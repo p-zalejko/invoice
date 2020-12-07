@@ -31,5 +31,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            pzalejko/ddd-invoice-web:${{ GITHUB_RUN_NUMBER }}
+            pzalejko/ddd-invoice-web:${{ github.run_number }}
             pzalejko/ddd-invoice-web:latest

@@ -5,5 +5,5 @@ import com.gmail.pzalejko.invoice.common.ValueObject
 /**
  * Details about the client who must pay off.
  */
-class InvoiceClient : ValueObject {
+data class InvoiceClient(val name: String, val address: InvoiceClientAddress, val taxId: InvoiceClientTaxId) : ValueObject {
 }

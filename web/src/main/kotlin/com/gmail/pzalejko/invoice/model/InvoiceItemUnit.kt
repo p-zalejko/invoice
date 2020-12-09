@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.invoicerequest.model
+package com.gmail.pzalejko.invoice.model
 
 import com.gmail.pzalejko.invoice.common.ValueObject
 

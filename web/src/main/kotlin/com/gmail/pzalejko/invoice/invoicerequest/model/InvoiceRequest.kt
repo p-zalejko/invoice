@@ -12,6 +12,7 @@ import com.gmail.pzalejko.invoice.model.InvoicePaymentDueDate
  * - the list of items must be greater than zero but lower than the allowed MAX. Items must be valid (with all details).
  * - client details must be present
  * - payment date must be provided and cannot be from the past
+ * - when the invoice is being generated then its content cannot be changed anymore.
  */
 interface InvoiceRequest : Aggregate<InvoiceNumber> {
 
@@ -25,6 +26,6 @@ interface InvoiceRequest : Aggregate<InvoiceNumber> {
 
     fun removeItem(item: InvoiceItem)
 
-    fun markAsRequested()
+    fun markAsInvoiceGenerationRequested()
 
 }

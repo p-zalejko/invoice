@@ -1,5 +1,5 @@
 package com.gmail.pzalejko.invoice.invoicerequest.model
 
-interface InvoiceRequestFactory {
+class InvoiceRequestFactory {
 
 }

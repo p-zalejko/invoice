@@ -1,4 +1,4 @@
-package org.acme.rest.resteasyjackson
+package com.gmail.pzalejko.invoice.common.web
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper

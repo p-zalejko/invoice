@@ -13,4 +13,8 @@ class InvoiceRequestDatabaseRepository: InvoiceRequestRepository {
     override fun save(request: InvoiceRequest) {
         TODO("Not yet implemented")
     }
+
+    override fun findLast(month: Long, year: Long): InvoiceRequest? {
+        TODO("Not yet implemented")
+    }
 }

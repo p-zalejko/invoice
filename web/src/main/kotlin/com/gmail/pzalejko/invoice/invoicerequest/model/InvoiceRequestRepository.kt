@@ -7,4 +7,6 @@ interface InvoiceRequestRepository {
     fun findByNumber(number: InvoiceNumber): InvoiceRequest?
 
     fun save(request: InvoiceRequest)
+
+    fun findLast(month: Long, year: Long): InvoiceRequest?
 }

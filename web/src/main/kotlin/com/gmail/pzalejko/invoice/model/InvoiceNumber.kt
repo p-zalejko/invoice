@@ -1,7 +1,11 @@
 package com.gmail.pzalejko.invoice.model
 
+import com.gmail.pzalejko.invoice.common.ValueObject
+
 /**
  * An unique number of the invoice.
  */
-data class InvoiceNumber(val number: String) {
+interface InvoiceNumber : ValueObject {
+
+    fun getNumber(): String
 }

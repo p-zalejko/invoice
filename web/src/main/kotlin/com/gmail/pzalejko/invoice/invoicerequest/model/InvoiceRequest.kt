@@ -14,9 +14,9 @@ import com.gmail.pzalejko.invoice.model.InvoicePaymentDueDate
  * - payment date must be provided and cannot be from the past
  * - when the invoice is being generated then its content cannot be changed anymore.
  */
-interface InvoiceRequest : Aggregate<InvoiceNumber> {
+interface InvoiceRequest : Aggregate<InvoiceRequestId> {
 
-    fun getInvoiceNumber(): InvoiceNumber
+    fun getInvoiceRequestId(): InvoiceRequestId
 
     fun changeClient(client: InvoiceClient)
 

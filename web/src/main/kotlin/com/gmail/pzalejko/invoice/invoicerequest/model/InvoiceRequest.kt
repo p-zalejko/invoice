@@ -26,6 +26,6 @@ interface InvoiceRequest : Aggregate<InvoiceNumber> {
 
     fun removeItem(item: InvoiceItem)
 
-    fun markAsInvoiceGenerationRequested()
+    fun markAsRequested()
 
 }

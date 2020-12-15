@@ -6,6 +6,7 @@ import java.time.Instant
 
 data class RequestInvoiceCommand(
     val paymentDate: Instant,
+    val saleDate: Instant,
     val client: InvoiceClient,
     val items: Collection<InvoiceItem>
 )

@@ -16,11 +16,11 @@ import com.gmail.pzalejko.invoice.model.InvoicePaymentDueDate
  */
 interface InvoiceRequest : Aggregate<InvoiceRequestId> {
 
-    fun getInvoiceRequestId(): InvoiceRequestId
-
     fun changeClient(client: InvoiceClient)
 
     fun changePaymentDate(dueDate: InvoicePaymentDueDate)
+
+    fun changeSaleDate(dueDate: InvoicePaymentDueDate)
 
     fun addItem(item: InvoiceItem)
 

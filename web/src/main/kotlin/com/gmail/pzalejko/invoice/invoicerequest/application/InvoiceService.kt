@@ -1,6 +1,7 @@
 package com.gmail.pzalejko.invoice.invoicerequest.application
 
 import com.gmail.pzalejko.invoice.model.InvoiceNumber
+import com.gmail.pzalejko.invoice.model.MonthBasedInvoiceNumber
 import javax.enterprise.context.ApplicationScoped
 
 /**
@@ -12,6 +13,6 @@ import javax.enterprise.context.ApplicationScoped
 class InvoiceService {
 
     fun requestInvoice(request: RequestInvoiceCommand): InvoiceNumber {
-        TODO("Not yet implemented")
+        return MonthBasedInvoiceNumber(1, 1, 200)
     }
 }

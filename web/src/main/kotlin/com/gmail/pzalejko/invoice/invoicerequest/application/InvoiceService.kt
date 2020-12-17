@@ -26,8 +26,16 @@ class InvoiceService {
     lateinit var invoiceRequestRepository: InvoiceRequestRepository
 
     fun requestInvoice(request: RequestInvoiceCommand): InvoiceNumber {
+        val dueDate = InvoicePaymentDueDate(request.paymentDate)
+        val creationDate = InvoiceCreationDate(request.creationDate)
+        val saleDate = InvoiceSaleDate(request.saleDate)
+        val client = toClient(request)
+        val items = toItems(request)
 
-        return MonthBasedInvoiceNumber(1, 1, 200)
+        val invoice = invoiceRequestFactory.create(dueDate, creationDate, saleDate, client, items)
+        invoiceRequestRepository.save(invoice)
+
+        return invoice.getInvoiceNumber()
     }
 
     private fun toClient(request: RequestInvoiceCommand): InvoiceClient {

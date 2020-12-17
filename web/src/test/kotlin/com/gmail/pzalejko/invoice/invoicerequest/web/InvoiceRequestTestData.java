@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,8 +18,9 @@ public class InvoiceRequestTestData {
     @AllArgsConstructor
     @Data
     static class TestRequestDto {
-        Instant paymentDate;
-        Instant saleDate;
+        LocalDate paymentDate;
+        LocalDate saleDate;
+        LocalDate creationDate;
         TestInvoiceClientDto client;
         List<TestInvoiceItemDto> items;
     }
@@ -62,12 +63,12 @@ public class InvoiceRequestTestData {
         var objectMapper = getObjectMapper();
 
         var clientAddress = new TestInvoiceClientAddressDto("foo", "0", "ZG");
-        var client = new TestInvoiceClientDto("Pawel", clientAddress, "00");
-        var now = Instant.now();
+        var client = new TestInvoiceClientDto("Pawel", clientAddress, "0123456789");
+        var now = LocalDate.now();
         var items = List.of(
                 new TestInvoiceItemDto("pc", 1, "COUNT", new TestInvoiceItemPriceDto(1, 1, "PLN"))
         );
-        var request = new TestRequestDto(now, now, client, items);
+        var request = new TestRequestDto(now, now, now, client, items);
 
         return objectMapper.writeValueAsString(request);
     }

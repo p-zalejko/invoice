@@ -4,6 +4,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
@@ -24,6 +26,9 @@ public class InvoiceRequestTest {
 
     @Test
     public void createInvoiceRequest() {
+        var now = LocalDate.now();
+        var expectedInvoiceNumber = String.format("1/%d/%d", now.getMonthValue(), now.getYear());
+
         given()
                 .when()
                 .contentType(ContentType.JSON)
@@ -31,6 +36,6 @@ public class InvoiceRequestTest {
                 .post(API)
                 .then()
                 .statusCode(201)
-                .body("invoiceNumber", is("1/1/200"));
+                .body("invoiceNumber", is(expectedInvoiceNumber));
     }
 }

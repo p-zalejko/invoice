@@ -2,8 +2,9 @@ package com.gmail.pzalejko.invoice.invoicerequest.application
 
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestFactory
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestRepository
-import com.gmail.pzalejko.invoice.model.InvoiceNumber
-import com.gmail.pzalejko.invoice.model.MonthBasedInvoiceNumber
+import com.gmail.pzalejko.invoice.model.*
+import java.math.BigDecimal
+import java.util.*
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.inject.Default
 import javax.inject.Inject
@@ -27,5 +28,31 @@ class InvoiceService {
     fun requestInvoice(request: RequestInvoiceCommand): InvoiceNumber {
 
         return MonthBasedInvoiceNumber(1, 1, 200)
+    }
+
+    private fun toClient(request: RequestInvoiceCommand): InvoiceClient {
+        val adr = InvoiceClientAddress(
+            request.client.address.street,
+            request.client.address.number,
+            request.client.address.city
+        )
+        val taxId = InvoiceClientPolandTaxId(request.client.taxId)
+
+        return InvoiceClient(request.client.name, adr, taxId)
+    }
+
+    private fun toItems(request: RequestInvoiceCommand): Collection<InvoiceItem> {
+        return request.items.map {
+            InvoiceItem(
+                it.name,
+                it.count,
+                it.unit,
+                InvoiceItemPrice(
+                    BigDecimal.valueOf(it.pricePerOne.value),
+                    BigDecimal.valueOf(it.pricePerOne.taxPercentage),
+                    Currency.getInstance(it.pricePerOne.currency)
+                )
+            )
+        }
     }
 }

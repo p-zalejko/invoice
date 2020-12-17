@@ -1,7 +1,7 @@
 package com.gmail.pzalejko.invoice.invoicerequest.application
 
 import com.gmail.pzalejko.invoice.model.InvoiceItemUnit
-import java.time.Instant
+import java.time.LocalDate
 
 /**
  * A command passed to the service (DDD application service) that creates new invoice requests.
@@ -9,8 +9,9 @@ import java.time.Instant
  * The command uses its own data model that acts like DTO objects.
  */
 data class RequestInvoiceCommand(
-    val paymentDate: Instant,
-    val saleDate: Instant,
+    val paymentDate: LocalDate,
+    val saleDate: LocalDate,
+    val creationDate: LocalDate,
     val client: RequestInvoiceClient,
     val items: Collection<RequestInvoiceItem>
 )

@@ -2,6 +2,7 @@ package com.gmail.pzalejko.invoice.invoicerequest.model
 
 import com.gmail.pzalejko.invoice.model.*
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneOffset
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.inject.Default
@@ -34,10 +35,9 @@ class InvoiceRequestFactory {
         )
     }
 
-    private fun getNextNumber(date: Instant): InvoiceNumber {
-        val localDate = date.atZone(ZoneOffset.UTC).toLocalDate()
-        val month = localDate.monthValue
-        val year = localDate.year
+    private fun getNextNumber(date: LocalDate): InvoiceNumber {
+        val month = date.monthValue
+        val year = date.year
         val latest = invoiceRequestRepository.findLast(month, year)
 
         val nextNumber = (latest?.getInvoiceNumber()?.getNumber() ?: 0) + 1

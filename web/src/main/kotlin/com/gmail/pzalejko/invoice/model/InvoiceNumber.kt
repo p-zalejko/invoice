@@ -7,5 +7,19 @@ import com.gmail.pzalejko.invoice.common.ValueObject
  */
 interface InvoiceNumber : ValueObject {
 
-    fun getNumber(): String
+    /**
+     * a number of the invoice
+     */
+    fun getNumber(): Int
+
+    /**
+     * a postfix part of the invoice number. Depending how invoices are counted (e.g. monthly, yearly or in any other way)
+     * it can provide different content.
+     */
+    fun getNumberPostfix(): String
+
+    /**
+     * a full invoice number.
+     */
+    fun getFullNumber(): String
 }

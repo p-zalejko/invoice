@@ -1,10 +1,7 @@
 package com.gmail.pzalejko.invoice.invoicerequest.model
 
 import com.gmail.pzalejko.invoice.common.Aggregate
-import com.gmail.pzalejko.invoice.model.InvoiceClient
-import com.gmail.pzalejko.invoice.model.InvoiceItem
-import com.gmail.pzalejko.invoice.model.InvoiceNumber
-import com.gmail.pzalejko.invoice.model.InvoicePaymentDueDate
+import com.gmail.pzalejko.invoice.model.*
 
 /**
  * An invoice request with all associated information important for invoice generation. The InvoiceRequest controls
@@ -16,11 +13,15 @@ import com.gmail.pzalejko.invoice.model.InvoicePaymentDueDate
  */
 interface InvoiceRequest : Aggregate<InvoiceNumber> {
 
+    fun getInvoiceNumber(): InvoiceNumber
+
     fun changeClient(client: InvoiceClient)
 
     fun changePaymentDate(dueDate: InvoicePaymentDueDate)
 
-    fun changeSaleDate(dueDate: InvoicePaymentDueDate)
+    fun changeSaleDate(saleDate: InvoiceSaleDate)
+
+    fun changeCreationDate(creationDate: InvoiceCreationDate)
 
     fun addItem(item: InvoiceItem)
 

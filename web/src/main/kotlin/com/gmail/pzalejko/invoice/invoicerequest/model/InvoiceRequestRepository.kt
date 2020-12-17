@@ -8,5 +8,5 @@ interface InvoiceRequestRepository {
 
     fun save(request: InvoiceRequest)
 
-    fun findLast(month: Long, year: Long): InvoiceRequest?
+    fun findLast(month: Int, year: Int): InvoiceRequest?
 }

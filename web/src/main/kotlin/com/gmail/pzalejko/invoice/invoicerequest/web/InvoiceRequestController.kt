@@ -25,7 +25,7 @@ class InvoiceRequestController {
     @POST
     fun create(request: RequestInvoiceCommand): Response {
         val createdInvoiceRequest = service.requestInvoice(request)
-        val dto = RequestResponse(createdInvoiceRequest.getNumber())
+        val dto = RequestResponse(createdInvoiceRequest.getFullNumber())
 
         return Response.ok(dto).status(Response.Status.CREATED).build();
     }

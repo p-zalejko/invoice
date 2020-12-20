@@ -60,15 +60,19 @@ public class InvoiceRequestTestData {
 
     @SneakyThrows
     public static String getInvoiceRequest() {
+        return getInvoiceRequest(LocalDate.now());
+    }
+
+    @SneakyThrows
+    public static String getInvoiceRequest(LocalDate date) {
         var objectMapper = getObjectMapper();
 
         var clientAddress = new TestInvoiceClientAddressDto("foo", "0", "ZG");
         var client = new TestInvoiceClientDto("Pawel", clientAddress, "0123456789");
-        var now = LocalDate.now();
         var items = List.of(
                 new TestInvoiceItemDto("pc", 1, "COUNT", new TestInvoiceItemPriceDto(1, 1, "PLN"))
         );
-        var request = new TestRequestDto(now, now, now, client, items);
+        var request = new TestRequestDto(date, date, date, client, items);
 
         return objectMapper.writeValueAsString(request);
     }

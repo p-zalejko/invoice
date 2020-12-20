@@ -15,6 +15,12 @@ interface InvoiceRequest : Aggregate<InvoiceNumber> {
 
     fun getInvoiceNumber(): InvoiceNumber
 
+    fun getPaymentDate(): InvoicePaymentDueDate
+
+    fun getSaleDate(): InvoiceSaleDate
+
+    fun getCreationDate(): InvoiceCreationDate
+
     fun changeClient(client: InvoiceClient)
 
     fun changePaymentDate(dueDate: InvoicePaymentDueDate)

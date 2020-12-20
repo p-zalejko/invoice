@@ -1,9 +1,12 @@
 package com.gmail.pzalejko.invoice.invoicerequest.web;
 
+import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.MockInvoiceRequestRepository;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 
 import static io.restassured.RestAssured.given;
@@ -13,6 +16,14 @@ import static org.hamcrest.CoreMatchers.is;
 public class InvoiceRequestTest {
 
     public static final String API = "/api/v1/invoicerequest";
+
+    @Inject
+    MockInvoiceRequestRepository repository;
+
+    @AfterEach
+    public void setup() {
+        repository.clear();
+    }
 
     @Test
     public void testHelloEndpoint() {
@@ -29,10 +40,23 @@ public class InvoiceRequestTest {
         var now = LocalDate.now();
         var expectedInvoiceNumber = String.format("1/%d/%d", now.getMonthValue(), now.getYear());
 
+        verifyInvoice(now, expectedInvoiceNumber);
+    }
+
+    @Test
+    public void createManyInvoiceRequests_theSameMonth() {
+        var now = LocalDate.now();
+        for (int i = 1; i < 9; i++) {
+            var expectedInvoiceNumber = String.format("%d/%d/%d", i, now.getMonthValue(), now.getYear());
+            verifyInvoice(now, expectedInvoiceNumber);
+        }
+    }
+
+    private void verifyInvoice(LocalDate date, String expectedInvoiceNumber) {
         given()
                 .when()
                 .contentType(ContentType.JSON)
-                .body(InvoiceRequestTestData.getInvoiceRequest())
+                .body(InvoiceRequestTestData.getInvoiceRequest(date))
                 .post(API)
                 .then()
                 .statusCode(201)

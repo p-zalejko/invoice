@@ -7,8 +7,8 @@ data class DefaultInvoiceRequest(
     val items: MutableList<InvoiceItem>,
     var client: InvoiceClient,
     var dueDate: InvoicePaymentDueDate,
-    var saleDate: InvoiceSaleDate,
-    var creationDate: InvoiceCreationDate,
+    var sDate: InvoiceSaleDate,
+    var cDate: InvoiceCreationDate,
     var state: State
 ) : InvoiceRequest {
 
@@ -22,6 +22,18 @@ data class DefaultInvoiceRequest(
         return invNumber
     }
 
+    override fun getCreationDate(): InvoiceCreationDate {
+        return cDate
+    }
+
+    override fun getPaymentDate(): InvoicePaymentDueDate {
+        return dueDate
+    }
+
+    override fun getSaleDate(): InvoiceSaleDate {
+        return sDate
+    }
+
     override fun changeClient(client: InvoiceClient) {
         this.client = client
     }
@@ -31,11 +43,11 @@ data class DefaultInvoiceRequest(
     }
 
     override fun changeSaleDate(saleDate: InvoiceSaleDate) {
-        this.saleDate = saleDate
+        this.sDate = saleDate
     }
 
     override fun changeCreationDate(creationDate: InvoiceCreationDate) {
-        this.creationDate = creationDate
+        this.cDate = creationDate
     }
 
     override fun addItem(item: InvoiceItem) {

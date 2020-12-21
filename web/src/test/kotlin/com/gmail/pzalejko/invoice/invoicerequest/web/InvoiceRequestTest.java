@@ -1,6 +1,8 @@
 package com.gmail.pzalejko.invoice.invoicerequest.web;
 
+import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.DynamoDbResource;
 import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.MockInvoiceRequestRepository;
+import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
@@ -13,7 +15,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-public class InvoiceRequestTest {
+@QuarkusTestResource(DynamoDbResource.class)
+public class InvoiceRequestTest  {
 
     public static final String API = "/api/v1/invoicerequest";
 

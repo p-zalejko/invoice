@@ -1,0 +1,53 @@
+var params = {
+    TableName: 'QuarkusFruits2',
+    KeySchema: [{ AttributeName: 'fruitName', KeyType: 'HASH' },
+    { AttributeName: 'comment', KeyType: 'RANGE' }  ],
+    AttributeDefinitions: [
+        {  AttributeName: 'fruitName', AttributeType: 'S' },
+        {  AttributeName: 'comment', AttributeType: 'S' }
+        ],
+    ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1, }
+};
+
+dynamodb.createTable(params, function(err, data) {
+    if (err) ppJson(err);
+    else ppJson(data);
+
+});
+
+---------------
+
+ var params = {
+  Key: {
+   "fruitName": {
+     S: "foo"
+    }
+  },
+  TableName: "QuarkusFruits"
+ };
+ dynamodb.getItem(params, function(err, data) {
+   if (err) console.log(err, err.stack); // an error occurred
+   else     console.log(data);           // successful response
+
+ });
+
+
+---------------
+
+var params = {
+  TableName: 'QuarkusFruits2',
+  Item: {
+    'fruitName' : {S: '0011'},
+     'comment' : {S: '001'}
+  },
+  ConditionExpression: 'attribute_not_exists(fruitName)',
+};
+
+// Call DynamoDB to add the item to the table
+dynamodb.putItem(params, function(err, data) {
+  if (err) {
+    console.log("Error", err);
+  } else {
+    console.log("Success", data);
+  }
+});

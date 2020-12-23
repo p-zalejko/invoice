@@ -18,7 +18,7 @@ jobs:
           java-version: 11
       - 
         name: Run the Maven verify phase
-        run: mvn -f web/pom.xml clean verify
+        run: mvn -f webtest/pom.xml clean verify
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1

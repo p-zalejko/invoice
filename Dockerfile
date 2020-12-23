@@ -4,7 +4,8 @@ COPY ./web /tmp/my-project
 USER root
 RUN chown -R quarkus /tmp/my-project
 USER quarkus
-RUN mvn -f /tmp/my-project/pom.xml -Pnative clean package
+# we skip tests here because tests use Testcontainers. Tests are executed in a previous step (outside docker). See github actions witin this project.
+RUN mvn -f /tmp/my-project/pom.xml -Pnative clean package -DskipTests
 
 ## Stage 2 : create the docker final image
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.3

@@ -1,3 +1,5 @@
+[![ci Actions Status](https://github.com/p-zalejko/invoice/workflows/main/badge.svg)](https://github.com/p-zalejko/invoice/actions)
+
 # Invoice
 A sample project that aims to evaluate Domain-driven design approach on a simple example.
 

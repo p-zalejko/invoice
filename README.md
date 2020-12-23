@@ -1,4 +1,4 @@
-[![ci Actions Status](https://github.com/p-zalejko/invoice/workflows/main/badge.svg)](https://github.com/p-zalejko/invoice/actions)
+![ci](https://github.com/p-zalejko/invoice/workflows/ci/badge.svg)
 
 # Invoice
 A sample project that aims to evaluate Domain-driven design approach on a simple example.

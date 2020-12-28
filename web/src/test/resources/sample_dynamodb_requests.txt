@@ -34,6 +34,26 @@ dynamodb.createTable(params, function(err, data) {
 
 ---------------
 
+
+ var params = {
+            KeyConditionExpression: 'fruitName = :fruitName',
+            ExpressionAttributeValues: {
+                ':fruitName': {'S': 'foo'}
+            },
+            TableName: "QuarkusFruits2"
+        };
+
+// Call DynamoDB to add the item to the table
+dynamodb.query(params, function(err, data) {
+  if (err) {
+    console.log("Error", err);
+  } else {
+    console.log("Success", data);
+  }
+});
+
+---------------
+
 var params = {
   TableName: 'QuarkusFruits2',
   Item: {

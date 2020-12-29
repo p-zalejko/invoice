@@ -65,6 +65,11 @@ public class InvoiceRequestTestData {
 
     @SneakyThrows
     public static String getInvoiceRequest(LocalDate date) {
+        return getInvoiceRequest(date, date, date);
+    }
+
+    @SneakyThrows
+    public static String getInvoiceRequest(LocalDate paymentDate, LocalDate saleDate, LocalDate creationDate) {
         var objectMapper = getObjectMapper();
 
         var clientAddress = new TestInvoiceClientAddressDto("foo", "0", "ZG");
@@ -72,10 +77,11 @@ public class InvoiceRequestTestData {
         var items = List.of(
                 new TestInvoiceItemDto("pc", 1, "COUNT", new TestInvoiceItemPriceDto(1, 1, "PLN"))
         );
-        var request = new TestRequestDto(date, date, date, client, items);
+        var request = new TestRequestDto(paymentDate, saleDate, creationDate, client, items);
 
         return objectMapper.writeValueAsString(request);
     }
+
 
     @NotNull
     private static ObjectMapper getObjectMapper() {

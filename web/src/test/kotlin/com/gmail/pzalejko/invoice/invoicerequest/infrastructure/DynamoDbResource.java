@@ -23,10 +23,9 @@ import java.util.Map;
  */
 public class DynamoDbResource implements QuarkusTestResourceLifecycleManager {
 
-    public static GenericContainer dynamoDBLocal =
-            new GenericContainer("amazon/dynamodb-local:1.11.477")
+    public static GenericContainer<?> dynamoDBLocal =
+            new GenericContainer<>("amazon/dynamodb-local:1.11.477")
                     .withExposedPorts(8000);
-
 
     @Override
     public Map<String, String> start() {

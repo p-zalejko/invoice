@@ -1,7 +1,6 @@
 var params = {
     TableName: 'QuarkusFruits2',
-    KeySchema: [{ AttributeName: 'fruitName', KeyType: 'HASH' },
-    { AttributeName: 'comment', KeyType: 'RANGE' }  ],
+    KeySchema: [{ AttributeName: 'fruitName', KeyType: 'HASH' }, { AttributeName: 'comment', KeyType: 'RANGE' }  ],
     AttributeDefinitions: [
         {  AttributeName: 'fruitName', AttributeType: 'S' },
         {  AttributeName: 'comment', AttributeType: 'S' }
@@ -53,6 +52,27 @@ dynamodb.query(params, function(err, data) {
 });
 
 ---------------
+ var params = {
+            KeyConditionExpression: 'fruitName = :fruitName',
+            FilterExpression: 'contains (naa, :naa)',
+            ExpressionAttributeValues: {
+                ':fruitName': {'S': '0011'},
+                ':naa': {'S': 'abc'},
+            },
+            TableName: "Invoices"
+        };
+
+// Call DynamoDB to add the item to the table
+dynamodb.query(params, function(err, data) {
+  if (err) {
+    console.log("Error", err);
+  } else {
+    console.log("Success", data);
+  }
+});
+
+
+--------------
 
 var params = {
   TableName: 'QuarkusFruits2',

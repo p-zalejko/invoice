@@ -5,6 +5,8 @@ import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.MockInvoiceReque
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +18,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @QuarkusTestResource(DynamoDbResource.class)
-public class InvoiceRequestTest  {
+public class InvoiceRequestTest {
 
     public static final String API = "/api/v1/invoicerequest";
 
@@ -47,6 +49,13 @@ public class InvoiceRequestTest  {
     }
 
     @Test
+    public void createInvoiceRequest_dueDateFromThePast() {
+        var now = LocalDate.now();
+        var body = InvoiceRequestTestData.getInvoiceRequest(now.minusDays(1), now, now);
+        ExtractableResponse<Response> response = verifyInvoice(body, 400);
+    }
+
+    @Test
     public void createManyInvoiceRequests_theSameMonth() {
         var now = LocalDate.now();
         for (int i = 1; i < 9; i++) {
@@ -64,5 +73,16 @@ public class InvoiceRequestTest  {
                 .then()
                 .statusCode(201)
                 .body("invoiceNumber", is(expectedInvoiceNumber));
+    }
+
+    private ExtractableResponse<Response> verifyInvoice(String body, int code) {
+        return given()
+                .when()
+                .contentType(ContentType.JSON)
+                .body(body)
+                .post(API)
+                .then()
+                .statusCode(code)
+                .extract();
     }
 }

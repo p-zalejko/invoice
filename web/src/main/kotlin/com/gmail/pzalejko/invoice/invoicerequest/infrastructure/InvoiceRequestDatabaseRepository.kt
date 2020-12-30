@@ -66,7 +66,14 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
     override fun save(request: InvoiceRequest) {
         val item = factory.to(request)
 
-        TODO("Not yet implemented")
+        val put = PutItemRequest.builder()
+            .tableName(TABLE_NAME)
+            .item(item)
+            .conditionExpression("attribute_not_exists(invoiceFullNumber)")
+            .build()
+
+        val putResult = dynamoDB.putItem(put)
+        LOG.debug("Saved a new request $putResult")
     }
 
     override fun findLast(month: Int, year: Int): InvoiceRequest? {
@@ -81,7 +88,7 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
             .build()
 
         val queryResponse = dynamoDB.query(query)
-        if (!queryResponse.hasItems()) {
+        if (queryResponse.count() == 0) {
             return null
         }
         val items = queryResponse.items()

@@ -1,6 +1,7 @@
 package com.gmail.pzalejko.invoice.invoicerequest.infrastructure
 
 import com.gmail.pzalejko.invoice.invoicerequest.model.DefaultInvoiceRequest
+import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequest
 import com.gmail.pzalejko.invoice.model.InvoiceClient
 import com.gmail.pzalejko.invoice.model.InvoiceItem
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
@@ -10,21 +11,22 @@ import javax.enterprise.context.ApplicationScoped
 @ApplicationScoped
 class DynamoDbInvoiceRequestFactory {
 
-    fun to(request: DefaultInvoiceRequest): Map<String, AttributeValue> {
+    fun to(request: InvoiceRequest): Map<String, AttributeValue> {
         val creationDate = request.getCreationDate()
         val saleDate = request.getSaleDate().date.toString()
         val paymentDate = request.getPaymentDate().date.toString()
         val yearMonth = String.format("%d-%d", creationDate.date.year, creationDate.date.monthValue)
 
-        val client = request.client
-        val items = request.items
+        val client = request.getClient()
+        val items = request.getItems()
+        val accountId = request.getAccountId()
 
         val invoiceNumberValue = request.getInvoiceNumber().getNumber().toString()
         val invoiceFullNumber = request.getInvoiceNumber().getFullNumber()
 
         val map: MutableMap<String, AttributeValue> = HashMap()
 
-        map["accountId"] = toNumAttr(1) //FIXME: use from the security context of invoiceRequest param
+        map["accountId"] = toNumAttr(accountId)
 
         map["invoiceFullNumber"] = toStringAttr(invoiceFullNumber)
         map["invoiceNumberValue"] = toStringAttr(invoiceNumberValue)

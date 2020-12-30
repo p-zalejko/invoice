@@ -13,6 +13,12 @@ import com.gmail.pzalejko.invoice.model.*
  */
 interface InvoiceRequest : Aggregate<InvoiceNumber> {
 
+    fun getAccountId(): Long
+
+    fun getClient(): InvoiceClient
+
+    fun getItems(): List<InvoiceItem>
+
     fun getInvoiceNumber(): InvoiceNumber
 
     fun getPaymentDate(): InvoicePaymentDueDate

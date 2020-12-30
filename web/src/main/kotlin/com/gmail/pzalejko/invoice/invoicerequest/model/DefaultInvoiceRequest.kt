@@ -4,8 +4,8 @@ import com.gmail.pzalejko.invoice.model.*
 
 data class DefaultInvoiceRequest(
     val invNumber: InvoiceNumber,
-    val items: MutableList<InvoiceItem>,
-    var client: InvoiceClient,
+    val itemsList: MutableList<InvoiceItem>,
+    var clientValue: InvoiceClient,
     var dueDate: InvoicePaymentDueDate,
     var sDate: InvoiceSaleDate,
     var cDate: InvoiceCreationDate,
@@ -18,6 +18,15 @@ data class DefaultInvoiceRequest(
 
     }
 
+    override fun getAccountId(): Long {
+        return 1 //FIXME: integrate with the security layer
+    }
+    override fun getItems(): List<InvoiceItem> {
+        return itemsList
+    }
+    override fun getClient(): InvoiceClient {
+        return clientValue
+    }
     override fun getInvoiceNumber(): InvoiceNumber {
         return invNumber
     }
@@ -35,7 +44,7 @@ data class DefaultInvoiceRequest(
     }
 
     override fun changeClient(client: InvoiceClient) {
-        this.client = client
+        this.clientValue = client
     }
 
     override fun changePaymentDate(dueDate: InvoicePaymentDueDate) {
@@ -51,15 +60,15 @@ data class DefaultInvoiceRequest(
     }
 
     override fun addItem(item: InvoiceItem) {
-        if (this.items.size > MAX_INVOICE_ITEMS) {
+        if (this.itemsList.size > MAX_INVOICE_ITEMS) {
             throw TooManyInvoiceItemsException("Invoice already contains the maximum number of items - $MAX_INVOICE_ITEMS")
         }
 
-        items.add(item)
+        itemsList.add(item)
     }
 
     override fun removeItem(item: InvoiceItem) {
-        items.remove(item)
+        itemsList.remove(item)
     }
 
     override fun markAsRequested() {

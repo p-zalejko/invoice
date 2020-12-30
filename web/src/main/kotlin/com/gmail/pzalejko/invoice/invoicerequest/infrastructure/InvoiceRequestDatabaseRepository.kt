@@ -64,6 +64,8 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
     }
 
     override fun save(request: InvoiceRequest) {
+        val item = factory.to(request)
+
         TODO("Not yet implemented")
     }
 

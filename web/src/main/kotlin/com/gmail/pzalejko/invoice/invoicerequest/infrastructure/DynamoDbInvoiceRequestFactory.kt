@@ -12,34 +12,45 @@ class DynamoDbInvoiceRequestFactory {
 
     fun to(request: DefaultInvoiceRequest): Map<String, AttributeValue> {
         val creationDate = request.getCreationDate()
-        val saleDate = request.getSaleDate()
-        val paymentDate = request.getPaymentDate()
+        val saleDate = request.getSaleDate().date.toString()
+        val paymentDate = request.getPaymentDate().date.toString()
         val yearMonth = String.format("%d-%d", creationDate.date.year, creationDate.date.monthValue)
-        val client = toClient(request.client)
-        val items = toItems(request.items)
+
+        val client = request.client
+        val items = request.items
+
         val invoiceNumberValue = request.getInvoiceNumber().getNumber().toString()
         val invoiceFullNumber = request.getInvoiceNumber().getFullNumber()
 
         val map: MutableMap<String, AttributeValue> = HashMap()
-//        map["InvoiceNumberValue"] = AttributeValue.builder().m(invoiceNumberValue).build()
-//        map["InvoiceNumber"] = AttributeValue.builder().n(invoiceFullNumber).build()
-//        map["InvoiceNumber"] = AttributeValue.builder().m(invoiceFullNumber).build()
 
+        map["accountId"] = toNumAttr(1) //FIXME: use from the security context of invoiceRequest param
+
+        map["invoiceFullNumber"] = toStringAttr(invoiceFullNumber)
+        map["invoiceNumberValue"] = toStringAttr(invoiceNumberValue)
+
+        map["saleDate"] = toStringAttr(saleDate)
+        map["paymentDate"] = toStringAttr(paymentDate)
+        map["yearMonth"] = toStringAttr(yearMonth)
+
+        map["client"] = toClient(client)
+        map["items"] = toItems(items)
 
         return map
     }
 
-    fun toClient(client: InvoiceClient): Map<String, AttributeValue> {
+    private fun toClient(client: InvoiceClient): AttributeValue {
         val map: MutableMap<String, AttributeValue> = HashMap()
         map["clientAddressCity"] = toStringAttr(client.address.city)
         map["clientAddressNumber"] = toStringAttr(client.address.number)
         map["clientAddressStreet"] = toStringAttr(client.address.street)
         map["clientName"] = toStringAttr(client.name)
         map["clientTaxId"] = toStringAttr(client.taxId.getTaxId())
-        return map
+
+        return toMapAttr(map)
     }
 
-    fun toItems(items: List<InvoiceItem>): AttributeValue {
+    private fun toItems(items: List<InvoiceItem>): AttributeValue {
         val result: MutableList<AttributeValue> = mutableListOf()
         for (item in items) {
             val map: MutableMap<String, AttributeValue> = HashMap()
@@ -56,19 +67,19 @@ class DynamoDbInvoiceRequestFactory {
         return toListAttr(result)
     }
 
-    fun toStringAttr(value: String): AttributeValue {
+    private fun toStringAttr(value: String): AttributeValue {
         return AttributeValue.builder().s(value).build()
     }
 
-    fun toNumAttr(value: Number): AttributeValue {
+    private fun toNumAttr(value: Number): AttributeValue {
         return AttributeValue.builder().n(value.toString()).build()
     }
 
-    fun toListAttr(values: List<AttributeValue>): AttributeValue {
+    private fun toListAttr(values: List<AttributeValue>): AttributeValue {
         return AttributeValue.builder().l(values).build()
     }
 
-    fun toMapAttr(values: Map<String, AttributeValue>): AttributeValue {
+    private fun toMapAttr(values: Map<String, AttributeValue>): AttributeValue {
         return AttributeValue.builder().m(values).build()
     }
 }

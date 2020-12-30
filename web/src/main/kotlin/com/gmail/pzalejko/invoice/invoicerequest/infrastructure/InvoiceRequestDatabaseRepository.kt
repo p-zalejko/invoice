@@ -25,6 +25,10 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
     @field: Default
     lateinit var dynamoDB: DynamoDbClient
 
+    @Inject
+    @field: Default
+    lateinit var factory: DynamoDbInvoiceRequestFactory
+
     @PostConstruct
     fun init() {
         val tables = dynamoDB.listTables()

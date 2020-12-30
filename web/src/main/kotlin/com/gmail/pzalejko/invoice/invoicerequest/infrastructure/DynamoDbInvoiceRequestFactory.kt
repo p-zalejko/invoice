@@ -8,6 +8,9 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import java.util.HashMap
 import javax.enterprise.context.ApplicationScoped
 
+/**
+ * Converts InvoiceRequest objects to dynamoDB structure and vice versa.
+ */
 @ApplicationScoped
 class DynamoDbInvoiceRequestFactory {
 
@@ -31,6 +34,7 @@ class DynamoDbInvoiceRequestFactory {
         map["invoiceFullNumber"] = toStringAttr(invoiceFullNumber)
         map["invoiceNumberValue"] = toStringAttr(invoiceNumberValue)
 
+        map["creationDate"] = toStringAttr(creationDate.toString())
         map["saleDate"] = toStringAttr(saleDate)
         map["paymentDate"] = toStringAttr(paymentDate)
         map["yearMonth"] = toStringAttr(yearMonth)

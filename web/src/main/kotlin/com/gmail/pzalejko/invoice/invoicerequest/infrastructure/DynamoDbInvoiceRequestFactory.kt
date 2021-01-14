@@ -28,10 +28,20 @@ class DynamoDbInvoiceRequestFactory {
                     InvoiceItemPrice(
                         it.m()["priceValue"]!!.n().toBigDecimal(),
                         it.m()["priceTax"]!!.n().toBigDecimal(),
-                        Currency.getInstance( it.m()["priceCurrency"]!!.s())
+                        Currency.getInstance(it.m()["priceCurrency"]!!.s())
                     )
                 )
             }
+
+        var client = InvoiceClient(
+            request["client"]!!.m()["name"]!!.s(),
+            InvoiceClientAddress(
+                request["client"]!!.m()["clientAddressStreet"]!!.s(),
+                request["client"]!!.m()["clientAddressNumber"]!!.s(),
+                request["client"]!!.m()["clientAddressCity"]!!.s()
+            ),
+            InvoiceClientPolandTaxId(request["client"]!!.m()["clientTaxId"]!!.s())
+        )
 
         TODO("Not yet implemented")
     }

@@ -24,11 +24,11 @@ class DynamoDbInvoiceRequestFactory {
                 InvoiceItem(
                     it.m()["name"]!!.s(),
                     it.m()["count"]!!.n().toInt(),
-                    InvoiceItemUnit.COUNT,
+                    InvoiceItemUnit.valueOf(it.m()["unit"]!!.s()),
                     InvoiceItemPrice(
-                        BigDecimal.ZERO,
-                        BigDecimal.ZERO,
-                        Currency.getInstance("")
+                        it.m()["priceValue"]!!.n().toBigDecimal(),
+                        it.m()["priceTax"]!!.n().toBigDecimal(),
+                        Currency.getInstance( it.m()["priceCurrency"]!!.s())
                     )
                 )
             }

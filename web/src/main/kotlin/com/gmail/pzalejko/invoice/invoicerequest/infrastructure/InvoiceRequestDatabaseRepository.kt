@@ -91,9 +91,11 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
         if (queryResponse.count() == 0) {
             return null
         }
+
         val items = queryResponse.items()
-        // val existingInvoiceRequests = items.map { DefaultInvoiceRequest.from(it) }
-        return null
+        val existingInvoiceRequests = items.map { factory.from(it) }
+        val sorted = existingInvoiceRequests.sortedBy { it.getCreationDate() }
+        return sorted[sorted.lastIndex]
     }
 
 }

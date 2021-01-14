@@ -1,11 +1,10 @@
 package com.gmail.pzalejko.invoice.invoicerequest.infrastructure
 
-import com.gmail.pzalejko.invoice.invoicerequest.model.DefaultInvoiceRequest
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequest
-import com.gmail.pzalejko.invoice.model.InvoiceClient
-import com.gmail.pzalejko.invoice.model.InvoiceItem
+import com.gmail.pzalejko.invoice.model.*
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
-import java.util.HashMap
+import java.math.BigDecimal
+import java.util.*
 import javax.enterprise.context.ApplicationScoped
 
 /**
@@ -13,6 +12,29 @@ import javax.enterprise.context.ApplicationScoped
  */
 @ApplicationScoped
 class DynamoDbInvoiceRequestFactory {
+
+    fun from(request: Map<String, AttributeValue>): InvoiceRequest {
+        val invoiceNumber = MonthBasedInvoiceNumber(
+            request["invoiceNumberValue"]!!.n().toInt(),
+            request["yearMonth"]!!.n().split("-")[1].toInt(),
+            request["yearMonth"]!!.n().split("-")[0].toInt()
+        )
+        val items = request["items"]!!.l()
+            .map {
+                InvoiceItem(
+                    it.m()["name"]!!.s(),
+                    it.m()["count"]!!.n().toInt(),
+                    InvoiceItemUnit.COUNT,
+                    InvoiceItemPrice(
+                        BigDecimal.ZERO,
+                        BigDecimal.ZERO,
+                        Currency.getInstance("")
+                    )
+                )
+            }
+
+        TODO("Not yet implemented")
+    }
 
     fun to(request: InvoiceRequest): Map<String, AttributeValue> {
         val creationDate = request.getCreationDate()

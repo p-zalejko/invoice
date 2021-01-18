@@ -39,6 +39,4 @@ interface InvoiceRequest : Aggregate<InvoiceNumber> {
 
     fun removeItem(item: InvoiceItem)
 
-    fun markAsRequested()
-
 }

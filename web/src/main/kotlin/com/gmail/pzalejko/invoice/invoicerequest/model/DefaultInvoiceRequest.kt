@@ -8,8 +8,7 @@ data class DefaultInvoiceRequest(
     var clientValue: InvoiceClient,
     var dueDate: InvoicePaymentDueDate,
     var sDate: InvoiceSaleDate,
-    var cDate: InvoiceCreationDate,
-    var state: State
+    var cDate: InvoiceCreationDate
 ) : InvoiceRequest {
 
     companion object {
@@ -71,12 +70,4 @@ data class DefaultInvoiceRequest(
         itemsList.remove(item)
     }
 
-    override fun markAsRequested() {
-        this.state = State.REQUESTED
-    }
-
-    enum class State {
-        NEW,
-        REQUESTED
-    }
 }

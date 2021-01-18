@@ -20,16 +20,16 @@ import java.util.stream.Collectors;
  * <p>
  * See https://quarkus.io/guides/writing-extensions#how-to-override-a-bean-defined-by-a-libraryquarkus-extension-that-doesnt-use-defaultbean
  */
-@Alternative
-@Priority(1)
-@Singleton
+//@Alternative
+//@Priority(1)
+//@Singleton
 public class MockInvoiceRequestRepository implements InvoiceRequestRepository {
 
     private final List<InvoiceRequest> invoiceRequests = new ArrayList<>();
 
     @Nullable
     @Override
-    public InvoiceRequest findByNumber(@NotNull InvoiceNumber number) {
+    public InvoiceRequest findByNumber(int accountId, @NotNull InvoiceNumber number) {
         return null;
     }
 
@@ -40,7 +40,7 @@ public class MockInvoiceRequestRepository implements InvoiceRequestRepository {
 
     @Nullable
     @Override
-    public InvoiceRequest findLast(int month, int year) {
+    public InvoiceRequest findLast(int accountId, int month, int year) {
         var perMonth = invoiceRequests.stream()
                 .filter(i -> i.getCreationDate().getDate().getYear() == year &&
                         i.getCreationDate().getDate().getMonthValue() == month)

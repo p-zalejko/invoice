@@ -4,7 +4,6 @@ import com.gmail.pzalejko.invoice.invoicerequest.model.DefaultInvoiceRequest
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequest
 import com.gmail.pzalejko.invoice.model.*
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
-import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.*
 import javax.enterprise.context.ApplicationScoped
@@ -36,7 +35,7 @@ class DynamoDbInvoiceRequestFactory {
             }.toMutableList()
 
         val client = InvoiceClient(
-            request["client"]!!.m()["name"]!!.s(),
+            request["client"]!!.m()["clientName"]!!.s(),
             InvoiceClientAddress(
                 request["client"]!!.m()["clientAddressStreet"]!!.s(),
                 request["client"]!!.m()["clientAddressNumber"]!!.s(),
@@ -48,16 +47,15 @@ class DynamoDbInvoiceRequestFactory {
         val creationDate = InvoiceCreationDate(LocalDate.parse(request["creationDate"]!!.s()))
         val paymentDueDate = InvoicePaymentDueDate(LocalDate.parse(request["paymentDate"]!!.s()))
         val saleDate = InvoiceSaleDate(LocalDate.parse(request["saleDate"]!!.s()))
-        val state = DefaultInvoiceRequest.State.REQUESTED;// FIXME: state not persisted in DB
 
-        return DefaultInvoiceRequest(invoiceNumber, items, client, paymentDueDate, saleDate, creationDate, state)
+        return DefaultInvoiceRequest(invoiceNumber, items, client, paymentDueDate, saleDate, creationDate)
     }
 
     fun to(request: InvoiceRequest): Map<String, AttributeValue> {
-        val creationDate = request.getCreationDate()
+        val creationDate = request.getCreationDate().date
         val saleDate = request.getSaleDate().date.toString()
         val paymentDate = request.getPaymentDate().date.toString()
-        val yearMonth = String.format("%d-%d", creationDate.date.year, creationDate.date.monthValue)
+        val yearMonth = String.format("%d-%d", creationDate.year, creationDate.monthValue)
 
         val client = request.getClient()
         val items = request.getItems()
@@ -73,6 +71,12 @@ class DynamoDbInvoiceRequestFactory {
         map["invoiceFullNumber"] = toStringAttr(invoiceFullNumber)
         map["invoiceNumberValue"] = toNumAttr(invoiceNumberValue)
 
+        // the next filed is a trick - it is a field that contains an invoice number as the key! While saving the
+        //  invoice request, this field will be used as the unique constrain - if the field with that key exists then
+        //  it means the invoice with that number already exists! This validation is done via a condition expression
+        //  called 'attribute_not_exists'.
+        map[getUniqueIdentifier(request)] = toNumAttr(0)
+
         map["creationDate"] = toStringAttr(creationDate.toString())
         map["saleDate"] = toStringAttr(saleDate)
         map["paymentDate"] = toStringAttr(paymentDate)
@@ -82,6 +86,11 @@ class DynamoDbInvoiceRequestFactory {
         map["items"] = toItems(items)
 
         return map
+    }
+
+    fun getUniqueIdentifier(request: InvoiceRequest): String {
+        val num = request.getInvoiceNumber().getFullNumber().replace("/", "_")
+        return "inv_$num"
     }
 
     private fun toClient(client: InvoiceClient): AttributeValue {

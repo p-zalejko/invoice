@@ -4,9 +4,9 @@ import com.gmail.pzalejko.invoice.model.InvoiceNumber
 
 interface InvoiceRequestRepository {
 
-    fun findByNumber(number: InvoiceNumber): InvoiceRequest?
+    fun findByNumber(accountId: Int, number: InvoiceNumber): InvoiceRequest?
 
     fun save(request: InvoiceRequest)
 
-    fun findLast(month: Int, year: Int): InvoiceRequest?
+    fun findLast(accountId: Int, month: Int, year: Int): InvoiceRequest?
 }

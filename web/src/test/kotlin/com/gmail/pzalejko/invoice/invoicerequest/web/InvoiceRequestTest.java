@@ -46,6 +46,8 @@ public class InvoiceRequestTest {
     public void testHelloEndpoint() {
         given()
                 .when()
+                .auth()
+                .basic("scott", "abc")
                 .get(API)
                 .then()
                 .statusCode(200)

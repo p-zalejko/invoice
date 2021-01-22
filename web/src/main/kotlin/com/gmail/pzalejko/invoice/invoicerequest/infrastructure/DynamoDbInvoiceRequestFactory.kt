@@ -44,11 +44,12 @@ class DynamoDbInvoiceRequestFactory {
             InvoiceClientPolandTaxId(request["client"]!!.m()["clientTaxId"]!!.s())
         )
 
+        val accountId = request["accountId"]!!.n().toLong()
         val creationDate = InvoiceCreationDate(LocalDate.parse(request["creationDate"]!!.s()))
         val paymentDueDate = InvoicePaymentDueDate(LocalDate.parse(request["paymentDate"]!!.s()))
         val saleDate = InvoiceSaleDate(LocalDate.parse(request["saleDate"]!!.s()))
 
-        return DefaultInvoiceRequest(invoiceNumber, items, client, paymentDueDate, saleDate, creationDate)
+        return DefaultInvoiceRequest(accountId, invoiceNumber, items, client, paymentDueDate, saleDate, creationDate)
     }
 
     fun to(request: InvoiceRequest): Map<String, AttributeValue> {

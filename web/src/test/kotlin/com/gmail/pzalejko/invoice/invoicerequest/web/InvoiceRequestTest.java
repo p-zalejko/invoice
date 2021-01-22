@@ -43,18 +43,6 @@ public class InvoiceRequestTest {
     }
 
     @Test
-    public void testHelloEndpoint() {
-        given()
-                .when()
-                .auth()
-                .basic("scott", "abc")
-                .get(API)
-                .then()
-                .statusCode(200)
-                .body(is("works!"));
-    }
-
-    @Test
     public void createInvoiceRequest() {
         var now = LocalDate.now();
         var expectedInvoiceNumber = String.format("1/%d/%d", now.getMonthValue(), now.getYear());

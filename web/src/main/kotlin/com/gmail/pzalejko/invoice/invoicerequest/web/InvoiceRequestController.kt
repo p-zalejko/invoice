@@ -25,7 +25,6 @@ class InvoiceRequestController {
     }
 
     @POST
-    @RolesAllowed("USER")
     fun create(request: RequestInvoiceCommand): Response {
         val createdInvoiceRequest = service.requestInvoice(request)
         val dto = RequestResponse(createdInvoiceRequest.getFullNumber())

@@ -26,3 +26,8 @@ class PasswordFactory {
     }
 
 }
+
+fun main(args: Array<String>) {
+    val encryptPassword = PasswordFactory().encryptPassword("abc".toCharArray())
+    print(encryptPassword)
+}

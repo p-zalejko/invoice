@@ -1,7 +1,6 @@
 package com.gmail.pzalejko.invoice.security.infrastructure
 
 import com.gmail.pzalejko.invoice.security.model.InvoiceUser
-import io.quarkus.elytron.security.common.BcryptUtil
 import io.quarkus.security.credential.PasswordCredential
 import org.apache.http.auth.BasicUserPrincipal
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue

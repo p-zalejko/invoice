@@ -6,7 +6,6 @@ import org.wildfly.security.password.util.ModularCrypt
 import javax.enterprise.context.ApplicationScoped
 import org.wildfly.security.password.interfaces.BCryptPassword
 
-
 @ApplicationScoped
 class PasswordFactory {
 

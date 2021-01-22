@@ -14,21 +14,23 @@ class InvoiceRequestFactory {
     lateinit var invoiceRequestRepository: InvoiceRequestRepository
 
     fun create(
-        dueDate: InvoicePaymentDueDate,
-        creationDate: InvoiceCreationDate,
-        saleDate: InvoiceSaleDate,
-        invoiceClient: InvoiceClient,
-        items: Collection<InvoiceItem>
+            accountId: Long,
+            dueDate: InvoicePaymentDueDate,
+            creationDate: InvoiceCreationDate,
+            saleDate: InvoiceSaleDate,
+            invoiceClient: InvoiceClient,
+            items: Collection<InvoiceItem>
     ): InvoiceRequest {
 
         val invoiceNumber = getNextNumber(creationDate.date)
         return DefaultInvoiceRequest(
-            invoiceNumber,
-            items.toMutableList(),
-            invoiceClient,
-            dueDate,
-            saleDate,
-            creationDate
+                accountId,
+                invoiceNumber,
+                items.toMutableList(),
+                invoiceClient,
+                dueDate,
+                saleDate,
+                creationDate
         )
     }
 

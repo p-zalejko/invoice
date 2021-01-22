@@ -3,12 +3,13 @@ package com.gmail.pzalejko.invoice.invoicerequest.model
 import com.gmail.pzalejko.invoice.model.*
 
 data class DefaultInvoiceRequest(
-    val invNumber: InvoiceNumber,
-    val itemsList: MutableList<InvoiceItem>,
-    var clientValue: InvoiceClient,
-    var dueDate: InvoicePaymentDueDate,
-    var sDate: InvoiceSaleDate,
-    var cDate: InvoiceCreationDate
+        val _accountId: Long,
+        val invNumber: InvoiceNumber,
+        val itemsList: MutableList<InvoiceItem>,
+        var clientValue: InvoiceClient,
+        var dueDate: InvoicePaymentDueDate,
+        var _saleDate: InvoiceSaleDate,
+        var _creationDate: InvoiceCreationDate
 ) : InvoiceRequest {
 
     companion object {
@@ -18,20 +19,23 @@ data class DefaultInvoiceRequest(
     }
 
     override fun getAccountId(): Long {
-        return 1 //FIXME: integrate with the security layer
+        return _accountId
     }
+
     override fun getItems(): List<InvoiceItem> {
         return itemsList
     }
+
     override fun getClient(): InvoiceClient {
         return clientValue
     }
+
     override fun getInvoiceNumber(): InvoiceNumber {
         return invNumber
     }
 
     override fun getCreationDate(): InvoiceCreationDate {
-        return cDate
+        return _creationDate
     }
 
     override fun getPaymentDate(): InvoicePaymentDueDate {
@@ -39,7 +43,7 @@ data class DefaultInvoiceRequest(
     }
 
     override fun getSaleDate(): InvoiceSaleDate {
-        return sDate
+        return _saleDate
     }
 
     override fun changeClient(client: InvoiceClient) {
@@ -51,11 +55,11 @@ data class DefaultInvoiceRequest(
     }
 
     override fun changeSaleDate(saleDate: InvoiceSaleDate) {
-        this.sDate = saleDate
+        this._saleDate = saleDate
     }
 
     override fun changeCreationDate(creationDate: InvoiceCreationDate) {
-        this.cDate = creationDate
+        this._creationDate = creationDate
     }
 
     override fun addItem(item: InvoiceItem) {

@@ -32,7 +32,8 @@ class InvoiceService {
         val client = toClient(request)
         val items = toItems(request)
 
-        val invoice = invoiceRequestFactory.create(dueDate, creationDate, saleDate, client, items)
+        //FIXME: configure security layer and get the accountId from the user's context
+        val invoice = invoiceRequestFactory.create(1L, dueDate, creationDate, saleDate, client, items)
         invoiceRequestRepository.save(invoice)
 
         return invoice.getInvoiceNumber()

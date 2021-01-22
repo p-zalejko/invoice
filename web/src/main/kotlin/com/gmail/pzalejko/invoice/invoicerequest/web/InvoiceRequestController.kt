@@ -2,7 +2,6 @@ package com.gmail.pzalejko.invoice.invoicerequest.web
 
 import com.gmail.pzalejko.invoice.invoicerequest.application.InvoiceService
 import com.gmail.pzalejko.invoice.invoicerequest.application.RequestInvoiceCommand
-import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
@@ -17,12 +16,6 @@ class InvoiceRequestController {
     @Inject
     @field: Default
     lateinit var service: InvoiceService
-
-    @GET
-    @RolesAllowed("USER")
-    fun get(): String {
-        return "works!"
-    }
 
     @POST
     fun create(request: RequestInvoiceCommand): Response {

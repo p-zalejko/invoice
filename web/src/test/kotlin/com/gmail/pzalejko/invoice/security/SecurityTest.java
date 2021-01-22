@@ -19,7 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTestResource(DynamoDbResource.class)
 public class SecurityTest {
 
-    public static final String API = "/api/v1/invoicerequest";
+    public static final String API = "/api/v1/hello";
 
     @Inject
     DynamoDbClient dynamoDB;

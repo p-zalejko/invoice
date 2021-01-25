@@ -2,7 +2,7 @@ package com.gmail.pzalejko.invoice.invoicerequest.infrastructure
 
 import com.gmail.pzalejko.invoice.invoicerequest.model.DefaultInvoiceRequest
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequest
-import com.gmail.pzalejko.invoice.model.*
+import com.gmail.pzalejko.invoice.common.model.*
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import java.time.LocalDate
 import java.util.*

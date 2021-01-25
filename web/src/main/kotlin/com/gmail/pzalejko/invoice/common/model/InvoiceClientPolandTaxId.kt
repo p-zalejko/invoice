@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.model
+package com.gmail.pzalejko.invoice.common.model
 
 /**
  * TaxID of the client from Poland.

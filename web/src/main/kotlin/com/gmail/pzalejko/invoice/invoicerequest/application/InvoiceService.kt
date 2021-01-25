@@ -2,7 +2,7 @@ package com.gmail.pzalejko.invoice.invoicerequest.application
 
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestFactory
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestRepository
-import com.gmail.pzalejko.invoice.model.*
+import com.gmail.pzalejko.invoice.common.model.*
 import java.math.BigDecimal
 import java.util.*
 import javax.enterprise.context.ApplicationScoped

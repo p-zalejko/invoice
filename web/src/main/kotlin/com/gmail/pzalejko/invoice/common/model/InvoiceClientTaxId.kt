@@ -1,6 +1,6 @@
-package com.gmail.pzalejko.invoice.model
+package com.gmail.pzalejko.invoice.common.model
 
-import com.gmail.pzalejko.invoice.common.ValueObject
+import com.gmail.pzalejko.invoice.common.ddd.ValueObject
 
 /**
  * TaxID of the client who must pay off.

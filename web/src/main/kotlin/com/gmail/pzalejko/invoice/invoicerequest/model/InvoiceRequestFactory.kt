@@ -1,6 +1,6 @@
 package com.gmail.pzalejko.invoice.invoicerequest.model
 
-import com.gmail.pzalejko.invoice.model.*
+import com.gmail.pzalejko.invoice.common.model.*
 import java.time.LocalDate
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.inject.Default

@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.common
+package com.gmail.pzalejko.invoice.common.ddd
 
 /**
  * A marker interface for value objects.

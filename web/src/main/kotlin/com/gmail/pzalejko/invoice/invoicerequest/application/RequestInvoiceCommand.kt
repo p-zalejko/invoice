@@ -1,6 +1,6 @@
 package com.gmail.pzalejko.invoice.invoicerequest.application
 
-import com.gmail.pzalejko.invoice.model.InvoiceItemUnit
+import com.gmail.pzalejko.invoice.common.model.InvoiceItemUnit
 import java.time.LocalDate
 
 /**

@@ -1,7 +1,7 @@
 package com.gmail.pzalejko.invoice.invoicerequest.model
 
-import com.gmail.pzalejko.invoice.common.Aggregate
-import com.gmail.pzalejko.invoice.model.*
+import com.gmail.pzalejko.invoice.common.ddd.Aggregate
+import com.gmail.pzalejko.invoice.common.model.*
 
 /**
  * An invoice request with all associated information important for invoice generation. The InvoiceRequest controls

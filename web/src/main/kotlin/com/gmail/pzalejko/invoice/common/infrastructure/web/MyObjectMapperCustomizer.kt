@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.common.web
+package com.gmail.pzalejko.invoice.common.infrastructure.web
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper

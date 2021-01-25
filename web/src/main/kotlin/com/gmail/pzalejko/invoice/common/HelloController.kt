@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.common.web
+package com.gmail.pzalejko.invoice.common
 
 import javax.annotation.security.RolesAllowed
 import javax.ws.rs.Consumes

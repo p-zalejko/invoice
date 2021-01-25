@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.common.web;
+package com.gmail.pzalejko.invoice.common.infrastructure.web;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

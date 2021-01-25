@@ -2,6 +2,7 @@ package com.gmail.pzalejko.invoice.invoicerequest.web
 
 import com.gmail.pzalejko.invoice.invoicerequest.application.InvoiceService
 import com.gmail.pzalejko.invoice.invoicerequest.application.RequestInvoiceCommand
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
@@ -18,6 +19,7 @@ class InvoiceRequestController {
     lateinit var service: InvoiceService
 
     @POST
+    @RolesAllowed("USER")
     fun create(request: RequestInvoiceCommand): Response {
         val createdInvoiceRequest = service.requestInvoice(request)
         val dto = RequestResponse(createdInvoiceRequest.getFullNumber())

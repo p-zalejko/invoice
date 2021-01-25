@@ -4,6 +4,7 @@ import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.DynamoDbResource
 import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.InvoiceRequestDatabaseRepository;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -43,6 +44,13 @@ public class InvoiceRequestTest {
     }
 
     @Test
+    public void createInvoiceRequest_unauthorized() {
+        var now = LocalDate.now();
+        verifyInvoice(InvoiceRequestTestData.getInvoiceRequest(now), 401);
+    }
+
+    @Test
+    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createInvoiceRequest() {
         var now = LocalDate.now();
         var expectedInvoiceNumber = String.format("1/%d/%d", now.getMonthValue(), now.getYear());
@@ -51,6 +59,7 @@ public class InvoiceRequestTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createInvoiceRequest_dueDateFromThePast() {
         var now = LocalDate.now();
         var body = InvoiceRequestTestData.getInvoiceRequest(now.minusDays(1), now, now);
@@ -58,6 +67,7 @@ public class InvoiceRequestTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createInvoiceRequest_saleDateFromTheFuture() {
         var now = LocalDate.now();
         var body = InvoiceRequestTestData.getInvoiceRequest(now, now.plusMonths(1), now);
@@ -65,6 +75,7 @@ public class InvoiceRequestTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createManyInvoiceRequests_theSameMonth() {
         var now = LocalDate.now();
         for (int i = 1; i < 9; i++) {
@@ -74,6 +85,7 @@ public class InvoiceRequestTest {
     }
 
     @Test
+    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createManyInvoiceRequests_differentMonths() {
         var now = LocalDate.now();
         // the current month

@@ -1,0 +1,9 @@
+version: '3'
+services:
+  api:
+    image: 'pzalejko/ddd-invoice-web'
+    ports:
+      - "8080:8080"
+    environment:
+     - AWS_ACCESS_KEY_ID=XX
+     - AWS_SECRET_ACCESS_KEY=YY

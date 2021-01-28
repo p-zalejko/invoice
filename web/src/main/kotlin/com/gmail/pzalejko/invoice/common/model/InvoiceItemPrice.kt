@@ -14,8 +14,8 @@ data class InvoiceItemPrice(val value: BigDecimal, val taxPercentage: BigDecimal
     }
 
     init {
-        require(value > BigDecimal.ZERO) { "Price must be grater than zero" }
-        require(taxPercentage >= BigDecimal.ZERO) { "Price must be grater or equals than zero" }
-        require(currency.currencyCode == SUPPORTED_CURRENCY.currencyCode) { "Only PLN (Poland) currency is supported." }
+        require(value > BigDecimal.ZERO) { "Price must be grater than zero. It is $value" }
+        require(taxPercentage >= BigDecimal.ZERO) { "Tax must be grater or equals than zero. It is $taxPercentage" }
+        require(currency.currencyCode == SUPPORTED_CURRENCY.currencyCode) { "Only PLN (Poland) currency is supported. This one isn't: $currency"  }
     }
 }

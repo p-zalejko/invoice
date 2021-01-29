@@ -8,7 +8,9 @@ import javax.inject.Inject
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 import javax.enterprise.inject.Default
+import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
+import javax.ws.rs.core.SecurityContext
 
 @Path("/api/v1/invoicerequest")
 @Produces(MediaType.APPLICATION_JSON)
@@ -21,7 +23,7 @@ class InvoiceRequestController {
 
     @POST
     @RolesAllowed("USER")
-    fun create(request: RequestInvoiceCommand): Response {
+    fun create(request: RequestInvoiceCommand, @Context sec: SecurityContext): Response {
         val createdInvoiceRequest = service.requestInvoice(request)
         val dto = RequestResponse(createdInvoiceRequest.getFullNumber())
 

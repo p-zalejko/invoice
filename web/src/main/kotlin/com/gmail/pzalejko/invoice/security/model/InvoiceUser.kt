@@ -6,7 +6,7 @@ import io.smallrye.mutiny.Uni
 import java.security.Permission
 import java.security.Principal
 
-data class InvoiceUser(val _principal: Principal,   val _credential: Credential, val _roles: MutableSet<String>, val accountId: Int) : SecurityIdentity {
+data class InvoiceUser(val _principal: Principal,   val _credential: Credential, val _roles: MutableSet<String>, val accountId: Long) : SecurityIdentity {
 
     override fun getPrincipal(): Principal {
         return _principal

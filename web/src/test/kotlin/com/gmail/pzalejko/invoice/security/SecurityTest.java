@@ -49,7 +49,7 @@ public class SecurityTest {
                 .get(API)
                 .then()
                 .statusCode(200)
-                .body(is("works!"));
+                .body(is("Hello foo"));
     }
 
     @Test

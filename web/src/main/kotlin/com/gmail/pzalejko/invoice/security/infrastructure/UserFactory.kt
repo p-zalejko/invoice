@@ -1,8 +1,8 @@
 package com.gmail.pzalejko.invoice.security.infrastructure
 
 import com.gmail.pzalejko.invoice.security.model.InvoiceUser
+import com.gmail.pzalejko.invoice.security.model.InvoiceUserPrincipal
 import io.quarkus.security.credential.PasswordCredential
-import org.apache.http.auth.BasicUserPrincipal
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import java.util.HashMap
 import javax.enterprise.context.ApplicationScoped
@@ -30,10 +30,10 @@ class UserFactory {
     fun from(request: Map<String, AttributeValue>): InvoiceUser {
         val username = request["username"]!!.s();
         val password = request["password"]!!.s().toCharArray();
-        val accountId = request["accountId"]!!.n().toInt();
+        val accountId = request["accountId"]!!.n().toLong();
         val roles = request["roles"]!!.ss().toMutableSet()
 
-        val principal = BasicUserPrincipal(username)
+        val principal = InvoiceUserPrincipal(username, accountId)
         val credential = PasswordCredential(password)
         return InvoiceUser(principal, credential, roles, accountId);
     }

@@ -25,15 +25,14 @@ class InvoiceService {
     @field: Default
     lateinit var invoiceRequestRepository: InvoiceRequestRepository
 
-    fun requestInvoice(request: RequestInvoiceCommand): InvoiceNumber {
+    fun requestInvoice(accountId: Long, request: RequestInvoiceCommand): InvoiceNumber {
         val dueDate = InvoicePaymentDueDate(request.paymentDate)
         val creationDate = InvoiceCreationDate(request.creationDate)
         val saleDate = InvoiceSaleDate(request.saleDate)
         val client = toClient(request)
         val items = toItems(request)
 
-        //FIXME: configure security layer and get the accountId from the user's context
-        val invoice = invoiceRequestFactory.create(1L, dueDate, creationDate, saleDate, client, items)
+        val invoice = invoiceRequestFactory.create(accountId, dueDate, creationDate, saleDate, client, items)
         invoiceRequestRepository.save(invoice)
 
         return invoice.getInvoiceNumber()

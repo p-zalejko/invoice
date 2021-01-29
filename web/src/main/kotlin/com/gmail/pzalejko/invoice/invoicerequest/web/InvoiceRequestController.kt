@@ -2,6 +2,7 @@ package com.gmail.pzalejko.invoice.invoicerequest.web
 
 import com.gmail.pzalejko.invoice.invoicerequest.application.InvoiceService
 import com.gmail.pzalejko.invoice.invoicerequest.application.RequestInvoiceCommand
+import com.gmail.pzalejko.invoice.security.model.InvoiceUserPrincipal
 import io.quarkus.runtime.annotations.RegisterForReflection
 import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
@@ -24,7 +25,8 @@ class InvoiceRequestController {
     @POST
     @RolesAllowed("USER")
     fun create(request: RequestInvoiceCommand, @Context sec: SecurityContext): Response {
-        val createdInvoiceRequest = service.requestInvoice(request)
+        val principal = sec.userPrincipal as InvoiceUserPrincipal
+        val createdInvoiceRequest = service.requestInvoice(principal.accountId, request)
         val dto = RequestResponse(createdInvoiceRequest.getFullNumber())
 
         return Response.ok(dto).status(Response.Status.CREATED).build();

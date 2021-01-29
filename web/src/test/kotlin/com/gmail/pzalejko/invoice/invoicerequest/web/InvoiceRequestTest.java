@@ -2,9 +2,9 @@ package com.gmail.pzalejko.invoice.invoicerequest.web;
 
 import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.DynamoDbResource;
 import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.InvoiceRequestDatabaseRepository;
+import com.gmail.pzalejko.invoice.security.SecurityRepositoryHelper;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -15,6 +15,7 @@ import software.amazon.awssdk.services.dynamodb.model.DeleteTableRequest;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -24,11 +25,16 @@ import static org.hamcrest.CoreMatchers.is;
 public class InvoiceRequestTest {
 
     public static final String API = "/api/v1/invoicerequest";
+    public static final String USER_NAME = "foo";
+    public static final String PASSWORD = "bar";
 
     @Inject
     DynamoDbClient dynamoDB;
     @Inject
     InvoiceRequestDatabaseRepository repository;
+
+    @Inject
+    SecurityRepositoryHelper repositoryHelper;
 
     @AfterEach
     public void setup() {
@@ -41,16 +47,24 @@ public class InvoiceRequestTest {
         }
 
         repository.init();
+        repositoryHelper.setup();
+        repositoryHelper.createUser(USER_NAME, PASSWORD.toCharArray(), 1, Set.of("USER"));
     }
 
     @Test
     public void createInvoiceRequest_unauthorized() {
         var now = LocalDate.now();
-        verifyInvoice(InvoiceRequestTestData.getInvoiceRequest(now), 401);
+
+        given()
+                .when()
+                .contentType(ContentType.JSON)
+                .body(InvoiceRequestTestData.getInvoiceRequest(now))
+                .post(API)
+                .then()
+                .statusCode(401);
     }
 
     @Test
-    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createInvoiceRequest() {
         var now = LocalDate.now();
         var expectedInvoiceNumber = String.format("1/%d/%d", now.getMonthValue(), now.getYear());
@@ -59,7 +73,6 @@ public class InvoiceRequestTest {
     }
 
     @Test
-    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createInvoiceRequest_dueDateFromThePast() {
         var now = LocalDate.now();
         var body = InvoiceRequestTestData.getInvoiceRequest(now.minusDays(1), now, now);
@@ -67,7 +80,6 @@ public class InvoiceRequestTest {
     }
 
     @Test
-    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createInvoiceRequest_saleDateFromTheFuture() {
         var now = LocalDate.now();
         var body = InvoiceRequestTestData.getInvoiceRequest(now, now.plusMonths(1), now);
@@ -75,7 +87,6 @@ public class InvoiceRequestTest {
     }
 
     @Test
-    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createManyInvoiceRequests_theSameMonth() {
         var now = LocalDate.now();
         for (int i = 1; i < 9; i++) {
@@ -85,7 +96,6 @@ public class InvoiceRequestTest {
     }
 
     @Test
-    @TestSecurity(user = "testUser", roles = {"USER"})
     public void createManyInvoiceRequests_differentMonths() {
         var now = LocalDate.now();
         // the current month
@@ -105,6 +115,8 @@ public class InvoiceRequestTest {
     private void verifyInvoice(LocalDate date, String expectedInvoiceNumber) {
         given()
                 .when()
+                .auth()
+                .basic(USER_NAME, PASSWORD)
                 .contentType(ContentType.JSON)
                 .body(InvoiceRequestTestData.getInvoiceRequest(date))
                 .post(API)
@@ -116,6 +128,8 @@ public class InvoiceRequestTest {
     private void verifyInvoice(String body, String expectedInvoiceNumber) {
         given()
                 .when()
+                .auth()
+                .basic(USER_NAME, PASSWORD)
                 .contentType(ContentType.JSON)
                 .body(body)
                 .post(API)
@@ -127,6 +141,8 @@ public class InvoiceRequestTest {
     private ExtractableResponse<Response> verifyInvoice(String body, int code) {
         return given()
                 .when()
+                .auth()
+                .basic(USER_NAME, PASSWORD)
                 .contentType(ContentType.JSON)
                 .body(body)
                 .post(API)

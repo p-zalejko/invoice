@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.inject.Default
 import javax.inject.Inject
+import software.amazon.awssdk.services.dynamodb.model.ScanRequest
 
 @ApplicationScoped
 class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
@@ -19,7 +20,7 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
     private val LOG: Logger = Logger.getLogger(InvoiceRequestDatabaseRepository::class.java)
 
     companion object {
-          const val TABLE_NAME = "InvoiceApp_InvoiceRequests"
+        const val TABLE_NAME = "InvoiceApp_InvoiceRequests"
     }
 
     @Inject
@@ -38,12 +39,16 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
 
             // key
             val keySchema = ArrayList<KeySchemaElement>()
-            keySchema.add(KeySchemaElement.builder().attributeName("accountId").keyType(KeyType.HASH).build())
+            keySchema.add(
+                KeySchemaElement.builder().attributeName("accountId_invoiceFullNumber").keyType(KeyType.HASH).build()
+            )
             keySchema.add(KeySchemaElement.builder().attributeName("yearMonth").keyType(KeyType.RANGE).build())
 
             // attributes
             val attributes = ArrayList<AttributeDefinition>()
-            attributes.add(AttributeDefinition.builder().attributeName("accountId").attributeType("N").build())
+            attributes.add(
+                AttributeDefinition.builder().attributeName("accountId_invoiceFullNumber").attributeType("S").build()
+            )
             attributes.add(AttributeDefinition.builder().attributeName("yearMonth").attributeType("S").build())
 
             val throughput = ProvisionedThroughput.builder().readCapacityUnits(1).writeCapacityUnits(1).build()
@@ -61,11 +66,11 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
     }
 
     override fun findByNumber(accountId: Int, number: InvoiceNumber): InvoiceRequest? {
+        val queryValue = accountId.toString().plus("_").plus(number.getFullNumber())
         val expressionAttributeValues: MutableMap<String, AttributeValue> = HashMap()
-        expressionAttributeValues[":accountId"] = AttributeValue.builder().n(accountId.toString()).build()
-        expressionAttributeValues[":invoiceFullNumber"] = AttributeValue.builder().s(number.getFullNumber()).build()
+        expressionAttributeValues[":accountId_invoiceFullNumber"] = AttributeValue.builder().s(queryValue).build()
         val query = QueryRequest.builder()
-            .keyConditionExpression("accountId = :accountId and invoiceFullNumber = :invoiceFullNumber")
+            .keyConditionExpression("accountId_invoiceFullNumber = :accountId_invoiceFullNumber")
             .expressionAttributeValues(expressionAttributeValues)
             .tableName(TABLE_NAME)
             .build()
@@ -96,24 +101,26 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
         LOG.debug("Saved a new request $putResult")
     }
 
-    override fun findLast(accountId: Int, month: Int, year: Int): InvoiceRequest? {
+    override fun findLast(accountId: Long, month: Int, year: Int): InvoiceRequest? {
         val expressionAttributeValues: MutableMap<String, AttributeValue> = HashMap()
         expressionAttributeValues[":accountId"] = AttributeValue.builder().n(accountId.toString()).build()
         expressionAttributeValues[":yearMonth"] = AttributeValue.builder().s("$year-$month").build()
-        val query = QueryRequest.builder()
-            .keyConditionExpression("accountId = :accountId and yearMonth = :yearMonth")
-            .expressionAttributeValues(expressionAttributeValues)
+
+        val scanRequest: ScanRequest = ScanRequest.builder()
             .tableName(TABLE_NAME)
+            .filterExpression("accountId = :accountId and yearMonth = :yearMonth")
+            .expressionAttributeValues(expressionAttributeValues)
             .build()
 
-        val queryResponse = dynamoDB.query(query)
+
+        val queryResponse = dynamoDB.scan(scanRequest)
         if (queryResponse.count() == 0) {
             return null
         }
 
         val items = queryResponse.items()
         val existingInvoiceRequests = items.map { factory.from(it) }
-        val sorted = existingInvoiceRequests.sortedBy { it.getCreationDate() }
+        val sorted = existingInvoiceRequests.sortedBy { it.getInvoiceNumber().getNumber() }
         return sorted[sorted.lastIndex]
     }
 

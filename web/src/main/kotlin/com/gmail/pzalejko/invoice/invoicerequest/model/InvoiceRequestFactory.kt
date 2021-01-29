@@ -22,7 +22,7 @@ class InvoiceRequestFactory {
             items: Collection<InvoiceItem>
     ): InvoiceRequest {
 
-        val invoiceNumber = getNextNumber(creationDate.date)
+        val invoiceNumber = getNextNumber(accountId,creationDate.date)
         return DefaultInvoiceRequest(
                 accountId,
                 invoiceNumber,
@@ -34,11 +34,10 @@ class InvoiceRequestFactory {
         )
     }
 
-    private fun getNextNumber(date: LocalDate): InvoiceNumber {
+    private fun getNextNumber( accountId: Long,date: LocalDate): InvoiceNumber {
         val month = date.monthValue
         val year = date.year
-        //FIXME: take account id from the security context
-        val latest = invoiceRequestRepository.findLast(1, month, year)
+        val latest = invoiceRequestRepository.findLast(accountId, month, year)
 
         val nextNumber = (latest?.getInvoiceNumber()?.getNumber() ?: 0) + 1
         return MonthBasedInvoiceNumber(nextNumber, month, year)

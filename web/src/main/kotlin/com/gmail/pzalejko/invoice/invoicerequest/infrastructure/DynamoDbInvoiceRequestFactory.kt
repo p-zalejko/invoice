@@ -68,7 +68,7 @@ class DynamoDbInvoiceRequestFactory {
         val map: MutableMap<String, AttributeValue> = HashMap()
 
         map["accountId"] = toNumAttr(accountId)
-
+        map["accountId_invoiceFullNumber"] = toStringAttr(accountId.toString().plus("_").plus(invoiceFullNumber))
         map["invoiceFullNumber"] = toStringAttr(invoiceFullNumber)
         map["invoiceNumberValue"] = toNumAttr(invoiceNumberValue)
 
@@ -90,8 +90,11 @@ class DynamoDbInvoiceRequestFactory {
     }
 
     fun getUniqueIdentifier(request: InvoiceRequest): String {
+        val accountIdAsString = request.getAccountId().toString();
         val num = request.getInvoiceNumber().getFullNumber().replace("/", "_")
-        return "inv_$num"
+        val keyName = accountIdAsString.plus("_").plus(num)
+
+        return "inv_$keyName"
     }
 
     private fun toClient(client: InvoiceClient): AttributeValue {

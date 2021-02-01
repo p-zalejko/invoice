@@ -72,12 +72,6 @@ class DynamoDbInvoiceRequestFactory {
         map["invoiceFullNumber"] = toStringAttr(invoiceFullNumber)
         map["invoiceNumberValue"] = toNumAttr(invoiceNumberValue)
 
-        // the next filed is a trick - it is a field that contains an invoice number as the key! While saving the
-        //  invoice request, this field will be used as the unique constrain - if the field with that key exists then
-        //  it means the invoice with that number already exists! This validation is done via a condition expression
-        //  called 'attribute_not_exists'.
-        map[getUniqueIdentifier(request)] = toNumAttr(0)
-
         map["creationDate"] = toStringAttr(creationDate.toString())
         map["saleDate"] = toStringAttr(saleDate)
         map["paymentDate"] = toStringAttr(paymentDate)
@@ -87,14 +81,6 @@ class DynamoDbInvoiceRequestFactory {
         map["items"] = toItems(items)
 
         return map
-    }
-
-    fun getUniqueIdentifier(request: InvoiceRequest): String {
-        val accountIdAsString = request.getAccountId().toString();
-        val num = request.getInvoiceNumber().getFullNumber().replace("/", "_")
-        val keyName = accountIdAsString.plus("_").plus(num)
-
-        return "inv_$keyName"
     }
 
     private fun toClient(client: InvoiceClient): AttributeValue {

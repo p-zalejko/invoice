@@ -88,13 +88,12 @@ class InvoiceRequestDatabaseRepository : InvoiceRequestRepository {
     }
 
     override fun save(request: InvoiceRequest) {
-        val id = factory.getUniqueIdentifier(request)
         val item = factory.to(request)
 
         val put = PutItemRequest.builder()
             .tableName(TABLE_NAME)
             .item(item)
-            .conditionExpression("attribute_not_exists($id)")
+            .conditionExpression("attribute_not_exists(accountId_invoiceFullNumber)")
             .build()
 
         val putResult = dynamoDB.putItem(put)

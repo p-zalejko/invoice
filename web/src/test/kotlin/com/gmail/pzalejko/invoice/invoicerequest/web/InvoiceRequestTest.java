@@ -15,9 +15,15 @@ import software.amazon.awssdk.services.dynamodb.model.DeleteTableRequest;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
@@ -110,6 +116,36 @@ public class InvoiceRequestTest {
             var expectedInvoiceNumber = String.format("%d/%d/%d", i, now.getMonthValue(), now.getYear());
             verifyInvoice(InvoiceRequestTestData.getInvoiceRequest(now, LocalDate.now(), now), expectedInvoiceNumber);
         }
+    }
+
+    @Test
+    public void createManyInvoiceRequests_inParallel() throws Exception {
+        var now = LocalDate.now();
+        var executorService = Executors.newFixedThreadPool(10);
+        var items = IntStream.range(0, 250)
+                .mapToObj(i -> executorService.submit(() -> given()
+                                .when()
+                                .auth()
+                                .basic(USER_NAME, PASSWORD)
+                                .contentType(ContentType.JSON)
+                                .body(InvoiceRequestTestData.getInvoiceRequest(now))
+                                .post(API)
+                                .then()
+                                .extract()
+                        )
+                )
+                .collect(Collectors.toList());
+
+        var results = new ArrayList<ExtractableResponse<Response>>();
+        for (var item : items) {
+            results.add(item.get(10, TimeUnit.SECONDS));
+        }
+
+        boolean isConflict = results.stream()
+                .filter(i -> i.statusCode() == 500)
+                .map(i -> i.response().body().prettyPrint())
+                .anyMatch(i -> i.contains("ConditionalCheckFailedException: The conditional request failed"));
+        assertThat(isConflict).isTrue();
     }
 
     private void verifyInvoice(LocalDate date, String expectedInvoiceNumber) {

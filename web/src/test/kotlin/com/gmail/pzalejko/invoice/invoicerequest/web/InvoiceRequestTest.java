@@ -120,32 +120,38 @@ public class InvoiceRequestTest {
 
     @Test
     public void createManyInvoiceRequests_inParallel() throws Exception {
+        //FIXME: this test is weak - it can fail randomly
         var now = LocalDate.now();
         var executorService = Executors.newFixedThreadPool(10);
-        var items = IntStream.range(0, 250)
-                .mapToObj(i -> executorService.submit(() -> given()
-                                .when()
-                                .auth()
-                                .basic(USER_NAME, PASSWORD)
-                                .contentType(ContentType.JSON)
-                                .body(InvoiceRequestTestData.getInvoiceRequest(now))
-                                .post(API)
-                                .then()
-                                .extract()
-                        )
-                )
-                .collect(Collectors.toList());
+        try {
+            var items = IntStream.range(0, 250)
+                    .mapToObj(i -> executorService.submit(() -> given()
+                                    .when()
+                                    .auth()
+                                    .basic(USER_NAME, PASSWORD)
+                                    .contentType(ContentType.JSON)
+                                    .body(InvoiceRequestTestData.getInvoiceRequest(now))
+                                    .post(API)
+                                    .then()
+                                    .extract()
+                            )
+                    )
+                    .collect(Collectors.toList());
 
-        var results = new ArrayList<ExtractableResponse<Response>>();
-        for (var item : items) {
-            results.add(item.get(10, TimeUnit.SECONDS));
+            var results = new ArrayList<ExtractableResponse<Response>>();
+            for (var item : items) {
+                results.add(item.get(10, TimeUnit.SECONDS));
+            }
+
+            boolean isConflict = results.stream()
+                    .filter(i -> i.statusCode() == 500)
+                    .map(i -> i.response().body().prettyPrint())
+                    .anyMatch(i -> i.contains("ConditionalCheckFailedException: The conditional request failed"));
+            assertThat(isConflict).isTrue();
         }
-
-        boolean isConflict = results.stream()
-                .filter(i -> i.statusCode() == 500)
-                .map(i -> i.response().body().prettyPrint())
-                .anyMatch(i -> i.contains("ConditionalCheckFailedException: The conditional request failed"));
-        assertThat(isConflict).isTrue();
+        finally {
+            executorService.shutdownNow();
+        }
     }
 
     private void verifyInvoice(LocalDate date, String expectedInvoiceNumber) {

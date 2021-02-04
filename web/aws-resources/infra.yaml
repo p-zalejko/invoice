@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description:
+Resources:
+
+  #VPC
+
+  # Internet gateways
+
+  # Subnet
+
+
+  # sec group
+
+
+  # AMI Role
+
+
+  # DynamoDB table (for inv requests)
+
+
+  # ec2
+

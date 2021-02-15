@@ -16,6 +16,28 @@ Parameters:
     Type: String
     Default: 10.0.1.0/24
 
+  InstanceType:
+    Description: EC2 instance type
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+
+  InstanceAmiRole:
+    Description: AMI Role name
+    Type: String
+    Default: invoice-app-user-role
+
+  InstanceSshKey:
+    Description: SSH Key name
+    Type: String
+    Default: invoice-app-key-01
+
+  InstanceImageId:
+    Description: Image ID
+    Type: String
+    Default: ami-0a6dc7529cd559185
+
 Resources:
   # VPC and network-related stuff
   AppVpc:
@@ -67,6 +89,7 @@ Resources:
 
   AppPubSubnet:
     Type: AWS::EC2::Subnet
+    DependsOn: AppVpc
     Properties:
       VpcId:
         Ref: AppVpc
@@ -86,7 +109,9 @@ Resources:
  # Security
   AppInstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
+    DependsOn: AppVpc
     Properties:
+      GroupName: App Securrity Group
       GroupDescription: Allow HTTP and SSH
       VpcId:
         Ref: AppVpc
@@ -111,3 +136,61 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Public subnet security group
+
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType:
+        Ref: InstanceType
+#      SecurityGroups:
+#        - Ref: AppInstanceSecurityGroup
+#      SecurityGroupIds:
+#        - Ref: AppInstanceSecurityGroup
+#      SubnetId: !Ref AppPubSubnet
+#      KeyName:
+#        Ref: InstanceSshKey
+      ImageId:
+        Ref: InstanceImageId
+      Tags:
+       - Key: Name
+         Value: !Sub ${EnvironmentName} EC2 Instance
+
+
+#  InvoiceAppServer:
+#    Type: 'AWS::EC2::Instance'
+#    Properties:
+#      ImageId: !Ref InstanceImageId
+#      InstanceType:
+#        Ref: InstanceType
+#      KeyName: !Ref InstanceSshKey
+#      SubnetId: !Ref AppPubSubnet
+##      IamInstanceProfile: !Ref InstanceAmiRole
+#      SecurityGroupIds:
+#        - Ref: AppInstanceSecurityGroup
+#      Tags:
+#        - Key: Name
+#          Value: !Sub ${EnvironmentName} EC2 Instance
+
+#  # EC2
+#  InvoiceAppServer:
+#    Type: "AWS::EC2::Instance"
+#    Properties:
+#      ImageId: !Ref InstanceImageId
+#      KeyName: !Ref InstanceSshKey
+#      InstanceType:
+#        Ref: InstanceType
+##      SecurityGroupIds:
+##        - Ref: AppInstanceSecurityGroup
+#      SubnetId: !Ref AppPubSubnet
+#      IamInstanceProfile: !Ref InstanceAmiRole
+##      UserData:
+##        Fn::Base64:
+##          !Sub |
+##          #!/bin/bash -xe
+##          sudo yum update -y
+##          sudo amazon-linux-extras install docker -y
+##          sudo service docker start
+##          sudo usermod -a -G docker ec2-user
+#      Tags:
+#        - Key: Name
+#          Value: !Sub ${EnvironmentName} main app

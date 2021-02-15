@@ -146,9 +146,13 @@ Resources:
 #        - Ref: AppInstanceSecurityGroup
 #      SecurityGroupIds:
 #        - Ref: AppInstanceSecurityGroup
-#      SubnetId: !Ref AppPubSubnet
+      SubnetId: !Ref AppPubSubnet
 #      KeyName:
 #        Ref: InstanceSshKey
+#      NetworkInterfaces:
+#        - SubnetId: !Ref AppPubSubnet
+#          DeviceIndex: "0"
+
       ImageId:
         Ref: InstanceImageId
       Tags:

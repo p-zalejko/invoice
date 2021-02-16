@@ -36,24 +36,10 @@ public class InvoiceRequestTest {
     public static final String PASSWORD = "bar";
 
     @Inject
-    DynamoDbClient dynamoDB;
-    @Inject
-    InvoiceRequestDatabaseRepository repository;
-
-    @Inject
-    SecurityRepositoryHelper repositoryHelper;
+    InvoiceRequestRepositoryHelper repositoryHelper;
 
     @AfterEach
     public void setup() {
-        if (dynamoDB.listTables().tableNames().contains(InvoiceRequestDatabaseRepository.TABLE_NAME)) {
-            DeleteTableRequest request = DeleteTableRequest.builder()
-                    .tableName(InvoiceRequestDatabaseRepository.TABLE_NAME)
-                    .build();
-
-            dynamoDB.deleteTable(request);
-        }
-
-        repository.init();
         repositoryHelper.setup();
         repositoryHelper.createUser(USER_NAME, PASSWORD.toCharArray(), 1, Set.of("USER"));
     }

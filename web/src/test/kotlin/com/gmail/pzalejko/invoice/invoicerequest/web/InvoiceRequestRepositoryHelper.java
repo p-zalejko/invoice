@@ -31,7 +31,7 @@ public class InvoiceRequestRepositoryHelper {
         }
 
         repository.init();
-        Thread.sleep(3_000);
+        Thread.sleep(1_000);
 
         securityRepositoryHelper.setup();
     }

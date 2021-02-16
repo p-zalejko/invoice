@@ -28,7 +28,7 @@ public class SecurityRepositoryHelper {
         }
         userRepository.init();
 
-        Thread.sleep(3_000);
+        Thread.sleep(1_000);
     }
 
     public void createUser(String name, char[] pwd, int accountId, Set<String> roles) {

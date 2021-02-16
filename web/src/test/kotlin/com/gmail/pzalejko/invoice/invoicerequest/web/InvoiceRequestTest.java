@@ -8,8 +8,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.DeleteTableRequest;
@@ -120,7 +120,7 @@ public class InvoiceRequestTest {
     }
 
     @Test
-    @Ignore(value = "It will be migrated to some sort of the performance/stress test(s)")
+    @Disabled(value = "It will be migrated to some sort of the performance/stress test(s)")
     public void createManyInvoiceRequests_inParallel() throws Exception {
         //FIXME: this test is weak - it can fail randomly
         var now = LocalDate.now();

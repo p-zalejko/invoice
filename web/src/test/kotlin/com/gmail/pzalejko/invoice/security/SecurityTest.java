@@ -28,24 +28,24 @@ public class SecurityTest {
 
     @Test
     public void testValidUser() {
-        repositoryHelper.createUser("foo", "bar".toCharArray(), 1, Set.of("USER"));
+        repositoryHelper.createUser("foo1", "bar".toCharArray(), 1, Set.of("USER"));
         given()
                 .when()
                 .auth()
-                .basic("foo", "bar")
+                .basic("foo1", "bar")
                 .get(API)
                 .then()
                 .statusCode(200)
-                .body(is("Hello foo"));
+                .body(is("Hello foo1"));
     }
 
     @Test
     public void testValidUserWithWrongPassword() {
-        repositoryHelper.createUser("foo", "bar".toCharArray(), 1, Set.of("USER"));
+        repositoryHelper.createUser("foo2", "bar".toCharArray(), 1, Set.of("USER"));
         given()
                 .when()
                 .auth()
-                .basic("foo", "123")
+                .basic("foo2", "123")
                 .get(API)
                 .then()
                 .statusCode(401);
@@ -53,11 +53,11 @@ public class SecurityTest {
 
     @Test
     public void testValidUserWithoutProperRole() {
-        repositoryHelper.createUser("foo", "bar".toCharArray(), 1, Set.of("notExistingRole"));
+        repositoryHelper.createUser("foo3", "bar".toCharArray(), 1, Set.of("notExistingRole"));
         given()
                 .when()
                 .auth()
-                .basic("foo", "bar")
+                .basic("foo3", "bar")
                 .get(API)
                 .then()
                 .statusCode(403);

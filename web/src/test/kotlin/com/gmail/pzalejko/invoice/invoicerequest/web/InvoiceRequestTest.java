@@ -120,7 +120,7 @@ public class InvoiceRequestTest {
     }
 
     @Test
-    @Ignore(value = "It will be migrated to some sort of the integation test(s)")
+    @Ignore(value = "It will be migrated to some sort of the performance/stress test(s)")
     public void createManyInvoiceRequests_inParallel() throws Exception {
         //FIXME: this test is weak - it can fail randomly
         var now = LocalDate.now();

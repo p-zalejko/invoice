@@ -86,11 +86,9 @@ Resources:
       - AppInternetGateway
       - AppVpcRouteTable
     Properties:
-      RouteTableId:
-        Ref: AppVpcRouteTable
+      RouteTableId: !Ref AppVpcRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId:
-        Ref: AppInternetGateway
+      GatewayId: !Ref AppInternetGateway
 
   AppPubSubnet:
     Type: AWS::EC2::Subnet

@@ -46,7 +46,7 @@ Resources:
       CidrBlock: !Ref VpcCIDR
       EnableDnsSupport: 'true'
       EnableDnsHostnames: 'true'
-      InstanceTenancy: dedicated
+      InstanceTenancy: default
       Tags:
         - Key: Name
           Value: !Ref EnvironmentName
@@ -71,6 +71,7 @@ Resources:
 
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
+    DependsOn: AppInternetGateway
     Properties:
       VpcId:
         Ref: AppVpc
@@ -79,7 +80,11 @@ Resources:
 
   AppInternetRoute:
     Type: AWS::EC2::Route
-    DependsOn: AppInternetGateway
+    DependsOn:
+      - AppVpc
+      - AttachGateway
+      - AppInternetGateway
+      - AppVpcRouteTable
     Properties:
       RouteTableId:
         Ref: AppVpcRouteTable
@@ -91,6 +96,7 @@ Resources:
     Type: AWS::EC2::Subnet
     DependsOn: AppVpc
     Properties:
+      MapPublicIpOnLaunch: true
       VpcId:
         Ref: AppVpc
       CidrBlock: !Ref PublicSubCIDR
@@ -100,6 +106,10 @@ Resources:
 
   AppPubSubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
+    DependsOn:
+      - AppVpc
+      - AppPubSubnet
+      - AppVpcRouteTable
     Properties:
       SubnetId:
         Ref: AppPubSubnet
@@ -125,76 +135,39 @@ Resources:
           ToPort: 80
           CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
+        - IpProtocol: All
+          FromPort: -1
+          ToPort: -1
           CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
+
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Public subnet security group
 
-  EC2Instance:
-    Type: AWS::EC2::Instance
+  # EC2
+  InvoiceAppServer:
+    Type: "AWS::EC2::Instance"
+    DependsOn:
+      - AppPubSubnetRouteTableAssociation
+      - AppInstanceSecurityGroup
     Properties:
+      ImageId: !Ref InstanceImageId
+      KeyName: !Ref InstanceSshKey
       InstanceType:
         Ref: InstanceType
-#      SecurityGroups:
-#        - Ref: AppInstanceSecurityGroup
-#      SecurityGroupIds:
-#        - Ref: AppInstanceSecurityGroup
+      SecurityGroupIds:
+        - Ref: AppInstanceSecurityGroup
       SubnetId: !Ref AppPubSubnet
-#      KeyName:
-#        Ref: InstanceSshKey
-#      NetworkInterfaces:
-#        - SubnetId: !Ref AppPubSubnet
-#          DeviceIndex: "0"
-
-      ImageId:
-        Ref: InstanceImageId
+      IamInstanceProfile: !Ref InstanceAmiRole
+      UserData:
+        Fn::Base64:
+          !Sub |
+          #!/bin/bash -xe
+          sudo yum update -y
+          sudo amazon-linux-extras install docker -y
+          sudo service docker start
+          sudo usermod -a -G docker ec2-user
+          sudo docker run -d -p 80:8080 pzalejko/ddd-invoice-web
       Tags:
-       - Key: Name
-         Value: !Sub ${EnvironmentName} EC2 Instance
-
-
-#  InvoiceAppServer:
-#    Type: 'AWS::EC2::Instance'
-#    Properties:
-#      ImageId: !Ref InstanceImageId
-#      InstanceType:
-#        Ref: InstanceType
-#      KeyName: !Ref InstanceSshKey
-#      SubnetId: !Ref AppPubSubnet
-##      IamInstanceProfile: !Ref InstanceAmiRole
-#      SecurityGroupIds:
-#        - Ref: AppInstanceSecurityGroup
-#      Tags:
-#        - Key: Name
-#          Value: !Sub ${EnvironmentName} EC2 Instance
-
-#  # EC2
-#  InvoiceAppServer:
-#    Type: "AWS::EC2::Instance"
-#    Properties:
-#      ImageId: !Ref InstanceImageId
-#      KeyName: !Ref InstanceSshKey
-#      InstanceType:
-#        Ref: InstanceType
-##      SecurityGroupIds:
-##        - Ref: AppInstanceSecurityGroup
-#      SubnetId: !Ref AppPubSubnet
-#      IamInstanceProfile: !Ref InstanceAmiRole
-##      UserData:
-##        Fn::Base64:
-##          !Sub |
-##          #!/bin/bash -xe
-##          sudo yum update -y
-##          sudo amazon-linux-extras install docker -y
-##          sudo service docker start
-##          sudo usermod -a -G docker ec2-user
-#      Tags:
-#        - Key: Name
-#          Value: !Sub ${EnvironmentName} main app
+        - Key: Name
+          Value: !Sub ${EnvironmentName} main app

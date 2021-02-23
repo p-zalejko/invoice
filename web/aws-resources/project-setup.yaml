@@ -63,13 +63,13 @@ Resources:
 
   AppInternetGateway:
     Type: AWS::EC2::InternetGateway
-    DependsOn: AppVpcRouteTable
+    DependsOn: AppVpc
     Properties:
       Tags:
         - Key: Name
           Value: !Ref EnvironmentName
 
-  AttachGateway:
+  AttachGatewayToVpc:
     Type: AWS::EC2::VPCGatewayAttachment
     DependsOn: AppInternetGateway
     Properties:
@@ -82,13 +82,15 @@ Resources:
     Type: AWS::EC2::Route
     DependsOn:
       - AppVpc
-      - AttachGateway
+      - AttachGatewayToVpc
       - AppInternetGateway
       - AppVpcRouteTable
     Properties:
-      RouteTableId: !Ref AppVpcRouteTable
+      RouteTableId:
+        Ref: AppVpcRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref AppInternetGateway
+      GatewayId:
+        Ref: AppInternetGateway
 
   AppPubSubnet:
     Type: AWS::EC2::Subnet

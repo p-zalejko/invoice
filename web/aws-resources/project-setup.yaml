@@ -11,10 +11,15 @@ Parameters:
     Type: String
     Default: 10.0.0.0/16
 
-  PublicSubCIDR:
+  PublicSubCIDR1:
     Description: Please enter the IP range (CIDR notation) for this public subnet
     Type: String
     Default: 10.0.1.0/24
+
+  PublicSubCIDR2:
+    Description: Please enter the IP range (CIDR notation) for this public subnet
+    Type: String
+    Default: 10.0.2.0/24
 
   InstanceType:
     Description: EC2 instance type
@@ -37,6 +42,10 @@ Parameters:
     Description: Image ID
     Type: String
     Default: ami-0a6dc7529cd559185
+
+  InvoiceAppServerLaunchTemplateVersionNumber:
+    Description: Launch template version
+    Type: String
 
 Resources:
   # VPC and network-related stuff
@@ -92,27 +101,51 @@ Resources:
       GatewayId:
         Ref: AppInternetGateway
 
-  AppPubSubnet:
+  AppPubSubnet1:
     Type: AWS::EC2::Subnet
     DependsOn: AppVpc
     Properties:
       MapPublicIpOnLaunch: true
       VpcId:
         Ref: AppVpc
-      CidrBlock: !Ref PublicSubCIDR
+      CidrBlock: !Ref PublicSubCIDR1
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public subnet
+          Value: !Sub ${EnvironmentName} Public subnet 1
 
-  AppPubSubnetRouteTableAssociation:
+  AppPubSubnet2:
+    Type: AWS::EC2::Subnet
+    DependsOn: AppVpc
+    Properties:
+      MapPublicIpOnLaunch: true
+      VpcId:
+        Ref: AppVpc
+      CidrBlock: !Ref PublicSubCIDR2
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public subnet 2
+
+  AppPubSubnetRouteTableAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
     DependsOn:
       - AppVpc
-      - AppPubSubnet
+      - AppPubSubnet1
       - AppVpcRouteTable
     Properties:
       SubnetId:
-        Ref: AppPubSubnet
+        Ref: AppPubSubnet1
+      RouteTableId:
+        Ref: AppVpcRouteTable
+
+  AppPubSubnetRouteTableAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DependsOn:
+      - AppVpc
+      - AppPubSubnet2
+      - AppVpcRouteTable
+    Properties:
+      SubnetId:
+        Ref: AppPubSubnet2
       RouteTableId:
         Ref: AppVpcRouteTable
 
@@ -145,29 +178,68 @@ Resources:
           Value: !Sub ${EnvironmentName} Public subnet security group
 
   # EC2
-  InvoiceAppServer:
-    Type: "AWS::EC2::Instance"
+#  InvoiceAppServer:
+#    Type: "AWS::EC2::Instance"
+#    DependsOn:
+#      - AppPubSubnetRouteTableAssociation
+#      - AppInstanceSecurityGroup
+#    Properties:
+#      ImageId: !Ref InstanceImageId
+#      KeyName: !Ref InstanceSshKey
+#      InstanceType:
+#        Ref: InstanceType
+#      SecurityGroupIds:
+#        - Ref: AppInstanceSecurityGroup
+#      SubnetId: !Ref AppPubSubnet
+#      IamInstanceProfile: !Ref InstanceAmiRole
+#      UserData:
+#        Fn::Base64:
+#          !Sub |
+#          #!/bin/bash -xe
+#          sudo yum update -y
+#          sudo amazon-linux-extras install docker -y
+#          sudo service docker start
+#          sudo usermod -a -G docker ec2-user
+#          sudo docker run -d -p 80:8080 pzalejko/ddd-invoice-web
+#      Tags:
+#        - Key: Name
+#          Value: !Sub ${EnvironmentName} main app
+
+  InvoiceAppServerLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
     DependsOn:
-      - AppPubSubnetRouteTableAssociation
+      - AppPubSubnetRouteTableAssociation1
+      - AppPubSubnetRouteTableAssociation2
       - AppInstanceSecurityGroup
     Properties:
-      ImageId: !Ref InstanceImageId
-      KeyName: !Ref InstanceSshKey
-      InstanceType:
-        Ref: InstanceType
-      SecurityGroupIds:
-        - Ref: AppInstanceSecurityGroup
-      SubnetId: !Ref AppPubSubnet
-      IamInstanceProfile: !Ref InstanceAmiRole
-      UserData:
-        Fn::Base64:
-          !Sub |
-          #!/bin/bash -xe
-          sudo yum update -y
-          sudo amazon-linux-extras install docker -y
-          sudo service docker start
-          sudo usermod -a -G docker ec2-user
-          sudo docker run -d -p 80:8080 pzalejko/ddd-invoice-web
-      Tags:
-        - Key: Name
-          Value: !Sub ${EnvironmentName} main app
+      LaunchTemplateName: InvoiceAppLaunchTemplate
+      LaunchTemplateData:
+        IamInstanceProfile:
+          Name: !Ref InstanceAmiRole
+        ImageId: !Ref InstanceImageId
+        InstanceType: !Ref InstanceType
+        KeyName: !Ref InstanceSshKey
+        SecurityGroupIds:
+          - Ref: AppInstanceSecurityGroup
+        UserData:
+          Fn::Base64:
+            !Sub |
+            #!/bin/bash -xe
+            sudo yum update -y
+            sudo amazon-linux-extras install docker -y
+            sudo service docker start
+            sudo usermod -a -G docker ec2-user
+            sudo docker run -d -p 80:8080 pzalejko/ddd-invoice-web
+
+  InvoiceAppServerASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      MinSize: '0'
+      MaxSize: '2'
+      DesiredCapacity: '2'
+      LaunchTemplate:
+        LaunchTemplateId: !Ref InvoiceAppServerLaunchTemplate
+        Version: !Ref InvoiceAppServerLaunchTemplateVersionNumber
+      VPCZoneIdentifier:
+        - !Ref AppPubSubnet1
+        - !Ref AppPubSubnet2

@@ -46,6 +46,7 @@ Parameters:
   InvoiceAppServerLaunchTemplateVersionNumber:
     Description: Launch template version
     Type: String
+    Default: 1
 
 Resources:
   # VPC and network-related stuff
@@ -109,6 +110,7 @@ Resources:
       VpcId:
         Ref: AppVpc
       CidrBlock: !Ref PublicSubCIDR1
+      AvailabilityZone: "eu-central-1a"
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Public subnet 1
@@ -121,6 +123,7 @@ Resources:
       VpcId:
         Ref: AppVpc
       CidrBlock: !Ref PublicSubCIDR2
+      AvailabilityZone: "eu-central-1b"
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Public subnet 2

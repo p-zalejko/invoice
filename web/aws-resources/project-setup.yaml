@@ -208,6 +208,20 @@ Resources:
 #        - Key: Name
 #          Value: !Sub ${EnvironmentName} main app
 
+  InvoiceAppServerTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckEnabled: true
+      HealthCheckPath: /
+      HealthCheckPort: 80
+      HealthCheckProtocol: HTTP
+      Name: InvoiceAppServerTargetGroup
+      TargetType: instance
+      Protocol: HTTP
+      Port: 80
+      VpcId:
+        Ref: AppVpc
+
   InvoiceAppServerLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     DependsOn:
@@ -246,3 +260,28 @@ Resources:
       VPCZoneIdentifier:
         - !Ref AppPubSubnet1
         - !Ref AppPubSubnet2
+      TargetGroupARNs:
+        - !Ref InvoiceAppServerTargetGroup
+
+  InvoiceAppServerLB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Ref EnvironmentName
+      Subnets:
+        - !Ref AppPubSubnet1
+        - !Ref AppPubSubnet2
+      SecurityGroups:
+        - !Ref AppInstanceSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+  InvoiceAppServerLbListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref InvoiceAppServerLB
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref InvoiceAppServerTargetGroup

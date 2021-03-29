@@ -28,10 +28,10 @@ Parameters:
     AllowedValues:
       - t2.micro
 
-  InstanceAmiRole:
-    Description: AMI Role name
+  InstanceIAMRole:
+    Description: IAM Role name
     Type: String
-    Default: invoice-app-user-role
+    Default: invoice-app-ec2-role
 
   InstanceSshKey:
     Description: SSH Key name
@@ -49,9 +49,33 @@ Parameters:
     Default: 1
 
 Resources:
+  # IAM role for ec2
+  AppinvoiceAppEc2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref InstanceIAMRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+
+  AppinvoiceAppEc2RoleProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: AppinvoiceAppEc2Role
+
   # VPC and network-related stuff
   AppVpc:
     Type: AWS::EC2::VPC
+    DependsOn: AppinvoiceAppEc2Role
     Properties:
       CidrBlock: !Ref VpcCIDR
       EnableDnsSupport: 'true'
@@ -225,6 +249,7 @@ Resources:
   InvoiceAppServerLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     DependsOn:
+      - AppinvoiceAppEc2Role
       - AppPubSubnetRouteTableAssociation1
       - AppPubSubnetRouteTableAssociation2
       - AppInstanceSecurityGroup
@@ -232,7 +257,7 @@ Resources:
       LaunchTemplateName: InvoiceAppLaunchTemplate
       LaunchTemplateData:
         IamInstanceProfile:
-          Name: !Ref InstanceAmiRole
+          Name: !Ref AppinvoiceAppEc2RoleProfile
         ImageId: !Ref InstanceImageId
         InstanceType: !Ref InstanceType
         KeyName: !Ref InstanceSshKey
@@ -252,8 +277,8 @@ Resources:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
       MinSize: '0'
-      MaxSize: '2'
-      DesiredCapacity: '2'
+      MaxSize: '1'
+      DesiredCapacity: '1'
       LaunchTemplate:
         LaunchTemplateId: !Ref InvoiceAppServerLaunchTemplate
         Version: !Ref InvoiceAppServerLaunchTemplateVersionNumber

@@ -19,6 +19,9 @@ jobs:
       - 
         name: Run the Maven verify phase
         run: mvn -f web/pom.xml clean verify
+      - 
+        name: Run the Maven verify phase for invoice generator project
+        run: mvn -f invoice-generator/pom.xml clean verify
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1

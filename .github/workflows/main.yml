@@ -20,9 +20,6 @@ jobs:
         name: Run the Maven verify phase for the web project
         run: mvn -f web/pom.xml clean verify
       - 
-        name: Run the Maven verify phase for the invoice generator project
-        run: mvn -f web/pom.xml clean verify
-      - 
         name: Run the Maven verify phase for invoice generator project
         run: mvn -f invoice-generator/pom.xml clean verify
       -

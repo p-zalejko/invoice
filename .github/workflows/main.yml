@@ -46,7 +46,7 @@ jobs:
           push: true
           tags: |
             pzalejko/ddd-invoice-web:latest
-       -
+      -
         name: Build and push the invoice generator project
         uses: docker/build-push-action@v2
         with:

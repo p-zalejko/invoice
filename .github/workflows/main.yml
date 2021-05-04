@@ -17,7 +17,10 @@ jobs:
         with:
           java-version: 11
       - 
-        name: Run the Maven verify phase
+        name: Run the Maven verify phase for the web project
+        run: mvn -f web/pom.xml clean verify
+      - 
+        name: Run the Maven verify phase for the invoice generator project
         run: mvn -f web/pom.xml clean verify
       - 
         name: Run the Maven verify phase for invoice generator project
@@ -35,7 +38,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_API_KEY }}
       -
-        name: Build and push
+        name: Build and push the web project
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -43,3 +46,12 @@ jobs:
           push: true
           tags: |
             pzalejko/ddd-invoice-web:latest
+       -
+        name: Build and push the invoice generator project
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile_invoiceGenerator
+          push: true
+          tags: |
+            pzalejko/ddd-invoice-generator:latest

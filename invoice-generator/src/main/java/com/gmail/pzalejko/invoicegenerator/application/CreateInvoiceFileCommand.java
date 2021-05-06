@@ -1,19 +1,22 @@
 package com.gmail.pzalejko.invoicegenerator.application;
 
-import lombok.Data;
-import lombok.ToString;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import lombok.*;
 
 @ToString
 @Data
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CreateInvoiceFileCommand {
 
-    private Record[] Records;
+    public static CreateInvoiceFileCommand create(JsonNode node) {
+        JsonNode records = node.get("Records");
+        if (!(records instanceof ArrayNode)) {
+            throw new IllegalArgumentException("Invalid input, expected an array of records");
+        }
 
-    @ToString
-    @Data
-    public static class Record {
-        private String eventID;
-        private String eventName;
-
+        return new CreateInvoiceFileCommand(records.get(0));
     }
+
+    private final JsonNode record;
 }

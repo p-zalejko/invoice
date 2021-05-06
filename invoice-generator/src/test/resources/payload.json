@@ -1,0 +1,97 @@
+{
+  "Records": [
+    {
+      "eventID": "8987db98c0ceadb44d5069485dc3f3df",
+      "eventName": "INSERT",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "eu-central-1",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1620331694,
+        "Keys": {
+          "yearMonth": {
+            "S": "2021-2"
+          },
+          "accountId_invoiceFullNumber": {
+            "S": "1_9/2/2021"
+          }
+        },
+        "NewImage": {
+          "accountId": {
+            "N": "1"
+          },
+          "invoiceNumberValue": {
+            "N": "9"
+          },
+          "yearMonth": {
+            "S": "2021-2"
+          },
+          "client": {
+            "M": {
+              "clientAddressNumber": {
+                "S": "0"
+              },
+              "clientName": {
+                "S": "Pawel"
+              },
+              "clientTaxId": {
+                "S": "0123456789"
+              },
+              "clientAddressCity": {
+                "S": "ZG"
+              },
+              "clientAddressStreet": {
+                "S": "foo"
+              }
+            }
+          },
+          "saleDate": {
+            "S": "2021-02-01"
+          },
+          "creationDate": {
+            "S": "2021-02-01"
+          },
+          "paymentDate": {
+            "S": "2021-05-28"
+          },
+          "items": {
+            "L": [
+              {
+                "M": {
+                  "unit": {
+                    "S": "COUNT"
+                  },
+                  "priceCurrency": {
+                    "S": "PLN"
+                  },
+                  "name": {
+                    "S": "pc"
+                  },
+                  "count": {
+                    "N": "1"
+                  },
+                  "priceValue": {
+                    "N": "1"
+                  },
+                  "priceTax": {
+                    "N": "1"
+                  }
+                }
+              }
+            ]
+          },
+          "accountId_invoiceFullNumber": {
+            "S": "1_9/2/2021"
+          },
+          "invoiceFullNumber": {
+            "S": "9/2/2021"
+          }
+        },
+        "SequenceNumber": "47000000000008964206325",
+        "SizeBytes": 410,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "eventSourceARN": "arn:aws:dynamodb:eu-central-1:xxxxxxxxxx:table/InvoiceApp_InvoiceRequests/stream/2021-05-06T20:00:32.390"
+    }
+  ]
+}

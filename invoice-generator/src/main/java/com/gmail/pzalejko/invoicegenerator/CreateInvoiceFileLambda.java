@@ -3,6 +3,7 @@ package com.gmail.pzalejko.invoicegenerator;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.gmail.pzalejko.invoicegenerator.application.CreateInvoiceFileCommand;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
@@ -17,6 +18,7 @@ public class CreateInvoiceFileLambda implements RequestHandler<JsonNode, Invoice
     @Override
     public InvoiceRequestOutput handleRequest(JsonNode input, Context context) {
         log.info(String.format("Generating invoice for: %s", input));
+        CreateInvoiceFileCommand command = CreateInvoiceFileCommand.create(input);
         return new InvoiceRequestOutput("ok");
     }
 }

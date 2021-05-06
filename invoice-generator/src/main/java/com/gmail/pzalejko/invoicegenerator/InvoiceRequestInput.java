@@ -1,26 +1,19 @@
 package com.gmail.pzalejko.invoicegenerator;
 
+import lombok.Data;
+import lombok.ToString;
+
+@ToString
+@Data
 public class InvoiceRequestInput {
 
     private Record[] Records;
 
-    public Record[] getRecords() {
-        return Records;
-    }
-
-    public void setRecords(Record[] records) {
-        Records = records;
-    }
-
+    @ToString
+    @Data
     public static class Record {
         private String eventID;
+        private String eventName;
 
-        public String getEventID() {
-            return eventID;
-        }
-
-        public void setEventID(String eventID) {
-            this.eventID = eventID;
-        }
     }
 }

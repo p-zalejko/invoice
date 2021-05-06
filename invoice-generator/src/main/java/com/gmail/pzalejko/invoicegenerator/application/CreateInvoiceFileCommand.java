@@ -1,11 +1,11 @@
-package com.gmail.pzalejko.invoicegenerator;
+package com.gmail.pzalejko.invoicegenerator.application;
 
 import lombok.Data;
 import lombok.ToString;
 
 @ToString
 @Data
-public class InvoiceRequestInput {
+public class CreateInvoiceFileCommand {
 
     private Record[] Records;
 

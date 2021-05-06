@@ -17,8 +17,6 @@ public class CreateInvoiceFileLambda implements RequestHandler<JsonNode, Invoice
     @Override
     public InvoiceRequestOutput handleRequest(JsonNode input, Context context) {
         log.info(String.format("Generating invoice for: %s", input));
-        InvoiceRequestOutput outputObject = new InvoiceRequestOutput();
-        outputObject.setIds(new String[]{});
-        return outputObject;
+        return new InvoiceRequestOutput("ok");
     }
 }

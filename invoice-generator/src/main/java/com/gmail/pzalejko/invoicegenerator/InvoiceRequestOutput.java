@@ -1,14 +1,13 @@
 package com.gmail.pzalejko.invoicegenerator;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class InvoiceRequestOutput {
 
-    private String[] ids;
-
-    public String[] getIds() {
-        return ids;
-    }
-
-    public void setIds(String[] ids) {
-        this.ids = ids;
-    }
+    private String status;
 }

@@ -1,9 +1,8 @@
-package com.gmail.pzalejko.invoicegenerator;
+package com.gmail.pzalejko.invoicegenerator.application;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.gmail.pzalejko.invoicegenerator.application.CreateInvoiceFileCommand;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;

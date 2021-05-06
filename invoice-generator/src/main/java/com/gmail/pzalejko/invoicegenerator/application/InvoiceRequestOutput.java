@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoicegenerator;
+package com.gmail.pzalejko.invoicegenerator.application;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

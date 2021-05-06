@@ -2,6 +2,7 @@ package com.gmail.pzalejko.invoicegenerator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gmail.pzalejko.invoicegenerator.application.InvoiceRequestOutput;
 import io.quarkus.amazon.lambda.test.LambdaClient;
 import io.quarkus.test.junit.QuarkusTest;
 import org.apache.commons.io.IOUtils;

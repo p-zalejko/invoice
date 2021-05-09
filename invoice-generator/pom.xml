@@ -21,6 +21,7 @@
         <lombok.version>1.18.20</lombok.version>
         <openhtmltopdf-pdfbox.version>1.0.8</openhtmltopdf-pdfbox.version>
         <jsoup.version>1.13.1</jsoup.version>
+        <quarkus-freemarker.version>0.2.7</quarkus-freemarker.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -41,7 +42,7 @@
         <dependency>
             <groupId>io.quarkiverse.freemarker</groupId>
             <artifactId>quarkus-freemarker</artifactId>
-            <version>0.2.7</version>
+            <version>${quarkus-freemarker.version}</version>
         </dependency>
         <dependency>
             <groupId>com.openhtmltopdf</groupId>

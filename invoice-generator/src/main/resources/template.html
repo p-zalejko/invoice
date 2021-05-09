@@ -4,17 +4,135 @@
 <head>
     <title>MyPage</title>
     <style type="text/css">
-        body {
-            background-color: powderblue;
+        p.small {
+            line-height: 0.1;
+            font-size: 14px;
+        }
+
+        p.right {
+            text-align: right
+        }
+
+        p.big {
+            line-height: 1.8;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-<h1>Convert HTML to PDF</h1>
-<p>Here is an embedded image</p>
-<p style="color:#e05c5c">Styled text using Inline CSS</p>
-<i>This is italicised text</i>
-<p class="fontclass">This text uses the styling from font face font</p>
-<p class="myclass">This text uses the styling from external CSS class</p>
+<h4 style="color: #5e9ca0; text-align: right;"><span style="color: #000000;">&nbsp; &nbsp;{seller.title}:</span></h4>
+<p class="small right">${seller.name.line1}</p>
+<p class="small right">${seller.name.line2}</p>
+<p class="small right">${seller.name.line3}</p>
+<p class="big right">${seller.account.section}: ${seller.account.number}</span></p>
+<p style="text-align: right;">&nbsp;</p>
+<hr/>
+<table style="border-collapse: collapse; width: 100%; height: 109px;" border="0">
+    <tbody>
+    <tr style="height: 109px;">
+        <td style="width: 50%; height: 109px;">
+            <h2>${invoice.title}</h2>
+        </td>
+        <td style="width: 50%; height: 109px;">
+            <p style="text-align: right;"><strong>${invoice.number.title}: ${invoice.number.value}</strong></p>
+            <p style="text-align: right;">${invoice.sell-date.title}: ${invoice.sell-date.value}</p>
+            <p style="text-align: right;">${invoice.exec-date.title}: ${invoice.exec-date.value}</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr/>
+<h2>${consumer.title}</span></h2>
+<p class="small">${consumer.name.line1}</p>
+<p class="small">${consumer.name.line2}</p>
+<p class="small">${consumer.name.line3}</p>
+<p class="small">${consumer.name.line4}</p>
+<p>&nbsp;</p>
+
+<table style="border-collapse: collapse; width: 100%;" border="1">
+    <tbody>
+    <tr>
+        <td style="width: 4.48456%; text-align: center;"><strong>${items.no.title}</strong></td>
+        <td style="width: 27.922%; text-align: center;"><strong>${items.goods.title}</strong></td>
+        <td style="width: 16.9846%; text-align: center;"><strong>${items.goods-code.title}</strong></td>
+        <td style="width: 2.49597%; text-align: center;"><strong>${items.goods-count.title}</strong></td>
+        <td style="width: 6.04711%; text-align: center;"><strong>${items.goods-unit.title}</strong></td>
+        <td style="width: 17.4107%; text-align: center;"><strong>${items.goods-price-net.title}</strong></td>
+        <td style="width: 11.1607%; text-align: center;"><strong>${items.goods-tax.title}</strong></td>
+        <td style="width: 27.78%; text-align: center;"><strong>${items.goods-total-net.title}</strong></td>
+    </tr>
+    <tr>
+        <td style="width: 4.48456%;">&nbsp;</td>
+        <td style="width: 27.922%;">&nbsp;</td>
+        <td style="width: 16.9846%;">&nbsp;</td>
+        <td style="width: 2.49597%;">&nbsp;</td>
+        <td style="width: 6.04711%;">&nbsp;</td>
+        <td style="width: 17.4107%;">&nbsp;</td>
+        <td style="width: 11.1607%;">&nbsp;</td>
+        <td style="width: 27.78%;">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="width: 4.48456%;">&nbsp;</td>
+        <td style="width: 27.922%;">&nbsp;</td>
+        <td style="width: 16.9846%;">&nbsp;</td>
+        <td style="width: 2.49597%;">&nbsp;</td>
+        <td style="width: 6.04711%;">&nbsp;</td>
+        <td style="width: 17.4107%;">&nbsp;</td>
+        <td style="width: 11.1607%;">&nbsp;</td>
+        <td style="width: 27.78%;">&nbsp;</td>
+    </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<table style="border-collapse: collapse; width: 100%;" border="0">
+    <tbody>
+    <tr>
+        <td style="width: 20%; border-bottom: 1px solid #000;">${items.paymant.how.title}</td>
+        <td style="width: 20%; border-bottom: 1px solid #000;">${items.paymant.deadline.title}</td>
+        <td style="width: 1%;">&nbsp;</td>
+        <td style="width: 3%; border-bottom: 1px solid #000;">&nbsp;</td>
+        <td style="width: 5%; border-bottom: 1px solid #000;">${items.paymant.tax.title}</td>
+        <td style="width: 16%; border-bottom: 1px solid #000;">${items.paymant.net.title}</td>
+        <td style="width: 1%; border-bottom: 1px solid #000;">${items.paymant.tax-value.title}</td>
+        <td style="width: 18%; border-bottom: 1px solid #000;">${items.paymant.net-and-tax.title}</td>
+    </tr>
+    <tr>
+        <td style="width: 14.6622%;">${items.paymant.how.value}</td>
+        <td style="width: 14.6622%;">${items.paymant.deadline.value}</td>
+        <td style="width: 3.29859%;">&nbsp;</td>
+        <td style="width: 6.28156%;">${items.paymant.details}</td>
+        <td style="width: 5.71338%;">${items.paymant.tax.value}</td>
+        <td style="width: 14.3781%;">${items.paymant.total.net}</td>
+        <td style="width: 13.2418%;">${items.paymant.total-tax.value}</td>
+        <td style="width: 16.6509%;">${items.paymant.total-net-and-tax.value}</td>
+    </tr>
+    <tr>
+        <td style="width: 14.6622%;">&nbsp;</td>
+        <td style="width: 14.6622%;">&nbsp;</td>
+        <td style="width: 3.29859%;">&nbsp;</td>
+        <td style="width: 6.28156%;"><strong>${items.paymant.total-price.title}:</strong></td>
+        <td style="width: 5.71338%;">&nbsp;</td>
+        <td style="width: 14.3781%;"><strong>${items.paymant.total-price.net}</strong></td>
+        <td style="width: 13.2418%;"><strong>${items.paymant.total-price.tax}</strong></td>
+        <td style="width: 16.6509%;"><strong>${items.paymant.total-price.total}</strong></td>
+    </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<h2 style="text-align: right;">${items.paymant.summary.to-pay.title}: ${items.paymant.summary.to-pay.value}<br/>${items.paymant.summary.to-pay.as-text}</h2>
+<p>&nbsp;</p>
+<table style="border-collapse: collapse; width: 100%;" border="0">
+    <tbody>
+    <tr>
+        <td style="width: 50%; text-align: center;border-bottom: 1px solid #000;">${items.seller.who-created-invoice.value}</td>
+        <td style="width: 50%;">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="width: 50%;">${items.seller.who-created-invoice.title}</td>
+        <td style="width: 50%;">&nbsp;</td>
+    </tr>
+    </tbody>
+</table>
+
 </body>
 </html>

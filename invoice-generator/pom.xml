@@ -39,6 +39,11 @@
             <artifactId>quarkus-amazon-lambda</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.quarkiverse.freemarker</groupId>
+            <artifactId>quarkus-freemarker</artifactId>
+            <version>0.2.7</version>
+        </dependency>
+        <dependency>
             <groupId>com.openhtmltopdf</groupId>
             <artifactId>openhtmltopdf-core</artifactId>
             <version>${openhtmltopdf-pdfbox.version}</version>

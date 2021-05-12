@@ -4,6 +4,16 @@
 <head>
     <title>MyPage</title>
     <style type="text/css">
+        @font-face {
+            font-family: "Noto Sans";
+            src: url("SourceSans3-Regular.ttf"); /* Use an absolute or relative url. */
+        }
+
+        /* Later, use font as named: */
+        body {
+            font-family: 'Noto Sans', sans-serif;
+        }
+
         p.small {
             line-height: 0.1;
             font-size: 14px;
@@ -20,46 +30,46 @@
     </style>
 </head>
 <body>
-<h4 style="color: #5e9ca0; text-align: right;"><span style="color: #000000;">&nbsp; &nbsp;{seller.title}:</span></h4>
-<p class="small right">${seller.name.line1}</p>
-<p class="small right">${seller.name.line2}</p>
-<p class="small right">${seller.name.line3}</p>
-<p class="big right">${seller.account.section}: ${seller.account.number}</span></p>
+<h4 style="color: #5e9ca0; text-align: right;"><span style="color: #000000;">&nbsp; &nbsp;${sellerTitle}:</span></h4>
+<p class="small right">${sellerNameLine1}</p>
+<p class="small right">${sellerNameLine2}</p>
+<p class="small right">${sellerNameLine3}</p>
+<p class="big right">${sellerAccountSection}: ${sellerAccountNumber}</span></p>
 <p style="text-align: right;">&nbsp;</p>
 <hr/>
 <table style="border-collapse: collapse; width: 100%; height: 109px;" border="0">
     <tbody>
     <tr style="height: 109px;">
         <td style="width: 50%; height: 109px;">
-            <h2>${invoice.title}</h2>
+            <h2>${invoiceTitle}</h2>
         </td>
         <td style="width: 50%; height: 109px;">
-            <p style="text-align: right;"><strong>${invoice.number.title}: ${invoice.number.value}</strong></p>
-            <p style="text-align: right;">${invoice.sell-date.title}: ${invoice.sell-date.value}</p>
-            <p style="text-align: right;">${invoice.exec-date.title}: ${invoice.exec-date.value}</p>
+            <p style="text-align: right;"><strong>${invoiceNumberTitle}: ${invoiceNumberValue}</strong></p>
+            <p style="text-align: right;">${invoiceSellDateTitle}: ${invoiceSellDateValue}</p>
+            <p style="text-align: right;">${invoiceExecDateTitle}: ${invoiceExecDateValue}</p>
         </td>
     </tr>
     </tbody>
 </table>
 <hr/>
-<h2>${consumer.title}:</span></h2>
-<p class="small">${consumer.name.line1}</p>
-<p class="small">${consumer.name.line2}</p>
-<p class="small">${consumer.name.line3}</p>
-<p class="small">${consumer.name.line4}</p>
+<h2>&#261; &#261; &#261; ąść ${consumerTitle}:</span></h2>
+<p class="small">${consumerNameLine1}</p>
+<p class="small">${consumerNameLine2}</p>
+<p class="small">${consumerNameLine3}</p>
+<p class="small">${consumerNameLine4}</p>
 <p>&nbsp;</p>
 
 <table style="border-collapse: collapse; width: 100%;" border="1">
     <tbody>
     <tr>
-        <td style="width: 4.48456%; text-align: center;"><strong>${items.no.title}</strong></td>
-        <td style="width: 27.922%; text-align: center;"><strong>${items.goods.title}</strong></td>
-        <td style="width: 16.9846%; text-align: center;"><strong>${items.goods-code.title}</strong></td>
-        <td style="width: 2.49597%; text-align: center;"><strong>${items.goods-count.title}</strong></td>
-        <td style="width: 6.04711%; text-align: center;"><strong>${items.goods-unit.title}</strong></td>
-        <td style="width: 17.4107%; text-align: center;"><strong>${items.goods-price-net.title}</strong></td>
-        <td style="width: 11.1607%; text-align: center;"><strong>${items.goods-tax.title}</strong></td>
-        <td style="width: 27.78%; text-align: center;"><strong>${items.goods-total-net.title}</strong></td>
+        <td style="width: 4.48456%; text-align: center;"><strong>${itemsNoTitle}</strong></td>
+        <td style="width: 27.922%; text-align: center;"><strong>${itemsGoodsTitle}</strong></td>
+        <td style="width: 16.9846%; text-align: center;"><strong>${itemsGoodsCodeTitle}</strong></td>
+        <td style="width: 2.49597%; text-align: center;"><strong>${itemsGoodsCountTitle}</strong></td>
+        <td style="width: 6.04711%; text-align: center;"><strong>${itemsGoodsUnitTitle}</strong></td>
+        <td style="width: 17.4107%; text-align: center;"><strong>${itemsGoodsPriceNetTitle}</strong></td>
+        <td style="width: 11.1607%; text-align: center;"><strong>${itemsGoodsTaxTitle}</strong></td>
+        <td style="width: 27.78%; text-align: center;"><strong>${itemsGoodsTotalNetTitle}</strong></td>
     </tr>
     <tr>
         <td style="width: 4.48456%;">&nbsp;</td>
@@ -87,48 +97,48 @@
 <table style="border-collapse: collapse; width: 100%;" border="0">
     <tbody>
     <tr>
-        <td style="width: 20%; border-bottom: 1px solid #000;">${items.paymant.how.title}</td>
-        <td style="width: 20%; border-bottom: 1px solid #000;">${items.paymant.deadline.title}</td>
+        <td style="width: 20%; border-bottom: 1px solid #000;">${itemsPaymantHowTitle}</td>
+        <td style="width: 20%; border-bottom: 1px solid #000;">${itemsPaymantDeadlineTitle}</td>
         <td style="width: 1%;">&nbsp;</td>
         <td style="width: 3%; border-bottom: 1px solid #000;">&nbsp;</td>
-        <td style="width: 5%; border-bottom: 1px solid #000;">${items.paymant.tax.title}</td>
-        <td style="width: 16%; border-bottom: 1px solid #000;">${items.paymant.net.title}</td>
-        <td style="width: 1%; border-bottom: 1px solid #000;">${items.paymant.tax-value.title}</td>
-        <td style="width: 18%; border-bottom: 1px solid #000;">${items.paymant.net-and-tax.title}</td>
+        <td style="width: 5%; border-bottom: 1px solid #000;">${itemsPaymantTaxTitle}</td>
+        <td style="width: 16%; border-bottom: 1px solid #000;">${itemsPaymantNetTitle}</td>
+        <td style="width: 1%; border-bottom: 1px solid #000;">${itemsPaymantTaxValueTitle}</td>
+        <td style="width: 18%; border-bottom: 1px solid #000;">${itemsPaymantNetAndTaxTitle}</td>
     </tr>
     <tr>
-        <td style="width: 14.6622%;">${items.paymant.how.value}</td>
-        <td style="width: 14.6622%;">${items.paymant.deadline.value}</td>
+        <td style="width: 14.6622%;">${itemsPaymantHowValue}</td>
+        <td style="width: 14.6622%;">${itemsPaymantDeadlineValue}</td>
         <td style="width: 3.29859%;">&nbsp;</td>
-        <td style="width: 6.28156%;">${items.paymant.details}</td>
-        <td style="width: 5.71338%;">${items.paymant.tax.value}</td>
-        <td style="width: 14.3781%;">${items.paymant.total.net.value}</td>
-        <td style="width: 13.2418%;">${items.paymant.total-tax.value}</td>
-        <td style="width: 16.6509%;">${items.paymant.total-net-and-tax.value}</td>
+        <td style="width: 6.28156%;">${itemsPaymantDetails}</td>
+        <td style="width: 5.71338%;">${itemsPaymantTaxValue}</td>
+        <td style="width: 14.3781%;">${itemsPaymantTotalNetValue}</td>
+        <td style="width: 13.2418%;">${itemsPaymantTotalTaxValue}</td>
+        <td style="width: 16.6509%;">${itemsPaymantTotalNetAndTaxValue}</td>
     </tr>
     <tr>
         <td style="width: 14.6622%;">&nbsp;</td>
         <td style="width: 14.6622%;">&nbsp;</td>
         <td style="width: 3.29859%;">&nbsp;</td>
-        <td style="width: 6.28156%;"><strong>${items.paymant.total-price.title}:</strong></td>
+        <td style="width: 6.28156%;"><strong>${itemsPaymantTotalPriceTitle}:</strong></td>
         <td style="width: 5.71338%;">&nbsp;</td>
-        <td style="width: 14.3781%;"><strong>${items.paymant.total-price.net}</strong></td>
-        <td style="width: 13.2418%;"><strong>${items.paymant.total-price.tax}</strong></td>
-        <td style="width: 16.6509%;"><strong>${items.paymant.total-price.total}</strong></td>
+        <td style="width: 14.3781%;"><strong>${itemsPaymantTotalPriceNet}</strong></td>
+        <td style="width: 13.2418%;"><strong>${itemsPaymantTotalPriceTax}</strong></td>
+        <td style="width: 16.6509%;"><strong>${itemsPaymantTotalPriceTotal}</strong></td>
     </tr>
     </tbody>
 </table>
 <p>&nbsp;</p>
-<h2 style="text-align: right;">${items.paymant.summary.to-pay.title}: ${items.paymant.summary.to-pay.value}<br/>${items.paymant.summary.to-pay.as-text}</h2>
+<h2 style="text-align: right;">${itemsPaymantSummaryToPayTitle}: ${itemsPaymantSummaryToPayValue}<br/>${itemsPaymantSummaryToPayAsText}</h2>
 <p>&nbsp;</p>
 <table style="border-collapse: collapse; width: 100%;" border="0">
     <tbody>
     <tr>
-        <td style="width: 50%; text-align: center;border-bottom: 1px solid #000;">${items.seller.who-created-invoice.value}</td>
+        <td style="width: 50%; text-align: center;border-bottom: 1px solid #000;">${itemsSellerWhoCreatedInvoiceValue}</td>
         <td style="width: 50%;">&nbsp;</td>
     </tr>
     <tr>
-        <td style="width: 50%;">${items.seller.who-created-invoice.title}</td>
+        <td style="width: 50%;">${itemsSellerWhoCreatedInvoiceTitle}</td>
         <td style="width: 50%;">&nbsp;</td>
     </tr>
     </tbody>

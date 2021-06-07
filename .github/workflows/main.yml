@@ -11,17 +11,15 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
+# ######################## back-end (kotlin) project #######################################
       -
-        name: Setup java
+        name: Setup java 11
         uses: actions/setup-java@v1
         with:
-          java-version: 16
+          java-version: 11
       - 
         name: Run the Maven verify phase for the web project
         run: mvn -f web/pom.xml clean verify
-      - 
-        name: Run the Maven verify phase for invoice generator project
-        run: mvn -f invoice-generator/pom.xml clean verify
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -52,3 +50,12 @@ jobs:
           push: true
           tags: |
             pzalejko/ddd-invoice-generator:latest
+# ########################### AWS Lambda  project ########################################
+      -
+        name: Setup java 16
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+      - 
+        name: Run the Maven verify phase for invoice generator project
+        run: mvn -f invoice-generator/pom.xml clean verify

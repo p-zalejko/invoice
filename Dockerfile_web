@@ -1,5 +1,5 @@
 ## Stage 1 : build with maven builder image with native capabilities
-FROM quay.io/quarkus/centos-quarkus-maven:21.0.0-java11 AS build
+FROM quay.io/quarkus/centos-quarkus-maven:21.1.0-java11 AS build
 COPY ./web /tmp/my-project
 USER root
 RUN chown -R quarkus /tmp/my-project
@@ -8,7 +8,7 @@ USER quarkus
 RUN mvn -f /tmp/my-project/pom.xml -Pnative clean package -DskipTests
 
 ## Stage 2 : create the docker final image
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.3
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.4
 WORKDIR /usr/src/app/target/
 COPY --from=build /tmp/my-project/target/*-runner /usr/src/app/target/application
 RUN chmod 775 /usr/src/app/target

@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class InvoiceRequestOutput {
 
     private String status;
+    private String fileUri;
 }

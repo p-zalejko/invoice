@@ -13,6 +13,6 @@ public class PdfInvoiceFactory implements InvoiceFactory {
     @Override
     public Invoice create(InvoiceInput command) {
         Objects.requireNonNull(command);
-        return null;
+        return new Invoice("tbd");
     }
 }

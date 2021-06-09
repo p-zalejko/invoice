@@ -32,7 +32,7 @@ public class InvoiceInputFactory {
                 invoiceInputInternal.accountId,
                 invoiceInputInternal.invoiceFullNumber,
                 List.of(),
-                "",
+                invoiceInputInternal.clientDetails,
                 LocalDate.now(),
                 LocalDate.now(),
                 LocalDate.now()
@@ -45,6 +45,9 @@ public class InvoiceInputFactory {
         long accountId;
         String invoiceFullNumber;
         String clientDetails;
+        LocalDate dueDate;
+        LocalDate saleDate;
+        LocalDate creationDate;
 
         @JsonProperty("accountId")
         void setAccountId(Map<String, String> node) {
@@ -68,5 +71,19 @@ public class InvoiceInputFactory {
             );
         }
 
+        @JsonProperty("paymentDate")
+        void setDueDate(Map<String, String> node) {
+            this.dueDate = LocalDate.parse(node.get("S"));
+        }
+
+        @JsonProperty("creationDate")
+        void setCreationDate(Map<String, String> node) {
+            this.creationDate = LocalDate.parse(node.get("S"));
+        }
+
+        @JsonProperty("saleDate")
+        void setSaleDate(Map<String, String> node) {
+            this.saleDate = LocalDate.parse(node.get("S"));
+        }
     }
 }

@@ -39,13 +39,12 @@ public class InvoiceInputFactory {
         );
     }
 
-    private final JsonNode record;
-
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static class InvoiceInputInternal {
 
         long accountId;
         String invoiceFullNumber;
+        String clientDetails;
 
         @JsonProperty("accountId")
         void setAccountId(Map<String, String> node) {
@@ -55,6 +54,18 @@ public class InvoiceInputFactory {
         @JsonProperty("invoiceFullNumber")
         void setInvoiceFullNumber(Map<String, String> node) {
             this.invoiceFullNumber = node.get("S");
+        }
+
+        @JsonProperty("client")
+        void setClientDetails(Map<String, Map<String, Map<String, String>>> node) {
+            var clientMap = node.get("M");
+            this.clientDetails = String.format("%s\n%s\n%s\n%s %s",
+                    clientMap.get("clientName").get("S"),
+                    clientMap.get("clientTaxId").get("S"),
+                    clientMap.get("clientAddressCity").get("S"),
+                    clientMap.get("clientAddressStreet").get("S"),
+                    clientMap.get("clientAddressNumber").get("S")
+            );
         }
 
     }

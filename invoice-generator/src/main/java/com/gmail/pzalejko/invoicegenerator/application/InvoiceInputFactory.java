@@ -9,8 +9,10 @@ import com.gmail.pzalejko.invoicegenerator.model.InvoiceInput;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Currency;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ToString
 @Data
@@ -31,11 +33,11 @@ public class InvoiceInputFactory {
         return new InvoiceInput(
                 invoiceInputInternal.accountId,
                 invoiceInputInternal.invoiceFullNumber,
-                List.of(),
+                invoiceInputInternal.items,
                 invoiceInputInternal.clientDetails,
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now()
+                invoiceInputInternal.dueDate,
+                invoiceInputInternal.saleDate,
+                invoiceInputInternal.creationDate
         );
     }
 
@@ -48,6 +50,8 @@ public class InvoiceInputFactory {
         LocalDate dueDate;
         LocalDate saleDate;
         LocalDate creationDate;
+
+        private List<InvoiceInput.Item> items;
 
         @JsonProperty("accountId")
         void setAccountId(Map<String, String> node) {
@@ -84,6 +88,30 @@ public class InvoiceInputFactory {
         @JsonProperty("saleDate")
         void setSaleDate(Map<String, String> node) {
             this.saleDate = LocalDate.parse(node.get("S"));
+        }
+
+        @JsonProperty("items")
+        void setItems(Map<String, List<Map<String, Map<String, Map<String, String>>>>> node) {
+            this.items = node.get("L")
+                    .stream()
+                    .map(this::parseItem)
+                    .collect(Collectors.toList());
+        }
+
+        private InvoiceInput.Item parseItem(Map<String, Map<String, Map<String, String>>> i) {
+            var map = i.get("M");
+
+            var price = new InvoiceInput.Price(
+                    Double.parseDouble(map.get("priceValue").get("N")),
+                    Double.parseDouble(map.get("priceTax").get("N")),
+                    Currency.getInstance(map.get("priceCurrency").get("S"))
+            );
+
+            return new InvoiceInput.Item(
+                    map.get("name").get("S"),
+                    Long.parseLong(map.get("count").get("N")),
+                    map.get("unit").get("S"),
+                    price);
         }
     }
 }

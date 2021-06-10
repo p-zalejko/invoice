@@ -17,10 +17,10 @@ public record InvoiceInput(
             String name,
             long count,
             String unit,
-            rice price) {
+            Price price) {
     }
 
-    public record rice(
+    public record Price(
             double pricePerOne,
             double taxPerOne,
             Currency currency) {

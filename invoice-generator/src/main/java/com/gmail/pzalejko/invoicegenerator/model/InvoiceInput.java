@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 
+/**
+ * Encapsulates all information that must be included in the invoice. It also takes cares of all the calculations
+ * like a total price, total tax values etc.
+ */
 public record InvoiceInput(
         long accountId,
         String invNumber,

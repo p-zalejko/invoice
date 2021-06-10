@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.gmail.pzalejko.invoicegenerator.model.InvoiceInput;
 import lombok.*;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
@@ -17,22 +19,26 @@ import java.util.stream.Collectors;
 /**
  * Parses a new event sent by DynamoDB after saving new record. The event itself is a JSON object, containing the
  * full payload of a newly crested record.
- *
+ * <p>
  * For more information read https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.html
  */
-@ToString
-@Data
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@ApplicationScoped
 public class InvoiceInputFactory {
 
+    private ObjectMapper mapper;
+
+    @PostConstruct
+    void init() {
+        mapper = new ObjectMapper();
+    }
+
     @SneakyThrows
-    public static InvoiceInput create(JsonNode node) {
+    public InvoiceInput create(JsonNode node) {
         JsonNode records = node.get("Records");
         if (!(records instanceof ArrayNode)) {
             throw new IllegalArgumentException("Invalid input, expected an array of records");
         }
 
-        ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = records.get(0).get("dynamodb").get("NewImage");
         InvoiceInputInternal invoiceInputInternal = mapper.treeToValue(jsonNode, InvoiceInputInternal.class);
 

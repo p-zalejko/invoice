@@ -19,10 +19,13 @@ public class InvoiceFileLambda implements RequestHandler<JsonNode, InvoiceReques
     @Inject
     InvoiceFactory invoiceFactory;
 
+    @Inject
+    InvoiceInputFactory invoiceInputFactory;
+
     @Override
     public InvoiceRequestOutput handleRequest(JsonNode input, Context context) {
         log.info(String.format("Generating invoice for: %s", input));
-        var invoiceInput = InvoiceInputFactory.create(input);
+        var invoiceInput = invoiceInputFactory.create(input);
 
         Invoice invoice = invoiceFactory.create(invoiceInput);
         return new InvoiceRequestOutput("ok", invoice.fileUri());

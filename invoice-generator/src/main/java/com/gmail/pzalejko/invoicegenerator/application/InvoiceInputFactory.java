@@ -14,6 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Parses a new event sent by DynamoDB after saving new record. The event itself is a JSON object, containing the
+ * full payload of a newly crested record.
+ *
+ * For more information read https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.html
+ */
 @ToString
 @Data
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)

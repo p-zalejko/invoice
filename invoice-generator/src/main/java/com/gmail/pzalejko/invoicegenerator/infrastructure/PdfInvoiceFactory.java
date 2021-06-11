@@ -58,9 +58,6 @@ public class PdfInvoiceFactory implements InvoiceFactory {
                     PdfRendererBuilder builder = new PdfRendererBuilder();
                     builder.useFastMode();
                     Document doc = html5ParseDocument(toString);
-                    Element secondItem = doc.getElementById("secondItem");
-//                    doc.getChildNodes()
-//                    doc.removeChild(secondItem);
                     builder.withW3cDocument(doc, "/");
                     builder.useFont(() -> getResource("/SourceSans3-Regular.ttf"), "Noto Sans");
                     builder.toStream(os);
@@ -69,10 +66,6 @@ public class PdfInvoiceFactory implements InvoiceFactory {
 
                 out.flush();
             }
-//
-//            Configuration cfg = new Configuration();
-//            Template template = cfg.getTemplate("/template.html");
-
         }
 
         return new Invoice("tbd");

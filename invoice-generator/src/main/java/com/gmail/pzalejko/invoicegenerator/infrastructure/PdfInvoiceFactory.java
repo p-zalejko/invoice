@@ -6,16 +6,18 @@ import com.gmail.pzalejko.invoicegenerator.model.InvoiceInput;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import lombok.SneakyThrows;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -23,52 +25,63 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class PdfInvoiceFactory implements InvoiceFactory {
 
-    private Properties props;
-
-    @PostConstruct
-    void init() {
-        props = new Properties();
-        try (InputStream input = getResource("/invoice-template-pl.properties")) {
-            props.load(new InputStreamReader(input, StandardCharsets.UTF_8));
-        } catch (IOException ex) {
-            throw new IllegalStateException(ex);
-        }
-    }
+    public static final String TEMPLATE_HTML = "/template.html";
 
     @Override
     @SneakyThrows
     public Invoice create(InvoiceInput command) {
         Objects.requireNonNull(command);
 
-        try (var in = getResource("/template.html")) {
+        Template t = getTemplate();
+        Properties properties = getProperties(command);
+        var file = createPdfFile(t, properties);
+
+        return new Invoice("tbd");
+    }
+
+    private Path createPdfFile(Template t, Properties props) throws IOException, TemplateException {
+        var temp = Files.createTempFile("my-inv", ".pdf");
+        try (var out = new StringWriter()) {
+            t.process(props, out);
+            try (var os = new FileOutputStream(temp.toFile().getAbsolutePath())) {
+                String toString = out.getBuffer().toString();
+                Document doc = html5ParseDocument(toString);
+
+                PdfRendererBuilder builder = new PdfRendererBuilder();
+                builder.useFastMode();
+                builder.withW3cDocument(doc, "/");
+                builder.useFont(() -> getResource("/SourceSans3-Regular.ttf"), "Noto Sans");
+                builder.toStream(os);
+                builder.run();
+            }
+
+            out.flush();
+        }
+        return temp;
+    }
+
+    private Template getTemplate() throws IOException {
+        try (var in = getResource(TEMPLATE_HTML)) {
             String text = new BufferedReader(
                     new InputStreamReader(in, StandardCharsets.UTF_8)).lines()
                     .collect(Collectors.joining("\n"));
 
-            Template t = new Template("name",
+            return new Template("name",
                     new StringReader(text),
                     new Configuration(Configuration.VERSION_2_3_31)
             );
+        }
+    }
 
-            try (StringWriter out = new StringWriter()) {
-                t.process(props, out);
-                String toString = out.getBuffer().toString();
-                System.out.println(toString);
-                try (OutputStream os = new FileOutputStream("out.pdf")) {
-                    PdfRendererBuilder builder = new PdfRendererBuilder();
-                    builder.useFastMode();
-                    Document doc = html5ParseDocument(toString);
-                    builder.withW3cDocument(doc, "/");
-                    builder.useFont(() -> getResource("/SourceSans3-Regular.ttf"), "Noto Sans");
-                    builder.toStream(os);
-                    builder.run();
-                }
-
-                out.flush();
-            }
+    private Properties getProperties(InvoiceInput command) {
+        Properties props = new Properties();
+        try (var input = getResource("/invoice-template-pl.properties")) {
+            props.load(new InputStreamReader(input, StandardCharsets.UTF_8));
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
         }
 
-        return new Invoice("tbd");
+        return props;
     }
 
     private InputStream getResource(String name) {

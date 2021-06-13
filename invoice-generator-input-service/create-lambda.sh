@@ -1,0 +1,1 @@
+LAMBDA_ROLE_ARN="arn:aws:iam::XXXXXX:role/lambda-ex" sh target/manage.sh create

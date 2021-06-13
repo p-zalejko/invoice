@@ -43,7 +43,7 @@ public class PdfInvoiceFactory implements InvoiceFactory {
         var temp = Files.createTempFile("my-inv", ".pdf");
         try (var out = new StringWriter()) {
             t.process(props, out);
-            try (var os = new FileOutputStream(temp.toFile().getAbsolutePath())) {
+            try (var os = new FileOutputStream( "our.pdf")) {
                 String toString = out.getBuffer().toString();
                 Document doc = html5ParseDocument(toString);
 
@@ -80,6 +80,9 @@ public class PdfInvoiceFactory implements InvoiceFactory {
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         }
+
+        props.put("consumerNameLine1",command.clientDetails());
+        props.put("consumerNameLine1",command.clientDetails());
 
         return props;
     }

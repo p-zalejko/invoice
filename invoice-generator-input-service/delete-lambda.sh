@@ -1,0 +1,1 @@
+sh target/manage.sh delete

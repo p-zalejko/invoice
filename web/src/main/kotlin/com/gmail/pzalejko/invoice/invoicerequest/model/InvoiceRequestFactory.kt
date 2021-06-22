@@ -14,27 +14,27 @@ class InvoiceRequestFactory {
     lateinit var invoiceRequestRepository: InvoiceRequestRepository
 
     fun create(
-            accountId: Long,
-            dueDate: InvoicePaymentDueDate,
-            creationDate: InvoiceCreationDate,
-            saleDate: InvoiceSaleDate,
-            invoiceClient: InvoiceClient,
-            items: Collection<InvoiceItem>
+        sellerId: Long,
+        dueDate: InvoicePaymentDueDate,
+        creationDate: InvoiceCreationDate,
+        saleDate: InvoiceSaleDate,
+        invoiceClient: InvoiceClient,
+        items: Collection<InvoiceItem>
     ): InvoiceRequest {
 
-        val invoiceNumber = getNextNumber(accountId,creationDate.date)
+        val invoiceNumber = getNextNumber(sellerId, creationDate.date)
         return DefaultInvoiceRequest(
-                accountId,
-                invoiceNumber,
-                items.toMutableList(),
-                invoiceClient,
-                dueDate,
-                saleDate,
-                creationDate
+            sellerId,
+            invoiceNumber,
+            items.toMutableList(),
+            invoiceClient,
+            dueDate,
+            saleDate,
+            creationDate
         )
     }
 
-    private fun getNextNumber( accountId: Long,date: LocalDate): InvoiceNumber {
+    private fun getNextNumber(accountId: Long, date: LocalDate): InvoiceNumber {
         val month = date.monthValue
         val year = date.year
         val latest = invoiceRequestRepository.findLast(accountId, month, year)

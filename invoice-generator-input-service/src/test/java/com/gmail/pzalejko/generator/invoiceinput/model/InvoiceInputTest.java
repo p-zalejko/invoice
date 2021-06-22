@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoiceinput.model;
+package com.gmail.pzalejko.generator.invoiceinput.model;
 
 import static org.assertj.core.api.Assertions.*;
 

@@ -1,5 +1,6 @@
-package com.gmail.pzalejko.invoiceinput.model;
+package com.gmail.pzalejko.generator.invoiceinput.model;
 
+import com.gmail.pzalejko.generator.seller.model.SellerInfo;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ public class InvoiceInputTestData {
 
     InvoiceInput testData(int items) {
         return new InvoiceInput(
-                1,
+                new SellerInfo(1L, "", "", "",""),
                 "inv00",
                 testItems(items),
                 "foo",

@@ -1,4 +1,6 @@
-package com.gmail.pzalejko.invoiceinput.model;
+package com.gmail.pzalejko.generator.invoiceinput.model;
+
+import com.gmail.pzalejko.generator.seller.model.SellerInfo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,7 +13,7 @@ import java.util.List;
  * like a total price, total tax values etc.
  */
 public record InvoiceInput(
-        long accountId,
+        SellerInfo seller,
         String invNumber,
         List<Item> items,
         String clientDetails,

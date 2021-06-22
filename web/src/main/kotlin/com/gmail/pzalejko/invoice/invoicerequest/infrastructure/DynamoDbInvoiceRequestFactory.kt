@@ -60,7 +60,7 @@ class DynamoDbInvoiceRequestFactory {
 
         val client = request.getClient()
         val items = request.getItems()
-        val accountId = request.getAccountId()
+        val accountId = request.getSellerId()
 
         val invoiceNumberValue = request.getInvoiceNumber().getNumber()
         val invoiceFullNumber = request.getInvoiceNumber().getFullNumber()

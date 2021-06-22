@@ -18,7 +18,7 @@ data class DefaultInvoiceRequest(
 
     }
 
-    override fun getAccountId(): Long {
+    override fun getSellerId(): Long {
         return _accountId
     }
 

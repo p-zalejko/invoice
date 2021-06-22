@@ -1,10 +1,11 @@
-package com.gmail.pzalejko.invoiceinput.model;
+package com.gmail.pzalejko.generator.invoiceinput.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.gmail.pzalejko.generator.seller.model.SellerInfo;
 import lombok.*;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +35,7 @@ public class InvoiceInputFactory {
     }
 
     @SneakyThrows
-    public InvoiceInput create(JsonNode node) {
+    public InvoiceInput create(JsonNode node, Function<Long, SellerInfo> sellerProvider) {
         JsonNode records = node.get("Records");
         if (!(records instanceof ArrayNode)) {
             throw new IllegalArgumentException("Invalid input, expected an array of records");
@@ -40,9 +43,10 @@ public class InvoiceInputFactory {
 
         JsonNode jsonNode = records.get(0).get("dynamodb").get("NewImage");
         InvoiceInputInternal invoiceInputInternal = mapper.treeToValue(jsonNode, InvoiceInputInternal.class);
+        SellerInfo seller = sellerProvider.apply(invoiceInputInternal.accountId);
 
         return new InvoiceInput(
-                invoiceInputInternal.accountId,
+                seller,
                 invoiceInputInternal.invoiceFullNumber,
                 invoiceInputInternal.items,
                 invoiceInputInternal.clientDetails,

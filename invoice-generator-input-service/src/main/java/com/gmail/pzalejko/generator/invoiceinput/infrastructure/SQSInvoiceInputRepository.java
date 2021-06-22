@@ -1,7 +1,7 @@
-package com.gmail.pzalejko.invoiceinput.infrastructure;
+package com.gmail.pzalejko.generator.invoiceinput.infrastructure;
 
-import com.gmail.pzalejko.invoiceinput.model.InvoiceInput;
-import com.gmail.pzalejko.invoiceinput.model.InvoiceInputRepository;
+import com.gmail.pzalejko.generator.invoiceinput.model.InvoiceInput;
+import com.gmail.pzalejko.generator.invoiceinput.model.InvoiceInputRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Objects;

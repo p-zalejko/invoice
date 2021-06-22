@@ -13,7 +13,7 @@ import com.gmail.pzalejko.invoice.common.model.*
  */
 interface InvoiceRequest : Aggregate<InvoiceNumber> {
 
-    fun getAccountId(): Long
+    fun getSellerId(): Long
 
     fun getClient(): InvoiceClient
 

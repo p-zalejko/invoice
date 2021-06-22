@@ -2,7 +2,10 @@ package com.gmail.pzalejko.invoice.invoicerequest.infrastructure
 
 import com.gmail.pzalejko.invoice.invoicerequest.model.DefaultInvoiceRequest
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequest
-import com.gmail.pzalejko.invoice.common.model.*
+import com.gmail.pzalejko.invoice.core.model.subject.InvoiceClient
+import com.gmail.pzalejko.invoice.core.model.subject.SubjectAddress
+import com.gmail.pzalejko.invoice.core.model.subject.SubjectPolandTaxId
+import com.gmail.pzalejko.invoice.core.model.invoice.*
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import java.time.LocalDate
 import java.util.*
@@ -36,12 +39,12 @@ class DynamoDbInvoiceRequestFactory {
 
         val client = InvoiceClient(
             request["client"]!!.m()["clientName"]!!.s(),
-            InvoiceClientAddress(
+            SubjectAddress(
                 request["client"]!!.m()["clientAddressStreet"]!!.s(),
                 request["client"]!!.m()["clientAddressNumber"]!!.s(),
                 request["client"]!!.m()["clientAddressCity"]!!.s()
             ),
-            InvoiceClientPolandTaxId(request["client"]!!.m()["clientTaxId"]!!.s())
+            SubjectPolandTaxId(request["client"]!!.m()["clientTaxId"]!!.s())
         )
 
         val accountId = request["accountId"]!!.n().toLong()

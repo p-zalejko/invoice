@@ -2,7 +2,10 @@ package com.gmail.pzalejko.invoice.invoicerequest.application
 
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestFactory
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestRepository
-import com.gmail.pzalejko.invoice.common.model.*
+import com.gmail.pzalejko.invoice.core.model.subject.InvoiceClient
+import com.gmail.pzalejko.invoice.core.model.subject.SubjectAddress
+import com.gmail.pzalejko.invoice.core.model.subject.SubjectPolandTaxId
+import com.gmail.pzalejko.invoice.core.model.invoice.*
 import java.math.BigDecimal
 import java.util.*
 import javax.enterprise.context.ApplicationScoped
@@ -39,12 +42,12 @@ class InvoiceService {
     }
 
     private fun toClient(request: RequestInvoiceCommand): InvoiceClient {
-        val adr = InvoiceClientAddress(
+        val adr = SubjectAddress(
             request.client.address.street,
             request.client.address.number,
             request.client.address.city
         )
-        val taxId = InvoiceClientPolandTaxId(request.client.taxId)
+        val taxId = SubjectPolandTaxId(request.client.taxId)
 
         return InvoiceClient(request.client.name, adr, taxId)
     }

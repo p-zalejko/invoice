@@ -1,6 +1,6 @@
 package com.gmail.pzalejko.invoice.invoicerequest.model
 
-import com.gmail.pzalejko.invoice.common.model.InvoiceNumber
+import com.gmail.pzalejko.invoice.core.model.invoice.InvoiceNumber
 
 interface InvoiceRequestRepository {
 

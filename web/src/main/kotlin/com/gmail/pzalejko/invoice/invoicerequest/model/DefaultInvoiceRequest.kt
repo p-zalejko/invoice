@@ -1,15 +1,16 @@
 package com.gmail.pzalejko.invoice.invoicerequest.model
 
-import com.gmail.pzalejko.invoice.common.model.*
+import com.gmail.pzalejko.invoice.core.model.subject.InvoiceClient
+import com.gmail.pzalejko.invoice.core.model.invoice.*
 
 data class DefaultInvoiceRequest(
-        val _accountId: Long,
-        val invNumber: InvoiceNumber,
-        val itemsList: MutableList<InvoiceItem>,
-        var clientValue: InvoiceClient,
-        var dueDate: InvoicePaymentDueDate,
-        var _saleDate: InvoiceSaleDate,
-        var _creationDate: InvoiceCreationDate
+    val _accountId: Long,
+    val invNumber: InvoiceNumber,
+    val itemsList: MutableList<InvoiceItem>,
+    var clientValue: InvoiceClient,
+    var dueDate: InvoicePaymentDueDate,
+    var _saleDate: InvoiceSaleDate,
+    var _creationDate: InvoiceCreationDate
 ) : InvoiceRequest {
 
     companion object {

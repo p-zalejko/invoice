@@ -3,6 +3,7 @@ package com.gmail.pzalejko.invoice.invoicerequest.model
 import com.gmail.pzalejko.invoice.common.ddd.Aggregate
 import com.gmail.pzalejko.invoice.core.model.subject.InvoiceClient
 import com.gmail.pzalejko.invoice.core.model.invoice.*
+import com.gmail.pzalejko.invoice.core.model.subject.InvoiceSeller
 
 /**
  * An invoice request with all associated information important for invoice generation. The InvoiceRequest controls
@@ -14,7 +15,7 @@ import com.gmail.pzalejko.invoice.core.model.invoice.*
  */
 interface InvoiceRequest : Aggregate<InvoiceNumber> {
 
-    fun getSellerId(): Long
+    fun getSeller(): InvoiceSeller
 
     fun getClient(): InvoiceClient
 

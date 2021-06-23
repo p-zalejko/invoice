@@ -11,8 +11,6 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-import software.amazon.awssdk.services.dynamodb.model.DeleteTableRequest;
 
 import javax.inject.Inject;
 import java.time.LocalDate;

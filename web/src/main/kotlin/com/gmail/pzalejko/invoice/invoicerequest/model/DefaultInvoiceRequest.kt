@@ -2,9 +2,10 @@ package com.gmail.pzalejko.invoice.invoicerequest.model
 
 import com.gmail.pzalejko.invoice.core.model.subject.InvoiceClient
 import com.gmail.pzalejko.invoice.core.model.invoice.*
+import com.gmail.pzalejko.invoice.core.model.subject.InvoiceSeller
 
 data class DefaultInvoiceRequest(
-    val _accountId: Long,
+    val _seller: InvoiceSeller,
     val invNumber: InvoiceNumber,
     val itemsList: MutableList<InvoiceItem>,
     var clientValue: InvoiceClient,
@@ -19,8 +20,8 @@ data class DefaultInvoiceRequest(
 
     }
 
-    override fun getSellerId(): Long {
-        return _accountId
+    override fun getSeller(): InvoiceSeller {
+        return _seller
     }
 
     override fun getItems(): List<InvoiceItem> {

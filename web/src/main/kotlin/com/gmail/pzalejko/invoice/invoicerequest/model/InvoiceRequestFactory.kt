@@ -1,7 +1,7 @@
 package com.gmail.pzalejko.invoice.invoicerequest.model
 
-import com.gmail.pzalejko.invoice.core.model.subject.InvoiceClient
 import com.gmail.pzalejko.invoice.core.model.invoice.*
+import com.gmail.pzalejko.invoice.core.model.subject.*
 import java.time.LocalDate
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.inject.Default
@@ -24,8 +24,16 @@ class InvoiceRequestFactory {
     ): InvoiceRequest {
 
         val invoiceNumber = getNextNumber(sellerId, creationDate.date)
-        return DefaultInvoiceRequest(
+        val seller = InvoiceSeller(
             sellerId,
+            "Company ABC",
+            SubjectAddress("street", "1", "ZG"),
+            SubjectPolandTaxId("0987654321"),
+            BankAccountNumber("09876543210987654321098765")
+        )
+
+        return DefaultInvoiceRequest(
+            seller,
             invoiceNumber,
             items.toMutableList(),
             invoiceClient,

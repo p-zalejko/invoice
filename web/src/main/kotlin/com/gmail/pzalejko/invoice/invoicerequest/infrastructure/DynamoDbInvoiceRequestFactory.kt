@@ -2,10 +2,8 @@ package com.gmail.pzalejko.invoice.invoicerequest.infrastructure
 
 import com.gmail.pzalejko.invoice.invoicerequest.model.DefaultInvoiceRequest
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequest
-import com.gmail.pzalejko.invoice.core.model.subject.InvoiceClient
-import com.gmail.pzalejko.invoice.core.model.subject.SubjectAddress
-import com.gmail.pzalejko.invoice.core.model.subject.SubjectPolandTaxId
 import com.gmail.pzalejko.invoice.core.model.invoice.*
+import com.gmail.pzalejko.invoice.core.model.subject.*
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import java.time.LocalDate
 import java.util.*
@@ -47,12 +45,23 @@ class DynamoDbInvoiceRequestFactory {
             SubjectPolandTaxId(request["client"]!!.m()["clientTaxId"]!!.s())
         )
 
-        val accountId = request["accountId"]!!.n().toLong()
+        val seller = InvoiceSeller(
+            request["seller"]!!.m()["sellerId"]!!.n().toLong(),
+            request["seller"]!!.m()["sellerName"]!!.s(),
+            SubjectAddress(
+                request["seller"]!!.m()["sellerAddressStreet"]!!.s(),
+                request["seller"]!!.m()["sellerAddressNumber"]!!.s(),
+                request["seller"]!!.m()["sellerAddressCity"]!!.s()
+            ),
+            SubjectPolandTaxId(request["seller"]!!.m()["sellerTaxId"]!!.s()),
+            BankAccountNumber(request["seller"]!!.m()["sellerBankAccount"]!!.s())
+        )
+
         val creationDate = InvoiceCreationDate(LocalDate.parse(request["creationDate"]!!.s()))
         val paymentDueDate = InvoicePaymentDueDate(LocalDate.parse(request["paymentDate"]!!.s()))
         val saleDate = InvoiceSaleDate(LocalDate.parse(request["saleDate"]!!.s()))
 
-        return DefaultInvoiceRequest(accountId, invoiceNumber, items, client, paymentDueDate, saleDate, creationDate)
+        return DefaultInvoiceRequest(seller, invoiceNumber, items, client, paymentDueDate, saleDate, creationDate)
     }
 
     fun to(request: InvoiceRequest): Map<String, AttributeValue> {
@@ -62,14 +71,14 @@ class DynamoDbInvoiceRequestFactory {
         val yearMonth = String.format("%d-%d", creationDate.year, creationDate.monthValue)
 
         val client = request.getClient()
+        val seller = request.getSeller()
         val items = request.getItems()
-        val accountId = request.getSellerId()
+        val accountId = seller.accountId
 
         val invoiceNumberValue = request.getInvoiceNumber().getNumber()
         val invoiceFullNumber = request.getInvoiceNumber().getFullNumber()
 
         val map: MutableMap<String, AttributeValue> = HashMap()
-
         map["accountId"] = toNumAttr(accountId)
         map["accountId_invoiceFullNumber"] = toStringAttr(accountId.toString().plus("_").plus(invoiceFullNumber))
         map["invoiceFullNumber"] = toStringAttr(invoiceFullNumber)
@@ -81,6 +90,7 @@ class DynamoDbInvoiceRequestFactory {
         map["yearMonth"] = toStringAttr(yearMonth)
 
         map["client"] = toClient(client)
+        map["seller"] = toSeller(seller)
         map["items"] = toItems(items)
 
         return map
@@ -97,6 +107,18 @@ class DynamoDbInvoiceRequestFactory {
         return toMapAttr(map)
     }
 
+    private fun toSeller(seller: InvoiceSeller): AttributeValue {
+        val map: MutableMap<String, AttributeValue> = HashMap()
+        map["sellerId"] = toNumAttr(seller.accountId)
+        map["sellerAddressCity"] = toStringAttr(seller.address.city)
+        map["sellerAddressNumber"] = toStringAttr(seller.address.number)
+        map["sellerAddressStreet"] = toStringAttr(seller.address.street)
+        map["sellerName"] = toStringAttr(seller.name)
+        map["sellerTaxId"] = toStringAttr(seller.taxId.getTaxId())
+        map["sellerBankAccount"] = toStringAttr(seller.bankAccount.number)
+
+        return toMapAttr(map)
+    }
     private fun toItems(items: List<InvoiceItem>): AttributeValue {
         val result: MutableList<AttributeValue> = mutableListOf()
         for (item in items) {

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.gmail.pzalejko.generator.seller.model.SellerInfo;
 import lombok.*;
 
 import javax.annotation.PostConstruct;
@@ -15,7 +14,6 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +33,7 @@ public class InvoiceInputFactory {
     }
 
     @SneakyThrows
-    public InvoiceInput create(JsonNode node, Function<Long, SellerInfo> sellerProvider) {
+    public InvoiceInput create(JsonNode node) {
         JsonNode records = node.get("Records");
         if (!(records instanceof ArrayNode)) {
             throw new IllegalArgumentException("Invalid input, expected an array of records");
@@ -43,13 +41,12 @@ public class InvoiceInputFactory {
 
         JsonNode jsonNode = records.get(0).get("dynamodb").get("NewImage");
         InvoiceInputInternal invoiceInputInternal = mapper.treeToValue(jsonNode, InvoiceInputInternal.class);
-        SellerInfo seller = sellerProvider.apply(invoiceInputInternal.accountId);
 
         return new InvoiceInput(
-                seller,
+                invoiceInputInternal.sellerDetails,
+                invoiceInputInternal.clientDetails,
                 invoiceInputInternal.invoiceFullNumber,
                 invoiceInputInternal.items,
-                invoiceInputInternal.clientDetails,
                 invoiceInputInternal.dueDate,
                 invoiceInputInternal.saleDate,
                 invoiceInputInternal.creationDate
@@ -61,7 +58,8 @@ public class InvoiceInputFactory {
 
         long accountId;
         String invoiceFullNumber;
-        String clientDetails;
+        ClientInfo clientDetails;
+        SellerInfo sellerDetails;
         LocalDate dueDate;
         LocalDate saleDate;
         LocalDate creationDate;
@@ -81,13 +79,31 @@ public class InvoiceInputFactory {
         @JsonProperty("client")
         void setClientDetails(Map<String, Map<String, Map<String, String>>> node) {
             var clientMap = node.get("M");
-            this.clientDetails = String.format("%s\n%s\n%s\n%s %s",
-                    clientMap.get("clientName").get("S"),
-                    clientMap.get("clientTaxId").get("S"),
+
+            var name = clientMap.get("clientName").get("S");
+            var taxId = clientMap.get("clientTaxId").get("S");
+            var address = String.format("%s\n%s\n%s",
                     clientMap.get("clientAddressCity").get("S"),
                     clientMap.get("clientAddressStreet").get("S"),
-                    clientMap.get("clientAddressNumber").get("S")
-            );
+                    clientMap.get("clientAddressNumber").get("S"));
+
+            this.clientDetails = new ClientInfo(name, address, taxId);
+        }
+
+        @JsonProperty("seller")
+        void setSellerDetails(Map<String, Map<String, Map<String, String>>> node) {
+            var clientMap = node.get("M");
+
+            var name = clientMap.get("sellerName").get("S");
+            var id = Long.parseLong(clientMap.get("sellerId").get("N"));
+            var taxId = clientMap.get("sellerTaxId").get("S");
+            var bankNumber = clientMap.get("sellerBankAccount").get("S");
+            var address = String.format("%s\n%s\n%s",
+                    clientMap.get("sellerAddressCity").get("S"),
+                    clientMap.get("sellerAddressStreet").get("S"),
+                    clientMap.get("sellerAddressNumber").get("S"));
+
+            this.sellerDetails = new SellerInfo(id, name, address, bankNumber, taxId);
         }
 
         @JsonProperty("paymentDate")

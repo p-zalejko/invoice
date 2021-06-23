@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.generator.seller.model;
+package com.gmail.pzalejko.generator.invoiceinput.model;
 
 /**
  * Information about the company that creates the invoice. In general, the company is the "user" i.e. it uses the system

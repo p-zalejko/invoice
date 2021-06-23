@@ -1,7 +1,5 @@
 package com.gmail.pzalejko.generator.invoiceinput.model;
 
-import com.gmail.pzalejko.generator.seller.model.SellerInfo;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -14,9 +12,9 @@ import java.util.List;
  */
 public record InvoiceInput(
         SellerInfo seller,
+        ClientInfo client,
         String invNumber,
         List<Item> items,
-        String clientDetails,
         LocalDate dueDate,
         LocalDate saleDate,
         LocalDate creationDate) {
@@ -35,6 +33,11 @@ public record InvoiceInput(
             total = total.add(BigDecimal.valueOf(item.totalTaxValue()));
         }
         return total.doubleValue();
+    }
+
+    public String totalPriceAsText(){
+        // TODO: convert a price to text
+        return "";
     }
 
     public record Item(

@@ -2,10 +2,8 @@ package com.gmail.pzalejko.invoice.invoicerequest.application
 
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestFactory
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestRepository
-import com.gmail.pzalejko.invoice.core.model.subject.InvoiceClient
-import com.gmail.pzalejko.invoice.core.model.subject.SubjectAddress
-import com.gmail.pzalejko.invoice.core.model.subject.SubjectPolandTaxId
 import com.gmail.pzalejko.invoice.core.model.invoice.*
+import com.gmail.pzalejko.invoice.core.model.subject.*
 import java.math.BigDecimal
 import java.util.*
 import javax.enterprise.context.ApplicationScoped
@@ -33,9 +31,10 @@ class InvoiceService {
         val creationDate = InvoiceCreationDate(request.creationDate)
         val saleDate = InvoiceSaleDate(request.saleDate)
         val client = toClient(request)
+        val seller = toSeller(sellerId)
         val items = toItems(request)
 
-        val invoice = invoiceRequestFactory.create(sellerId, dueDate, creationDate, saleDate, client, items)
+        val invoice = invoiceRequestFactory.create(dueDate, creationDate, saleDate, client, seller, items)
         invoiceRequestRepository.save(invoice)
 
         return invoice.getInvoiceNumber()
@@ -50,6 +49,17 @@ class InvoiceService {
         val taxId = SubjectPolandTaxId(request.client.taxId)
 
         return InvoiceClient(request.client.name, adr, taxId)
+    }
+
+    private fun toSeller(id: Long): InvoiceSeller {
+        // FIXME: it should  be laaded from DB
+        return InvoiceSeller(
+            id,
+            "Company ABC",
+            SubjectAddress("street", "1", "ZG"),
+            SubjectPolandTaxId("0987654321"),
+            BankAccountNumber("09876543210987654321098765")
+        )
     }
 
     private fun toItems(request: RequestInvoiceCommand): Collection<InvoiceItem> {

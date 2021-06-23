@@ -15,25 +15,17 @@ class InvoiceRequestFactory {
     lateinit var invoiceRequestRepository: InvoiceRequestRepository
 
     fun create(
-        sellerId: Long,
         dueDate: InvoicePaymentDueDate,
         creationDate: InvoiceCreationDate,
         saleDate: InvoiceSaleDate,
         invoiceClient: InvoiceClient,
+        invoiceSeller: InvoiceSeller,
         items: Collection<InvoiceItem>
     ): InvoiceRequest {
 
-        val invoiceNumber = getNextNumber(sellerId, creationDate.date)
-        val seller = InvoiceSeller(
-            sellerId,
-            "Company ABC",
-            SubjectAddress("street", "1", "ZG"),
-            SubjectPolandTaxId("0987654321"),
-            BankAccountNumber("09876543210987654321098765")
-        )
-
+        val invoiceNumber = getNextNumber(invoiceSeller.accountId, creationDate.date)
         return DefaultInvoiceRequest(
-            seller,
+            invoiceSeller,
             invoiceNumber,
             items.toMutableList(),
             invoiceClient,

@@ -16,3 +16,13 @@ dynamodb.putItem(params, function(err, data) {
     console.log("Success", data);
   }
 });
+
+// input for  yamitzky/dynamodb-gui
+{
+  "accountId": 2,
+  "password": "abc",
+  "roles": [
+    "USER"
+  ],
+  "username": "abc"
+}

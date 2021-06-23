@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# example https://quarkus.io/guides/amazon-sqs
+
+docker run --rm -p 4566:4566 -p 4571:4571 localstack/localstack
+
+
+#Create an AWS profile for your local instance using AWS CLI:
+aws configure --profile localstack

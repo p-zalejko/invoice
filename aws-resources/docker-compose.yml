@@ -1,0 +1,14 @@
+version: '3'
+services:
+  # localstack has a shell (GUI) http://localhost:4566/shell/
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+  dynamocl:
+    image: yamitzky/dynamodb-gui
+    environment:
+      DYNAMO_ENDPOINT: http://localstack:4566
+    ports:
+      - "8001:8001"

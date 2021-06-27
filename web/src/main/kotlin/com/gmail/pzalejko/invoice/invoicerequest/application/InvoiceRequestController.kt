@@ -1,7 +1,5 @@
-package com.gmail.pzalejko.invoice.invoicerequest.web
+package com.gmail.pzalejko.invoice.invoicerequest.application
 
-import com.gmail.pzalejko.invoice.invoicerequest.application.InvoiceService
-import com.gmail.pzalejko.invoice.invoicerequest.application.RequestInvoiceCommand
 import com.gmail.pzalejko.invoice.security.model.InvoiceUserPrincipal
 import io.quarkus.runtime.annotations.RegisterForReflection
 import javax.annotation.security.RolesAllowed

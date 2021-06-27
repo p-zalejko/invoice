@@ -1,14 +1,13 @@
 package com.gmail.pzalejko.invoice.invoicerequest.web;
 
 import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.DynamoDbResource;
-import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.InvoiceRequestDatabaseRepository;
-import com.gmail.pzalejko.invoice.security.SecurityRepositoryHelper;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -36,10 +35,15 @@ public class InvoiceRequestTest {
     @Inject
     InvoiceRequestRepositoryHelper repositoryHelper;
 
-    @AfterEach
+    @BeforeEach
     public void setup() {
         repositoryHelper.setup();
         repositoryHelper.createUser(USER_NAME, PASSWORD.toCharArray(), 1, Set.of("USER"));
+    }
+
+    @AfterEach
+    public void after() {
+        repositoryHelper.clear();
     }
 
     @Test

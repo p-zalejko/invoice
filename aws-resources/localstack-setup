@@ -4,6 +4,6 @@
 
 docker run --rm -p 4566:4566 -p 4571:4571 localstack/localstack
 
-
+docker run --rm -p 8081 -e  DYNAMO_ENDPOINT=http://dynamodb:8000 yamitzky/dynamodb-gui
 #Create an AWS profile for your local instance using AWS CLI:
 aws configure --profile localstack

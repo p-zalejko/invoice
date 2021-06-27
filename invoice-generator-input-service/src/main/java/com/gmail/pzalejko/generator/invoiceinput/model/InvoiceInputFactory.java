@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.Currency;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -56,7 +55,6 @@ public class InvoiceInputFactory {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static class InvoiceInputInternal {
 
-        long accountId;
         String invoiceFullNumber;
         ClientInfo clientDetails;
         SellerInfo sellerDetails;
@@ -65,11 +63,6 @@ public class InvoiceInputFactory {
         LocalDate creationDate;
 
         private List<InvoiceInput.Item> items;
-
-        @JsonProperty("accountId")
-        void setAccountId(Map<String, String> node) {
-            this.accountId = Long.parseLong(node.get("N"));
-        }
 
         @JsonProperty("invoiceFullNumber")
         void setInvoiceFullNumber(Map<String, String> node) {

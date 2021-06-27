@@ -1,5 +1,7 @@
-package com.gmail.pzalejko.invoice.invoicerequest.web;
+package com.gmail.pzalejko.invoice.core.application;
 
+import com.gmail.pzalejko.invoice.core.infrastructure.DynamoDBSellerRepository;
+import com.gmail.pzalejko.invoice.core.model.subject.SellerRepository;
 import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.InvoiceRequestDatabaseRepository;
 import com.gmail.pzalejko.invoice.security.SecurityRepositoryHelper;
 import lombok.SneakyThrows;
@@ -11,12 +13,12 @@ import javax.inject.Inject;
 import java.util.Set;
 
 @ApplicationScoped
-public class InvoiceRequestRepositoryHelper {
+public class SellerRepositoryHelper {
 
     @Inject
     DynamoDbClient dynamoDB;
     @Inject
-    InvoiceRequestDatabaseRepository repository;
+    DynamoDBSellerRepository repository;
     @Inject
     SecurityRepositoryHelper securityRepositoryHelper;
 
@@ -31,9 +33,9 @@ public class InvoiceRequestRepositoryHelper {
     }
 
     public void clear() {
-        if (dynamoDB.listTables().tableNames().contains(InvoiceRequestDatabaseRepository.TABLE_NAME)) {
+        if (dynamoDB.listTables().tableNames().contains(DynamoDBSellerRepository.TABLE_NAME)) {
             DeleteTableRequest request = DeleteTableRequest.builder()
-                    .tableName(InvoiceRequestDatabaseRepository.TABLE_NAME)
+                    .tableName(DynamoDBSellerRepository.TABLE_NAME)
                     .build();
 
             dynamoDB.deleteTable(request);

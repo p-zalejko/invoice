@@ -19,6 +19,13 @@ public class SecurityRepositoryHelper {
 
     @SneakyThrows
     public void setup() {
+        clear();
+        userRepository.init();
+
+        Thread.sleep(1_000);
+    }
+
+    public void clear() {
         if (dynamoDB.listTables().tableNames().contains(DynamoDbUserRepository.TABLE_NAME)) {
             DeleteTableRequest request = DeleteTableRequest.builder()
                     .tableName(DynamoDbUserRepository.TABLE_NAME)
@@ -26,9 +33,6 @@ public class SecurityRepositoryHelper {
 
             dynamoDB.deleteTable(request);
         }
-        userRepository.init();
-
-        Thread.sleep(1_000);
     }
 
     public void createUser(String name, char[] pwd, int accountId, Set<String> roles) {

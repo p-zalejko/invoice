@@ -4,6 +4,7 @@ import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.DynamoDbResource
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -21,8 +22,13 @@ public class SecurityTest {
     @Inject
     SecurityRepositoryHelper repositoryHelper;
 
-    @AfterEach
+    @BeforeEach
     public void setup() {
+        repositoryHelper.setup();
+    }
+
+    @AfterEach
+    public void after() {
         repositoryHelper.setup();
     }
 

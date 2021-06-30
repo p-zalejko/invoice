@@ -1,0 +1,55 @@
+var params = {
+  TableName: 'InvoiceApp_Users',
+  Item: {
+    'accountId' : {N: '1'},
+    'username' : {S: 'foo'},
+    'password' : {S: 'xx'},
+    'roles' : {SS: ['USER']},
+  },
+};
+
+// Call DynamoDB to add the item to the table
+dynamodb.putItem(params, function(err, data) {
+  if (err) {
+    console.log("Error", err);
+  } else {
+    console.log("Success", data);
+  }
+});
+
+// input for  yamitzky/dynamodb-gui
+{
+  "accountId": 2,
+  "password": "abc",
+  "roles": [
+    "USER"
+  ],
+  "username": "abc"
+}
+
+
+// create an account (company)
+
+curl -i -X POST \
+   -H "au:" \
+   -H "Content-Type:application/json" \
+   -d \
+'{
+
+        "name": "corp",
+        "street": "abc",
+        "streetNumber": "1/1",
+        "city": "ZG",
+        "taxId": "0987654321",
+        "bankAccount": "09876543210987654321123456"
+}' \
+ 'http://localhost:8080/api/v1/sellers'
+
+
+ // create an invoice request
+
+ curl -i -X POST \
+    -H "Content-Type:application/json" \
+    -d \
+ '{"paymentDate":[2021,7,28],"saleDate":[2021,2,1],"creationDate":[2021,2,1],"client":{"name":"Pawel","address":{"street":"foo","number":"0","city":"ZG"},"taxId":"0123456789"},"items":[{"name":"pc","count":1,"unit":"COUNT","pricePerOne":{"value":1.0,"taxPercentage":1.0,"currency":"PLN"}}]}' \
+  'http://localhost:8080/api/v1/invoicerequest'

@@ -1,7 +1,6 @@
 package com.gmail.pzalejko.invoice.core.application
 
 data class CreateSellerCommand(
-        val accountId: Long,
         val name: String,
         val street: String,
         val streetNumber: String,

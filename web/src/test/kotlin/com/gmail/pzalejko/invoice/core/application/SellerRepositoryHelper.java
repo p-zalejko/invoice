@@ -45,6 +45,10 @@ public class SellerRepositoryHelper {
     }
 
     public void createUser(String name, char[] pwd, int accountId, Set<String> roles) {
-        securityRepositoryHelper.createUser(name, pwd, accountId, roles);
+        createUser(name, pwd, accountId, roles, true);
+    }
+
+    public void createUser(String name, char[] pwd, int accountId, Set<String> roles, boolean createAccount) {
+        securityRepositoryHelper.createUser(name, pwd, accountId, roles, createAccount);
     }
 }

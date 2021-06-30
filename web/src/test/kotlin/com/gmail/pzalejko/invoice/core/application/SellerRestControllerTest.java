@@ -1,7 +1,6 @@
 package com.gmail.pzalejko.invoice.core.application;
 
 import com.gmail.pzalejko.invoice.invoicerequest.infrastructure.DynamoDbResource;
-import com.gmail.pzalejko.invoice.invoicerequest.web.InvoiceRequestRepositoryHelper;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -28,7 +27,7 @@ public class SellerRestControllerTest {
     @BeforeEach
     public void setup() {
         repositoryHelper.setup();
-        repositoryHelper.createUser(USER_NAME, PASSWORD.toCharArray(), 1, Set.of("USER"));
+        repositoryHelper.createUser(USER_NAME, PASSWORD.toCharArray(), 1, Set.of("USER"), false);
     }
 
     @AfterEach

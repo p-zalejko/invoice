@@ -6,7 +6,6 @@ import com.gmail.pzalejko.invoice.core.model.subject.SellerRepository
 import org.jboss.logging.Logger
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.*
-import java.lang.RuntimeException
 import javax.annotation.PostConstruct
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.inject.Default
@@ -68,7 +67,7 @@ class DynamoDBSellerRepository : SellerRepository {
         }
     }
 
-    override fun findByAccountId(accountId: Int): InvoiceSeller? {
+    override fun findByAccountId(accountId: Long): InvoiceSeller? {
         val expressionAttributeValues: MutableMap<String, AttributeValue> = HashMap()
         expressionAttributeValues[":accountId"] = AttributeValue.builder().n(accountId.toString()).build()
         val query = QueryRequest.builder()

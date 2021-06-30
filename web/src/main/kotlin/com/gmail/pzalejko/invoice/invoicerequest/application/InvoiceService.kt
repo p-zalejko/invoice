@@ -26,6 +26,10 @@ class InvoiceService {
     @field: Default
     lateinit var invoiceRequestRepository: InvoiceRequestRepository
 
+    @Inject
+    @field: Default
+    lateinit var sellerRepository: SellerRepository
+
     fun requestInvoice(sellerId: Long, request: RequestInvoiceCommand): InvoiceNumber {
         val dueDate = InvoicePaymentDueDate(request.paymentDate)
         val creationDate = InvoiceCreationDate(request.creationDate)
@@ -52,14 +56,7 @@ class InvoiceService {
     }
 
     private fun toSeller(id: Long): InvoiceSeller {
-        // FIXME: it should  be laaded from DB
-        return InvoiceSeller(
-            id,
-            "Company ABC",
-            SubjectAddress("street", "1", "ZG"),
-            SubjectPolandTaxId("0987654321"),
-            BankAccountNumber("09876543210987654321098765")
-        )
+        return sellerRepository.findByAccountId(id)!!
     }
 
     private fun toItems(request: RequestInvoiceCommand): Collection<InvoiceItem> {

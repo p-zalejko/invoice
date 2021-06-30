@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.core.model.invoice
+package com.gmail.pzalejko.invoice.invoice.model
 
 import com.gmail.pzalejko.invoice.common.ddd.ValueObject
 import java.time.LocalDate

@@ -1,7 +1,7 @@
 package com.gmail.pzalejko.invoice.invoicerequest.model
 
-import com.gmail.pzalejko.invoice.core.model.invoice.*
 import com.gmail.pzalejko.invoice.core.model.subject.*
+import com.gmail.pzalejko.invoice.invoice.model.*
 import java.time.LocalDate
 import javax.enterprise.context.ApplicationScoped
 import javax.enterprise.inject.Default

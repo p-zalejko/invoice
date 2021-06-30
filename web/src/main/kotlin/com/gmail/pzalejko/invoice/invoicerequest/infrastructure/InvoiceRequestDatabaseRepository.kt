@@ -2,7 +2,7 @@ package com.gmail.pzalejko.invoice.invoicerequest.infrastructure
 
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequest
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestRepository
-import com.gmail.pzalejko.invoice.core.model.invoice.InvoiceNumber
+import com.gmail.pzalejko.invoice.invoice.model.InvoiceNumber
 import org.jboss.logging.Logger
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.*

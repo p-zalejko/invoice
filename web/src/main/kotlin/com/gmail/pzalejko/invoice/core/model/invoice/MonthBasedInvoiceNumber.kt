@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.invoice.model
+package com.gmail.pzalejko.invoice.core.model.invoice
 
 /**
  * An invoice number based on the month and year. The number starts from 0 for each month.

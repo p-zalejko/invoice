@@ -1,8 +1,8 @@
 package com.gmail.pzalejko.invoice.invoicerequest.model
 
+import com.gmail.pzalejko.invoice.core.model.invoice.*
 import com.gmail.pzalejko.invoice.core.model.subject.InvoiceClient
 import com.gmail.pzalejko.invoice.core.model.subject.InvoiceSeller
-import com.gmail.pzalejko.invoice.invoice.model.*
 
 data class DefaultInvoiceRequest(
     val _seller: InvoiceSeller,

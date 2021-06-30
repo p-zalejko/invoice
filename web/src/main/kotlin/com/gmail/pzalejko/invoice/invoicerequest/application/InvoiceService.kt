@@ -1,9 +1,9 @@
 package com.gmail.pzalejko.invoice.invoicerequest.application
 
+import com.gmail.pzalejko.invoice.core.model.invoice.*
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestFactory
 import com.gmail.pzalejko.invoice.invoicerequest.model.InvoiceRequestRepository
 import com.gmail.pzalejko.invoice.core.model.subject.*
-import com.gmail.pzalejko.invoice.invoice.model.*
 import java.math.BigDecimal
 import java.util.*
 import javax.enterprise.context.ApplicationScoped

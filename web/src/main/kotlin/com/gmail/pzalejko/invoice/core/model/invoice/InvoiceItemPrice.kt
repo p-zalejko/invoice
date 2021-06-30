@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.invoice.model
+package com.gmail.pzalejko.invoice.core.model.invoice
 
 import com.gmail.pzalejko.invoice.common.ddd.ValueObject
 import java.math.BigDecimal

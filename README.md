@@ -3,6 +3,7 @@
 # Goal
 A sample project that aims to evaluate Domain-driven design approach on a simple example.
 
+
 Please be aware that this project might not be fully aligned with DDD principles. 
 
 # The project

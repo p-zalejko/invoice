@@ -1,5 +1,11 @@
 # Domains and subdomains
 
+## Shared Kernel
+```
+- SKU
+- Currency
+```
+
 ## Invoice
 ```
 Invoice
@@ -59,6 +65,7 @@ Product
 ├─ Description
 ├─ SKU
 ├─ VATpercent
-└─ PricePerSKU
+├─ PricePerSKU
+└─ Currency
 
 ```

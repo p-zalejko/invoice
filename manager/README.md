@@ -14,7 +14,7 @@ Invoice
 ├- InvoiceDate
 ├- DueDate
 ├- Currency
-├- VATPDistributions (1:N)
+├- VATDistributions (1:N)
 |  ├- VATpercent
 |  └- Total
 ├- VATTotal

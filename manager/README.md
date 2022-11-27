@@ -8,15 +8,15 @@ Invoice
 ├- InvoiceDate
 ├- DueDate
 ├- Currency
-├- VATPDistribution (1:N)
+├- VATPDistributions (1:N)
 |  ├- VATpercent
 |  └- Total
 ├- VATTotal
 ├- Nett
 ├- Gross
 ├- GrossAsText
-├- InvoiceLines (1:N)
-|  ├- ItemId
+├- InvoiceLProducts (1:N)
+|  ├- ProductId
 |  ├- ItemName
 |  ├- SKU
 |  ├- Quantity

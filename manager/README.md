@@ -21,7 +21,7 @@ Invoice
 |   ├- VATTotal
 |   ├- Nett
 |   └- Gross
-├- InvoiceLProducts (1:N)
+├- InvoiceProducts (1:N)
 |  ├- ProductId
 |  ├- Name
 |  ├- Unit

@@ -2,7 +2,7 @@
 
 ## Shared Kernel
 ```
-- SKU
+- Unit
 - Currency
 ```
 
@@ -23,10 +23,10 @@ Invoice
 ├- InvoiceLProducts (1:N)
 |  ├- ProductId
 |  ├- Name
-|  ├- SKU
+|  ├- Unit
 |  ├- Quantity
 |  └- Price
-|     ├- PricePerSKU
+|     ├- PricePerUnit
 |     ├- VATpercent
 |     ├- TotalNettValue
 |     └- TotalGrossValue
@@ -63,9 +63,9 @@ Product
 ├─ Id
 ├─ Name
 ├─ Description
-├─ SKU
+├─ Unit
 ├─ VATpercent
-├─ PricePerSKU
+├─ Price
 └─ Currency
 
 ```

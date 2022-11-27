@@ -21,8 +21,8 @@ Invoice
 |   ├- VATTotal
 |   ├- Nett
 |   └- Gross
-├- InvoiceProducts (1:N)
-|  ├- ProductId
+├- InvoiceItems (1:N)
+|  ├- ItemId
 |  ├- Name
 |  ├- Unit
 |  ├- Quantity
@@ -56,11 +56,11 @@ Company
 └─ BankAccountNumber
 ```
 
-## Product
+## Item
 
 ```
 
-Product
+Item
 ├─ Id
 ├─ Name
 ├─ Description

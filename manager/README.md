@@ -13,13 +13,14 @@ Invoice
 ├- InvoiceNumber
 ├- InvoiceDate
 ├- DueDate
-├- Currency
-├- VATDistributions (1:N)
-|  ├- VATpercent
-|  └- Total
-├- VATTotal
-├- Nett
-├- Gross
+├- PriceSummary:
+|   ├- Currency
+|   └- VATDistributions (1:N)
+|       ├- VATpercent
+|       └- Total
+|   ├- VATTotal
+|   ├- Nett
+|   └- Gross
 ├- InvoiceLProducts (1:N)
 |  ├- ProductId
 |  ├- Name

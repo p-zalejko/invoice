@@ -13,7 +13,7 @@ Invoice
 ├- InvoiceNumber
 ├- InvoiceDate
 ├- DueDate
-├- PriceSummary:
+├- PriceSummary
 |   ├- Currency
 |   └- VATDistributions (1:N)
 |       ├- VATpercent

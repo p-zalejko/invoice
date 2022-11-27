@@ -14,7 +14,6 @@ Invoice
 ├- VATTotal
 ├- Nett
 ├- Gross
-├- GrossAsText
 ├- InvoiceLProducts (1:N)
 |  ├- ProductId
 |  ├- Name

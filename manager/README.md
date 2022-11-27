@@ -17,7 +17,7 @@ Invoice
 ├- GrossAsText
 ├- InvoiceLProducts (1:N)
 |  ├- ProductId
-|  ├- ItemName
+|  ├- Name
 |  ├- SKU
 |  ├- Quantity
 |  └- Price

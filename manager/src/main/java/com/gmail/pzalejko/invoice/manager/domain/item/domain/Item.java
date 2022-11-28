@@ -1,6 +1,5 @@
 package com.gmail.pzalejko.invoice.manager.domain.item.domain;
 
-import com.gmail.pzalejko.invoice.manager.domain.common.Currency;
 import com.gmail.pzalejko.invoice.manager.domain.common.Price;
 import com.gmail.pzalejko.invoice.manager.domain.common.Unit;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class Item {
 
-    private final ItemId id;
+    private ItemId id;
     private final @NonNull Name name;
     private final @NonNull Description description;
     private final @NonNull VatPercentage vatPercentage;

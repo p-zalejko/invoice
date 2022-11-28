@@ -1,0 +1,7 @@
+flyway:
+    baseline-on-migrate: 'true'
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/demo_db
+        username: demo
+        password: demo

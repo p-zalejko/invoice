@@ -16,6 +16,5 @@ public class Item {
     private final @NonNull Description description;
     private final @NonNull VatPercentage vatPercentage;
     private final @NonNull Unit unit;
-
     private final @NonNull Price price;
 }

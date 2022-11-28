@@ -1,4 +1,5 @@
 package com.gmail.pzalejko.invoice.manager;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.util.List;
 
 @Configuration
-public class SecurityConfiguration {
+class SecurityConfiguration {
 
     @Value("${system.user.username:demo}")
     private String username;
@@ -23,7 +24,7 @@ public class SecurityConfiguration {
     private String[] roles;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.
                 csrf().disable()
                 .authorizeHttpRequests().anyRequest().authenticated()
@@ -34,7 +35,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
+    InMemoryUserDetailsManager userDetailsService() {
         UserDetails user = User
                 .withUsername(username)
                 .password(passwordEncoder().encode(password))
@@ -44,7 +45,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

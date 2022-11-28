@@ -16,6 +16,7 @@ The project itself is a simple application for generating invoices. From the dom
 The project is built upon:
 - Java and Kotlin
 - Quarkus
+- Spring Boot 3 (native)
 - Docker
 - AWS
 

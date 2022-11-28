@@ -2,11 +2,74 @@
 
 ## Shared Kernel
 ```
-- Unit
-- Currency
+Unit(HOUR, QTY)
+
+Currency
+└- value
+
+VATpercent
+└- value
+
+Price
+├- value
+├- Currency
+└- VATpercent
 ```
 
 ## Invoice
+```
+Invoice
+├- Id
+├- InvoiceNumber
+├- InvoiceDate
+├- DueDate
+├- items (1:N)
+|  ├- ItemId
+|  ├- Name
+|  ├- Unit
+|  ├- Quantity
+|  └─ PricePerUnit
+└─ Company (From) (1:1)
+   ├─ Id
+   ├─ Name
+   ├─ CompanyTaxId
+   └─ BankAccountNumber
+└─ Company (Client) (1:1)
+   ├─ Id
+   ├─ Name
+   └─ CompamyTaxID 
+   
+```
+
+## Company
+```
+Company
+├─ Id
+├─ Name
+├─ Address (1:1)
+|   ├─ Street
+|   ├─ Zip
+|   ├─ City
+|   └─ Country 
+├─ CompanyTaxId
+└─ BankAccountNumber
+```
+
+## Item
+
+```
+
+Item
+├─ Id
+├─ Name
+├─ Description
+├─ Unit
+└─ Price
+
+```
+
+# Invoice read model
+
 ```
 Invoice
 ├- Id
@@ -21,52 +84,23 @@ Invoice
 |   ├- VATTotal
 |   ├- Nett
 |   └- Gross
-├- InvoiceItems (1:N)
+├- items (1:N)
 |  ├- ItemId
 |  ├- Name
 |  ├- Unit
 |  ├- Quantity
-|  └- Price
-|     ├- PricePerUnit
-|     ├- VATpercent
-|     ├- TotalNettValue
-|     └- TotalGrossValue
+|  ├- PricePerUnit
+|  ├- TotalNettValue
+|  └- TotalGrossValue
+|
 └─ Company (From) (1:1)
    ├─ Id
    ├─ Name
-   ├─ CompamyTaxID
+   ├─ CompanyTaxId
    └─ BankAccountNumber
 └─ Company (Client) (1:1)
    ├─ Id
    ├─ Name
    └─ CompamyTaxID 
    
-```
-
-## Company
-```
-Company
-├─ Id
-├─ Name
-├─ Street
-├─ Zip
-├─ City
-├─ Country
-├─ CompamyTaxID
-└─ BankAccountNumber
-```
-
-## Item
-
-```
-
-Item
-├─ Id
-├─ Name
-├─ Description
-├─ Unit
-├─ VATpercent
-├─ Price
-└─ Currency
-
 ```

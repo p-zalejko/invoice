@@ -1,4 +1,4 @@
-# Domains and subdomains
+# Invoice generation domain
 
 ## Shared Kernel
 ```
@@ -16,7 +16,7 @@ Price
 └- VATpercent
 ```
 
-## Invoice
+## Invoice (root aggregate)
 ```
 Invoice
 ├- Id
@@ -24,20 +24,10 @@ Invoice
 ├- InvoiceDate
 ├- DueDate
 ├- items (1:N)
-|  ├- ItemId
-|  ├- Name
-|  ├- Unit
-|  ├- Quantity
-|  └─ PricePerUnit
+|  ├- Item
+|  └─  Quantity
 └─ Company (From) (1:1)
-   ├─ Id
-   ├─ Name
-   ├─ CompanyTaxId
-   └─ BankAccountNumber
 └─ Company (Client) (1:1)
-   ├─ Id
-   ├─ Name
-   └─ CompamyTaxID 
    
 ```
 
@@ -48,6 +38,7 @@ Company
 ├─ Name
 ├─ Address (1:1)
 |   ├─ Street
+|   ├─ Number
 |   ├─ Zip
 |   ├─ City
 |   └─ Country 

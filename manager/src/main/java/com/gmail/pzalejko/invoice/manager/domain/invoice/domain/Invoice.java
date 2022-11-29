@@ -1,6 +1,6 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.domain;
 
-import com.gmail.pzalejko.invoice.manager.domain.item.domain.Item;
+import com.gmail.pzalejko.invoice.manager.domain.company.domain.Company;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -15,7 +15,7 @@ public class Invoice {
     private @NonNull InvoiceNumber number;
     private @NonNull IssueDate issueDate;
     private @NonNull DueDate dueDate;
-    private @NonNull FromCompany fromCompany;
-    private @NonNull BillToCompany billToCompany;
-    private @NonNull List<Item> items;
+    private @NonNull Company fromCompany;
+    private @NonNull Company billToCompany;
+    private @NonNull List<InvoiceItem> items;
 }

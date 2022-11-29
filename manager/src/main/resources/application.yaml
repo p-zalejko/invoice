@@ -2,6 +2,6 @@ flyway:
     baseline-on-migrate: 'true'
 spring:
     datasource:
-        url: jdbc:postgresql://localhost:5432/demo_db
+        url: jdbc:postgresql://localhost:5432/demo
         username: demo
         password: demo

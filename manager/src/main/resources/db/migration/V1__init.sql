@@ -1,16 +1,4 @@
-CREATE TYPE public.item_Unit AS ENUM ('HOUR', 'QTY');
-
-CREATE TABLE public.Item
-(
-    id             SERIAL PRIMARY KEY,
-    name           VARCHAR(25) NOT NULL,
-    description    VARCHAR(50) NOT NULL,
-    unit           item_Unit   NOT NULL,
-    price_value    DECIMAL(6, 2),
-    price_vat      int,
-    price_currency VARCHAR(3)  NOT NULL
-
-);
+CREATE TYPE public.item_unit AS ENUM ('HOUR', 'QTY');
 
 CREATE TABLE public.Company_Address
 (
@@ -35,6 +23,7 @@ CREATE TABLE public.Company
     FOREIGN KEY (address_id) REFERENCES public.Company_Address (id) MATCH SIMPLE
 );
 
+
 CREATE TABLE public.Invoice
 (
     id                SERIAL PRIMARY KEY,
@@ -49,13 +38,25 @@ CREATE TABLE public.Invoice
     FOREIGN KEY (company_billTo_id) REFERENCES public.Company (id) MATCH SIMPLE
 );
 
+CREATE TABLE public.Item
+(
+    id             SERIAL PRIMARY KEY,
+    name           VARCHAR(25) NOT NULL,
+    description    VARCHAR(50) NOT NULL,
+    unit           item_unit   NOT NULL,
+    price_value    DECIMAL(6, 2),
+    price_vat      int,
+    price_currency VARCHAR(3)  NOT NULL
+
+);
+
 CREATE TABLE public.InvoiceItem
 (
     id             SERIAL PRIMARY KEY,
     item_id        int,
     invoice_id     int,
     name           VARCHAR(25) NOT NULL,
-    unit           item_Unit   NOT NULL,
+    unit           item_unit   NOT NULL,
     quantity       int,
     price_value    DECIMAL(6, 2),
     price_vat      int,

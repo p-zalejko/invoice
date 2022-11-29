@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.manager.domain.item.domain;
+package com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item;
 
 import com.gmail.pzalejko.invoice.manager.domain.common.ValueObject;
 import lombok.NonNull;

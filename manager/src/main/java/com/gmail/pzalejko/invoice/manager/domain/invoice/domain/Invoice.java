@@ -1,6 +1,6 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.domain;
 
-import com.gmail.pzalejko.invoice.manager.domain.company.domain.Company;
+import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

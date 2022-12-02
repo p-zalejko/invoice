@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class TestContainerBasedTest {
 
     @Container
-    private PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer()
+    private PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer("postgres:14")
             .withDatabaseName("foo")
             .withUsername("foo")
             .withPassword("secret");

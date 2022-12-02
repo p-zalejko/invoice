@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS public;
+
 CREATE TYPE public.item_unit AS ENUM ('HOUR', 'QTY');
 
 CREATE TABLE public.Company_Address

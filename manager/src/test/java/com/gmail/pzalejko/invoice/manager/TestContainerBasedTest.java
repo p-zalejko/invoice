@@ -2,6 +2,7 @@ package com.gmail.pzalejko.invoice.manager;
 
 import com.gmail.pzalejko.invoice.manager.domain.invoice.infrastructure.JooqCompanyRepositoryTest;
 import lombok.SneakyThrows;
+import org.jooq.Table;
 import org.junit.jupiter.api.BeforeEach;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -37,6 +38,15 @@ public class TestContainerBasedTest {
         ds.getConnection().createStatement().execute(text2);
 
         jooqConfig = new JooqConfig(ds);
+    }
+
+    protected void clearTables(Table<?> t1, Table<?>... tables) {
+        var dsl = jooqConfig.dsl();
+
+        dsl.delete(t1).execute();
+        for (var table : tables) {
+            dsl.delete(table).execute();
+        }
     }
 
     private static String getSqlScript(String name) {

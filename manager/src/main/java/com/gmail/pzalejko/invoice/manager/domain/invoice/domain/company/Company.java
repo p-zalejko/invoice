@@ -1,12 +1,13 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company;
 
 import com.gmail.pzalejko.invoice.manager.domain.common.Aggregate;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Getter
+@Builder(toBuilder = true)
+@ToString
 public class Company implements Aggregate<Company> {
 
     private CompanyId id;

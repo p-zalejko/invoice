@@ -1,16 +1,19 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.infrastructure;
 
-import com.gmail.pzalejko.invoice.manager.db.tables.Company;
-import com.gmail.pzalejko.invoice.manager.db.tables.CompanyAddress;
 import com.gmail.pzalejko.invoice.manager.db.tables.records.CompanyAddressRecord;
+import com.gmail.pzalejko.invoice.manager.db.tables.records.CompanyRecord;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.CompanyRepository;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 
 import java.util.Optional;
+
+import static com.gmail.pzalejko.invoice.manager.db.tables.CompanyAddress.COMPANY_ADDRESS;
+import static com.gmail.pzalejko.invoice.manager.db.tables.Company.COMPANY;
 
 @RequiredArgsConstructor
 class JooqCompanyRepository implements CompanyRepository {
@@ -18,11 +21,45 @@ class JooqCompanyRepository implements CompanyRepository {
     private final DSLContext dsl;
 
     @Override
+    public com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company save(@NonNull com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company company) {
+        Address address = company.getAddress();
+        CompanyRecord companyRecord = dsl.transactionResult((Configuration trx) -> {
+            CompanyAddressRecord addressRecord = trx.dsl()
+                    .insertInto(COMPANY_ADDRESS,
+                            COMPANY_ADDRESS.STREET,
+                            COMPANY_ADDRESS.NUMBER,
+                            COMPANY_ADDRESS.ZIP,
+                            COMPANY_ADDRESS.CITY,
+                            COMPANY_ADDRESS.COUNTRY
+                    )
+                    .values(address.street(), address.number(), address.zip(), address.city(), address.country())
+                    .returning()
+                    .fetchOne();
+
+            return trx.dsl()
+                    .insertInto(COMPANY,
+                            COMPANY.ADDRESS_ID,
+                            COMPANY.NAME,
+                            COMPANY.ACCOUNT_NUMBER,
+                            COMPANY.TAXID
+                    )
+                    .values(addressRecord.getId(), company.getName().value(), company.getBankAccountNumber().value(), company.getCompanyTaxId().value())
+                    .returning()
+                    .fetchOne();
+        });
+
+        return company
+                .toBuilder()
+                .id(new CompanyId(companyRecord.getId()))
+                .build();
+    }
+
+    @Override
     public Optional<com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company> findById(@NonNull CompanyId id) {
         Record record = dsl.select()
-                .from(Company.COMPANY)
-                .join(CompanyAddress.COMPANY_ADDRESS).on(CompanyAddress.COMPANY_ADDRESS.ID.eq(Company.COMPANY.ADDRESS_ID))
-                .where(Company.COMPANY.ID.eq(id.value()))
+                .from(COMPANY)
+                .join(COMPANY_ADDRESS).on(COMPANY_ADDRESS.ID.eq(COMPANY.ADDRESS_ID))
+                .where(COMPANY.ID.eq(id.value()))
                 .fetchOne();
 
         return Optional.ofNullable(record)
@@ -30,9 +67,8 @@ class JooqCompanyRepository implements CompanyRepository {
     }
 
     private com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company mapToCompany(Record record) {
-        var companyRecord = record.into(Company.COMPANY);
-        var addressRecord = record.into(CompanyAddress.COMPANY_ADDRESS);
-
+        var companyRecord = record.into(COMPANY);
+        var addressRecord = record.into(COMPANY_ADDRESS);
 
         var id = new CompanyId(companyRecord.getId());
         var name = new Name(companyRecord.getName());

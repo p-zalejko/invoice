@@ -1,8 +1,15 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.infrastructure;
 
 import com.github.javafaker.Faker;
+import com.gmail.pzalejko.invoice.manager.domain.common.Currency;
+import com.gmail.pzalejko.invoice.manager.domain.common.Price;
+import com.gmail.pzalejko.invoice.manager.domain.common.Unit;
+import com.gmail.pzalejko.invoice.manager.domain.common.VatPercentage;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.*;
+import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Description;
+import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.RandomStringUtils;
 
 @UtilityClass
 public class TestDataFactory {
@@ -27,10 +34,24 @@ public class TestDataFactory {
         );
     }
 
+    public static Item newItem() {
+        var name = new com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Name(randomString(10));
+        var description = new Description(randomString(10));
+        var price = new Price(10, Currency.PLN, new VatPercentage(23));
+
+        return new Item(null, name, description, Unit.HOUR, price);
+    }
+
+    private String randomString(int maxLength) {
+        return RandomStringUtils.random(maxLength, true, false);
+    }
+
     private String normalize(String value, int maxLength) {
         if (value.length() > maxLength) {
             return value.substring(0, maxLength - 1);
         }
         return value;
     }
+
+
 }

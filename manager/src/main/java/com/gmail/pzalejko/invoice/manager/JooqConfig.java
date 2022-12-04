@@ -1,6 +1,7 @@
 package com.gmail.pzalejko.invoice.manager;
 
 import lombok.RequiredArgsConstructor;
+import org.jooq.SQLDialect;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
@@ -31,6 +32,9 @@ public class JooqConfig {
 
     public DefaultConfiguration configuration() {
         DefaultConfiguration jooqConfiguration = new DefaultConfiguration();
+
+        // Explicitly set the Dialect
+        jooqConfiguration.setSQLDialect(SQLDialect.POSTGRES);
 
         jooqConfiguration.set(connectionProvider());
         jooqConfiguration.set(new DefaultExecuteListenerProvider(new JooqExceptionTranslator()));

@@ -18,6 +18,7 @@ import static com.gmail.pzalejko.invoice.manager.db.tables.Company.COMPANY;
 @RequiredArgsConstructor
 class JooqCompanyRepository implements CompanyRepository {
 
+    @NonNull
     private final DSLContext dsl;
 
     @Override

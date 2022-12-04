@@ -3,6 +3,7 @@ package com.gmail.pzalejko.invoice.manager.domain.invoice.infrastructure;
 import com.gmail.pzalejko.invoice.manager.TestContainerBasedTest;
 import com.gmail.pzalejko.invoice.manager.db.tables.Company;
 import com.gmail.pzalejko.invoice.manager.db.tables.CompanyAddress;
+import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.CompanyRepository;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.CompanyId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,11 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class JooqCompanyRepositoryTest extends TestContainerBasedTest {
 
-    JooqCompanyRepository jooqCompanyRepository;
+    CompanyRepository companyRepository;
 
     @BeforeEach
     public void setup() {
-        jooqCompanyRepository = new JooqCompanyRepository(jooqConfig.dsl());
+        companyRepository = new JooqCompanyRepository(jooqConfig.dsl());
     }
 
     @AfterEach
@@ -30,15 +31,15 @@ public class JooqCompanyRepositoryTest extends TestContainerBasedTest {
         var company = TestDataFactory.newCompany();
 
         // when
-        var id = jooqCompanyRepository.save(company).getId();
+        var id = companyRepository.save(company).getId();
 
         // then
-        assertThat(jooqCompanyRepository.findById(id)).isPresent();
+        assertThat(companyRepository.findById(id)).isPresent();
     }
 
     @Test
     public void shouldNotFoundNotExistingCompany() {
-        assertThat(jooqCompanyRepository.findById(new CompanyId(1_000))).isEmpty();
+        assertThat(companyRepository.findById(new CompanyId(1_000))).isEmpty();
     }
 
     @Test
@@ -47,7 +48,7 @@ public class JooqCompanyRepositoryTest extends TestContainerBasedTest {
         var company = TestDataFactory.newCompany();
 
         // when
-        var id = jooqCompanyRepository.save(company).getId();
+        var id = companyRepository.save(company).getId();
 
         // then
         assertThat(id).isNotNull();

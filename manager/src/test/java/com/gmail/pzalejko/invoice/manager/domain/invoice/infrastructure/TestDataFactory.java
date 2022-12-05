@@ -5,11 +5,16 @@ import com.gmail.pzalejko.invoice.manager.domain.common.Currency;
 import com.gmail.pzalejko.invoice.manager.domain.common.Price;
 import com.gmail.pzalejko.invoice.manager.domain.common.Unit;
 import com.gmail.pzalejko.invoice.manager.domain.common.VatPercentage;
+import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.*;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.*;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Description;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.RandomStringUtils;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @UtilityClass
 public class TestDataFactory {
@@ -29,8 +34,8 @@ public class TestDataFactory {
                 null,
                 new Name(normalize(faker.company().name(), 25)),
                 address,
-                new TaxId("001"),
-                new BankAccountNumber("000")
+                new TaxId(randomString(5)),
+                new BankAccountNumber(randomString(10))
         );
     }
 
@@ -53,5 +58,20 @@ public class TestDataFactory {
         return value;
     }
 
+    public static Invoice newInvoice(Company companyA, Company companyB, List<Item> items) {
 
+        var invoiceItems = items.stream()
+                .map(i -> new InvoiceItem(null, 1, i))
+                .toList();
+
+        return new Invoice(
+                null,
+                new InvoiceNumber(randomString(5)),
+                new IssueDate(LocalDate.now()),
+                new DueDate(LocalDate.now().plusDays(14)),
+                companyA,
+                companyB,
+                invoiceItems
+        );
+    }
 }

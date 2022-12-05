@@ -32,10 +32,8 @@ public class TestContainerBasedTest {
         ds.setPassword("secret");
 
         String text = getSqlScript("/db/migration/V1__init.sql");
-        String text2 = getSqlScript("/db/migration/V2__sampleData.sql");
 
         ds.getConnection().createStatement().execute(text);
-        ds.getConnection().createStatement().execute(text2);
 
         jooqConfig = new JooqConfig(ds);
     }

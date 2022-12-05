@@ -5,6 +5,6 @@ import lombok.NonNull;
 
 import java.time.LocalDate;
 
-record DueDate(@NonNull LocalDate localDate) implements ValueObject {
+public record DueDate(@NonNull LocalDate value) implements ValueObject {
 
 }

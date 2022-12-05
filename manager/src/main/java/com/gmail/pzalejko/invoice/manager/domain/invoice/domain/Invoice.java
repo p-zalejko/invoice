@@ -1,14 +1,14 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.domain;
 
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Builder(toBuilder = true)
 public class Invoice {
 
     private InvoiceId id;

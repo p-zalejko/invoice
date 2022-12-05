@@ -26,7 +26,7 @@ public class JooqCompanyRepositoryTest extends TestContainerBasedTest {
     }
 
     @Test
-    public void shouldFoundNotExistingCompany() {
+    public void shouldFoundExistingCompany() {
         // given
         var company = TestDataFactory.newCompany();
 

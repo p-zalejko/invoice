@@ -1,23 +1,18 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.infrastructure;
 
 import com.gmail.pzalejko.invoice.manager.db.enums.ItemUnit;
-import com.gmail.pzalejko.invoice.manager.db.tables.records.CompanyAddressRecord;
-import com.gmail.pzalejko.invoice.manager.db.tables.records.CompanyRecord;
-import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.Invoice;
-import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.InvoiceId;
-import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.InvoiceItem;
-import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.InvoiceRepository;
+import com.gmail.pzalejko.invoice.manager.db.tables.records.InvoiceRecord;
+import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.*;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 import static com.gmail.pzalejko.invoice.manager.db.tables.Company.COMPANY;
+import static com.gmail.pzalejko.invoice.manager.db.tables.CompanyAddress.COMPANY_ADDRESS;
 import static com.gmail.pzalejko.invoice.manager.db.tables.Invoice.INVOICE;
 import static com.gmail.pzalejko.invoice.manager.db.tables.Invoiceitem.INVOICEITEM;
 
@@ -77,7 +72,6 @@ class JooqInvoiceRepository implements InvoiceRepository {
             return inv;
         });
 
-
         return invoice.toBuilder()
                 .id(new InvoiceId(record.getId()))
                 .build();
@@ -85,26 +79,49 @@ class JooqInvoiceRepository implements InvoiceRepository {
 
     @Override
     public Optional<Invoice> findById(@NonNull InvoiceId id) {
+        var billTo = COMPANY.as("billTo");
+        var billToAddress = COMPANY_ADDRESS.as("billToAddress");
+        var fromCompany = COMPANY.as("fromCompany");
+        var fromCompanyAddress = COMPANY_ADDRESS.as("fromCompanyAddress");
+
         return dsl.select()
                 .from(INVOICE)
-                .leftJoin(COMPANY).on(INVOICE.COMPANY_FROM_ID.eq(COMPANY.ID))
-                .leftJoin(COMPANY).on(INVOICE.COMPANY_BILLTO_ID.eq(COMPANY.ID))
+                .join(fromCompany).on(INVOICE.COMPANY_FROM_ID.eq(fromCompany.ID))
+                .join(fromCompanyAddress).on(fromCompany.ADDRESS_ID.eq(fromCompanyAddress.ID))
+                .join(billTo).on(INVOICE.COMPANY_BILLTO_ID.eq(billTo.ID))
+                .join(billToAddress).on(billTo.ADDRESS_ID.eq(billToAddress.ID))
                 .where(INVOICE.ID.eq(id.value()))
 //                .getSQL(ParamType.INLINED);
                 .fetchOptional()
-                .map(this::mapToInvoice);
+                .map(i -> {
+                    var invoiceRecord = i.into(INVOICE);
+                    var billToRecord = i.into(billTo);
+                    var billToAdrRecord = i.into(billToAddress);
+
+                    var fromCompanyRecord = i.into(fromCompany);
+                    var fromCompanyAdrRecord = i.into(fromCompanyAddress);
+
+                    var billToComp = JooqCompanyRepository.mapToCompany(billToRecord, billToAdrRecord);
+                    var fromComp = JooqCompanyRepository.mapToCompany(fromCompanyRecord, fromCompanyAdrRecord);
+                    return mapToInvoice(invoiceRecord, billToComp, fromComp);
+                });
     }
 
-    private com.gmail.pzalejko.invoice.manager.domain.invoice.domain.Invoice mapToInvoice(Record record) {
-        var invoiceRecord = record.into(INVOICE);
-        var companyRecord2 = record.into(COMPANY);
-//
-//        var number = new InvoiceNumber(invoiceRecord.getNumber());
-//        var dueDate = new DueDate(invoiceRecord.getDueDate());
-//        var issueDate =new IssueDate(invoiceRecord.getInvoiceDate());
-//        var billTo = invoice.getBillToCompany().getId().value();
-//        var from = invoice.getFromCompany().getId().value();
+    private com.gmail.pzalejko.invoice.manager.domain.invoice.domain.Invoice mapToInvoice(InvoiceRecord invoiceRecord,
+                                                                                          com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company billTo,
+                                                                                          com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company from) {
+        var id = new InvoiceId(invoiceRecord.getId());
+        var number = new InvoiceNumber(invoiceRecord.getNumber());
+        var dueDate = new DueDate(invoiceRecord.getDueDate());
+        var issueDate = new IssueDate(invoiceRecord.getInvoiceDate());
 
-        throw new UnsupportedOperationException("yet");
+        return new Invoice(
+                id,
+                number,
+                issueDate,
+                dueDate, from,
+                billTo,
+                null
+        );
     }
 }

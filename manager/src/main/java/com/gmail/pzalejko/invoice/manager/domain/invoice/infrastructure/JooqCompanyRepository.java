@@ -64,13 +64,10 @@ class JooqCompanyRepository implements CompanyRepository {
                 .fetchOne();
 
         return Optional.ofNullable(record)
-                .map(this::mapToCompany);
+                .map(i -> mapToCompany(i.into(COMPANY), i.into(COMPANY_ADDRESS)));
     }
 
-    private com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company mapToCompany(Record record) {
-        var companyRecord = record.into(COMPANY);
-        var addressRecord = record.into(COMPANY_ADDRESS);
-
+    static com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company mapToCompany(CompanyRecord companyRecord, CompanyAddressRecord addressRecord) {
         var id = new CompanyId(companyRecord.getId());
         var name = new Name(companyRecord.getName());
         var taxId = new TaxId(companyRecord.getTaxid());
@@ -86,7 +83,7 @@ class JooqCompanyRepository implements CompanyRepository {
         );
     }
 
-    private com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Address mapToAddress(CompanyAddressRecord addressRecord) {
+    static com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Address mapToAddress(CompanyAddressRecord addressRecord) {
         return addressRecord.into(Address.class);
     }
 }

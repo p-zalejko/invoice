@@ -55,4 +55,15 @@ public class JooqInvoiceRepositoryTest extends TestContainerBasedTest {
         // then
         assertThat(id).isNotNull();
     }
+
+    @Test
+    public void shouldFoundExisting() {
+        // given
+        var invoice = TestDataFactory.newInvoice(companyA, companyB, List.of(item));
+        var id = invoiceRepository.save(invoice).getId();
+        // when
+        assertThat(invoiceRepository.findById(id)).isPresent();
+
+    }
+
 }

@@ -1,14 +1,19 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.infrastructure;
 
 import com.gmail.pzalejko.invoice.manager.db.enums.ItemUnit;
+import com.gmail.pzalejko.invoice.manager.db.tables.Item;
 import com.gmail.pzalejko.invoice.manager.db.tables.records.InvoiceRecord;
+import com.gmail.pzalejko.invoice.manager.db.tables.records.InvoiceitemRecord;
+import com.gmail.pzalejko.invoice.manager.db.tables.records.ItemRecord;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.*;
+import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Configuration;
 import org.jooq.DSLContext;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static com.gmail.pzalejko.invoice.manager.db.tables.Company.COMPANY;
@@ -84,6 +89,7 @@ class JooqInvoiceRepository implements InvoiceRepository {
         var fromCompany = COMPANY.as("fromCompany");
         var fromCompanyAddress = COMPANY_ADDRESS.as("fromCompanyAddress");
 
+        List<InvoiceItem> items = findItems(id);
         return dsl.select()
                 .from(INVOICE)
                 .join(fromCompany).on(INVOICE.COMPANY_FROM_ID.eq(fromCompany.ID))
@@ -103,13 +109,31 @@ class JooqInvoiceRepository implements InvoiceRepository {
 
                     var billToComp = JooqCompanyRepository.mapToCompany(billToRecord, billToAdrRecord);
                     var fromComp = JooqCompanyRepository.mapToCompany(fromCompanyRecord, fromCompanyAdrRecord);
-                    return mapToInvoice(invoiceRecord, billToComp, fromComp);
+                    return mapToInvoice(invoiceRecord, billToComp, fromComp, items);
                 });
     }
 
+
+    private List<InvoiceItem> findItems(InvoiceId id) {
+        var item = Item.ITEM.as("item");
+
+        return dsl.select()
+                .from(INVOICEITEM)
+                .join(item).on(INVOICEITEM.ITEM_ID.eq(item.ID))
+                .where(INVOICEITEM.INVOICE_ID.eq(id.value()))
+                .fetch()
+                .stream()
+                .map(i -> {
+                    InvoiceitemRecord invoiceitemRecord = i.into(INVOICEITEM);
+                    ItemRecord itemRecord = i.into(item);
+                    return JooqItemRepository.mapToItem(invoiceitemRecord, itemRecord);
+                })
+                .toList();
+    }
+
     private com.gmail.pzalejko.invoice.manager.domain.invoice.domain.Invoice mapToInvoice(InvoiceRecord invoiceRecord,
-                                                                                          com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company billTo,
-                                                                                          com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company from) {
+                                                                                          Company billTo,
+                                                                                          Company from, List<InvoiceItem> items) {
         var id = new InvoiceId(invoiceRecord.getId());
         var number = new InvoiceNumber(invoiceRecord.getNumber());
         var dueDate = new DueDate(invoiceRecord.getDueDate());
@@ -121,7 +145,9 @@ class JooqInvoiceRepository implements InvoiceRepository {
                 issueDate,
                 dueDate, from,
                 billTo,
-                null
+                items
         );
     }
+
+
 }

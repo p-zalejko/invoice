@@ -5,3 +5,5 @@ spring:
         url: jdbc:postgresql://localhost:5432/demo
         username: demo
         password: demo
+
+management.endpoints.web.exposure.include: "*"

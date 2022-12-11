@@ -66,7 +66,7 @@ public class TestDataFactory {
 
         return new Invoice(
                 null,
-                new InvoiceNumber(randomString(5)),
+                new InvoiceNumber(1, 2022, 1),
                 new IssueDate(LocalDate.now()),
                 new DueDate(LocalDate.now().plusDays(14)),
                 companyA,

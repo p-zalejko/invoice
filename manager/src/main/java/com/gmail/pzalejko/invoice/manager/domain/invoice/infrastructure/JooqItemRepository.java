@@ -1,7 +1,6 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.infrastructure;
 
 import com.gmail.pzalejko.invoice.manager.db.enums.ItemUnit;
-import com.gmail.pzalejko.invoice.manager.db.tables.Item;
 import com.gmail.pzalejko.invoice.manager.db.tables.records.InvoiceitemRecord;
 import com.gmail.pzalejko.invoice.manager.db.tables.records.ItemRecord;
 import com.gmail.pzalejko.invoice.manager.domain.common.Currency;
@@ -17,17 +16,27 @@ import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Name;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Record;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static com.gmail.pzalejko.invoice.manager.db.tables.Item.ITEM;
 
 @RequiredArgsConstructor
 class JooqItemRepository implements ItemRepository {
 
-    static InvoiceItem mapToItem(@NonNull InvoiceitemRecord invoiceitemRecord, @NonNull ItemRecord itemRecord) {
+    static InvoiceItem mapToInvoiceItem(@NonNull InvoiceitemRecord invoiceitemRecord, @NonNull ItemRecord itemRecord) {
+        var item = mapToInvoiceItem(itemRecord);
+        return new InvoiceItem(
+                new InvoiceItemId(invoiceitemRecord.getId()),
+                invoiceitemRecord.getQuantity(),
+                item
+        );
+    }
 
-        var item = new com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item(
+    static com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item mapToInvoiceItem(@NonNull ItemRecord itemRecord) {
+        return new com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item(
                 new ItemId(itemRecord.getId()),
                 new Name(itemRecord.getName()),
                 new Description(itemRecord.getDescription()),
@@ -38,15 +47,21 @@ class JooqItemRepository implements ItemRepository {
                         new VatPercentage(itemRecord.getPriceVat())
                 )
         );
-        return new InvoiceItem(
-                new InvoiceItemId(invoiceitemRecord.getId()),
-                invoiceitemRecord.getQuantity(),
-                item
-        );
     }
 
     @NonNull
     private final DSLContext dsl;
+
+    @Override
+    public Optional<com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item> findById(ItemId id) {
+        Record record = dsl.select()
+                .from(ITEM)
+                .where(ITEM.ID.eq(id.value()))
+                .fetchOne();
+
+        return Optional.ofNullable(record)
+                .map(i -> mapToInvoiceItem(i.into(ITEM)));
+    }
 
     @Override
     public com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item save(@NonNull com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item item) {

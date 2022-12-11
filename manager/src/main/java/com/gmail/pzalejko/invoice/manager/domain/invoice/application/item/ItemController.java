@@ -1,6 +1,6 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.application.item;
 
-import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.ItemService;
+import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.InvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 class ItemController {
 
     private final ItemFactory factory;
-    private final ItemService service;
+    private final InvoiceService service;
 
     @PostMapping("/v1/items")
     NewItemResponseDto create(@RequestBody @Validated NewItemDto dto) {

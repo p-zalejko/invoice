@@ -29,7 +29,7 @@ class JooqInvoiceRepository implements InvoiceRepository {
 
     @Override
     public Invoice save(@NonNull Invoice invoice) {
-        var number = invoice.getNumber().value();
+        var number = invoice.getNumber().toString(); //FIXME: change the db model, I'm lazy here...
         var dueDate = invoice.getDueDate().value();
         var issueDate = invoice.getIssueDate().value();
         var billTo = invoice.getBillToCompany().getId().value();
@@ -126,7 +126,7 @@ class JooqInvoiceRepository implements InvoiceRepository {
                 .map(i -> {
                     InvoiceitemRecord invoiceitemRecord = i.into(INVOICEITEM);
                     ItemRecord itemRecord = i.into(item);
-                    return JooqItemRepository.mapToItem(invoiceitemRecord, itemRecord);
+                    return JooqItemRepository.mapToInvoiceItem(invoiceitemRecord, itemRecord);
                 })
                 .toList();
     }
@@ -134,8 +134,10 @@ class JooqInvoiceRepository implements InvoiceRepository {
     private com.gmail.pzalejko.invoice.manager.domain.invoice.domain.Invoice mapToInvoice(InvoiceRecord invoiceRecord,
                                                                                           Company billTo,
                                                                                           Company from, List<InvoiceItem> items) {
+
+        var invoiceNumberParts = invoiceRecord.getNumber().split("/");
         var id = new InvoiceId(invoiceRecord.getId());
-        var number = new InvoiceNumber(invoiceRecord.getNumber());
+        var number = new InvoiceNumber(Integer.parseInt(invoiceNumberParts[0]), Integer.parseInt(invoiceNumberParts[1]), Integer.parseInt(invoiceNumberParts[2]));
         var dueDate = new DueDate(invoiceRecord.getDueDate());
         var issueDate = new IssueDate(invoiceRecord.getInvoiceDate());
 

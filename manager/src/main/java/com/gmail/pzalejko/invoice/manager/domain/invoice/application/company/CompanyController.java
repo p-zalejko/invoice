@@ -1,6 +1,6 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.application.company;
 
-import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.ItemService;
+import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.InvoiceService;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 class CompanyController {
 
     private final CompanyFactory factory;
-    private final ItemService service;
+    private final InvoiceService service;
 
     @PostMapping("/v1/sellerCompanies")
     NewCompanyResponseDto create(@RequestBody @Validated NewSellerCompanyDto dto) {

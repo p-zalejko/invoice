@@ -59,6 +59,10 @@ public class TestDataFactory {
     }
 
     public static Invoice newInvoice(Company companyA, Company companyB, List<Item> items) {
+        return newInvoice(companyA, companyB, LocalDate.now(), new InvoiceNumber(1, 1, 2022), items);
+    }
+
+    public static Invoice newInvoice(Company companyA, Company companyB, LocalDate issueDate, InvoiceNumber number, List<Item> items) {
 
         var invoiceItems = items.stream()
                 .map(i -> new InvoiceItem(null, 1, i))
@@ -66,12 +70,13 @@ public class TestDataFactory {
 
         return new Invoice(
                 null,
-                new InvoiceNumber(1, 2022, 1),
-                new IssueDate(LocalDate.now()),
+                number,
+                new IssueDate(issueDate),
                 new DueDate(LocalDate.now().plusDays(14)),
                 companyA,
                 companyB,
                 invoiceItems
         );
+
     }
 }

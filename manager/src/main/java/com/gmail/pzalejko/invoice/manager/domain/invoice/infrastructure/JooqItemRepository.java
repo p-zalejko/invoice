@@ -1,14 +1,11 @@
 package com.gmail.pzalejko.invoice.manager.domain.invoice.infrastructure;
 
 import com.gmail.pzalejko.invoice.manager.db.enums.ItemUnit;
-import com.gmail.pzalejko.invoice.manager.db.tables.records.InvoiceitemRecord;
 import com.gmail.pzalejko.invoice.manager.db.tables.records.ItemRecord;
 import com.gmail.pzalejko.invoice.manager.domain.common.Currency;
 import com.gmail.pzalejko.invoice.manager.domain.common.Price;
 import com.gmail.pzalejko.invoice.manager.domain.common.Unit;
 import com.gmail.pzalejko.invoice.manager.domain.common.VatPercentage;
-import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.InvoiceItem;
-import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.InvoiceItemId;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.ItemRepository;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Description;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.ItemId;
@@ -25,15 +22,6 @@ import static com.gmail.pzalejko.invoice.manager.db.tables.Item.ITEM;
 
 @RequiredArgsConstructor
 class JooqItemRepository implements ItemRepository {
-
-    static InvoiceItem mapToInvoiceItem(@NonNull InvoiceitemRecord invoiceitemRecord, @NonNull ItemRecord itemRecord) {
-        var item = mapToInvoiceItem(itemRecord);
-        return new InvoiceItem(
-                new InvoiceItemId(invoiceitemRecord.getId()),
-                invoiceitemRecord.getQuantity(),
-                item
-        );
-    }
 
     static com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item mapToInvoiceItem(@NonNull ItemRecord itemRecord) {
         return new com.gmail.pzalejko.invoice.manager.domain.invoice.domain.item.Item(

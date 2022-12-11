@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.manager.domain.invoice.application;
+package com.gmail.pzalejko.invoice.manager.domain.invoice.application.company;
 
 import lombok.NonNull;
 

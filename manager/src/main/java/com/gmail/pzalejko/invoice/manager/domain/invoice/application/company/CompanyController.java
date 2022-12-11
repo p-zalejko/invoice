@@ -1,4 +1,4 @@
-package com.gmail.pzalejko.invoice.manager.domain.invoice.application;
+package com.gmail.pzalejko.invoice.manager.domain.invoice.application.company;
 
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.ItemService;
 import com.gmail.pzalejko.invoice.manager.domain.invoice.domain.company.Company;

@@ -11,7 +11,6 @@ public record NewInvoiceDto(int fromCompany,
                             int billToCompany,
                             @NonNull List<NewInvoiceItemsDto> items) {
 
-
     record NewInvoiceItemsDto(int itemId, int quantity) {
 
     }

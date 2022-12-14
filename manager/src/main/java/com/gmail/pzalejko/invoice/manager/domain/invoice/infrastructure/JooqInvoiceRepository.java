@@ -38,12 +38,7 @@ class JooqInvoiceRepository implements InvoiceRepository {
 
         var record = dsl.transactionResult((Configuration trx) -> {
             var inv = dsl
-                    .insertInto(INVOICE,
-                            INVOICE.NUMBER,
-                            INVOICE.INVOICE_DATE,
-                            INVOICE.DUE_DATE,
-                            INVOICE.COMPANY_BILLTO_ID,
-                            INVOICE.COMPANY_FROM_ID
+                    .insertInto(INVOICE, INVOICE.NUMBER, INVOICE.INVOICE_DATE, INVOICE.DUE_DATE, INVOICE.COMPANY_BILLTO_ID, INVOICE.COMPANY_FROM_ID
                     )
                     .values(number, issueDate, dueDate, billTo, from)
                     .returning()

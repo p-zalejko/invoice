@@ -38,12 +38,7 @@ class JooqCompanyRepository implements CompanyRepository {
                     .fetchOne();
 
             return trx.dsl()
-                    .insertInto(COMPANY,
-                            COMPANY.ADDRESS_ID,
-                            COMPANY.NAME,
-                            COMPANY.ACCOUNT_NUMBER,
-                            COMPANY.TAXID
-                    )
+                    .insertInto(COMPANY, COMPANY.ADDRESS_ID, COMPANY.NAME, COMPANY.ACCOUNT_NUMBER, COMPANY.TAXID)
                     .values(addressRecord.getId(), company.getName().value(), company.getBankAccountNumber().value(), company.getCompanyTaxId().value())
                     .returning()
                     .fetchOne();

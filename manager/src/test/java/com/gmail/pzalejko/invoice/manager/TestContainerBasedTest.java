@@ -19,6 +19,7 @@ public class TestContainerBasedTest {
             .withDatabaseName("foo")
             .withUsername("foo")
             .withPassword("secret");
+
     protected JooqConfig jooqConfig;
 
     @BeforeEach

@@ -38,15 +38,13 @@ class JooqInvoiceRepository implements InvoiceRepository {
 
         var record = dsl.transactionResult((Configuration trx) -> {
             var inv = dsl
-                    .insertInto(INVOICE, INVOICE.NUMBER, INVOICE.INVOICE_DATE, INVOICE.DUE_DATE, INVOICE.COMPANY_BILLTO_ID, INVOICE.COMPANY_FROM_ID
-                    )
+                    .insertInto(INVOICE, INVOICE.NUMBER, INVOICE.INVOICE_DATE, INVOICE.DUE_DATE, INVOICE.COMPANY_BILLTO_ID, INVOICE.COMPANY_FROM_ID)
                     .values(number, issueDate, dueDate, billTo, from)
                     .returning()
                     .fetchOne();
 
             for (var item : items) {
-                dsl
-                        .insertInto(INVOICEITEM,
+                dsl.insertInto(INVOICEITEM,
                                 INVOICEITEM.INVOICE_ID,
                                 INVOICEITEM.ITEM_ID,
                                 INVOICEITEM.UNIT,
@@ -55,8 +53,7 @@ class JooqInvoiceRepository implements InvoiceRepository {
                                 INVOICEITEM.PRICE_VALUE,
                                 INVOICEITEM.PRICE_VAT,
                                 INVOICEITEM.QUANTITY
-                        )
-                        .values(
+                        ).values(
                                 inv.getId(),
                                 item.getItem().id().value(),
                                 ItemUnit.valueOf(item.getItem().unit().name()),
@@ -161,30 +158,18 @@ class JooqInvoiceRepository implements InvoiceRepository {
 
     private InvoiceItem mapToInvoiceItem(@NonNull InvoiceitemRecord invoiceitemRecord, @NonNull ItemRecord itemRecord) {
         var item = JooqItemRepository.mapToInvoiceItem(itemRecord);
-        return new InvoiceItem(
-                new InvoiceItemId(invoiceitemRecord.getId()),
-                invoiceitemRecord.getQuantity(),
-                item
-        );
+        return new InvoiceItem(new InvoiceItemId(invoiceitemRecord.getId()), invoiceitemRecord.getQuantity(), item);
     }
 
     private com.gmail.pzalejko.invoice.manager.domain.invoice.domain.Invoice mapToInvoice(InvoiceRecord invoiceRecord,
                                                                                           Company billTo,
                                                                                           Company from, List<InvoiceItem> items) {
-
         var invoiceNumberParts = invoiceRecord.getNumber().split("/");
         var id = new InvoiceId(invoiceRecord.getId());
         var number = new InvoiceNumber(Integer.parseInt(invoiceNumberParts[0]), Integer.parseInt(invoiceNumberParts[1]), Integer.parseInt(invoiceNumberParts[2]));
         var dueDate = new DueDate(invoiceRecord.getDueDate());
         var issueDate = new IssueDate(invoiceRecord.getInvoiceDate());
 
-        return new Invoice(
-                id,
-                number,
-                issueDate,
-                dueDate, from,
-                billTo,
-                items
-        );
+        return new Invoice(id, number, issueDate, dueDate, from, billTo, items);
     }
 }

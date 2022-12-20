@@ -1,0 +1,177 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MyPage</title>
+    <style type="text/css">
+        @font-face {
+            font-family: "Noto Sans";
+            src: url("SourceSans3-Regular.ttf"); /* Use an absolute or relative url. */
+        }
+
+        /* Later, use font as named: */
+        body {
+            font-family: 'Noto Sans', sans-serif;
+        }
+
+        p.small {
+            line-height: 0.1;
+            font-size: 14px;
+        }
+
+        p.right {
+            text-align: right
+        }
+
+        p.big {
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        table.standard{
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+        td.border-top{
+            border-top: 1px solid #000;
+            text-align: center;
+        }
+        td.border-top-small{
+            border-top: 0.5px solid #808080;
+            text-align: center;
+        }
+        td.border-bottom{
+            border-bottom: 1px solid #000;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h4 style="color: #5e9ca0; text-align: right;"><span style="color: #000000;">Sprzedawca:</span></h4>
+<span th:text="'Welcome to ' + ${to} + '!'"></span>
+
+<p class="small right"><span th:text="'Welcome to ' + ${sellerNameLine1} + '!'"></span></p>
+<p class="small right">${sellerNameLine2}</p>
+<p class="small right">${sellerNameLine3}</p>
+<p class="big right">${sellerAccountSection}: ${sellerAccountNumber}</p>
+<p style="text-align: right;"></p>
+<hr/>
+<table style="border-collapse: collapse; width: 100%; height: 109px;" border="0">
+    <tbody>
+    <tr style="height: 109px;">
+        <td style="width: 50%; height: 109px;">
+            <h2>Faktura VAT</h2>
+        </td>
+        <td style="width: 50%; height: 109px;">
+            <p style="text-align: right;"><strong>Numer dokumentu: ${invoiceNumberValue}</strong></p>
+            <p style="text-align: right;">${invoiceSellDateTitle}: ${invoiceSellDateValue}</p>
+            <p style="text-align: right;">${invoiceExecDateTitle}: ${invoiceExecDateValue}</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<hr/>
+<h2>Nabywca:</h2>
+<p class="small">${consumerNameLine1}</p>
+<p class="small">${consumerNameLine2}</p>
+<p class="small">${consumerNameLine3}</p>
+<p class="small">${consumerNameLine4}</p>
+<p></p>
+
+<table id="invoiceItems" class="standard" border="0">
+    <tbody>
+    <tr>
+        <td class="border-top" style="width: 4.48456%;"><strong>Lp.</strong></td>
+        <td class="border-top" style="width: 27.922%;"><strong>Nazwa towaru/us³ugi</strong></td>
+        <td class="border-top" style="width: 16.9846%;"><strong>Kod CN/ PKWiU</strong></td>
+        <td class="border-top" style="width: 2.49597%;"><strong>Ilo¶æ</strong></td>
+        <td class="border-top" style="width: 6.04711%;"><strong>j.m.</strong></td>
+        <td class="border-top" style="width: 17.4107%;"><strong>Cena netto</strong></td>
+        <td class="border-top" style="width: 11.1607%;"><strong>VAT</strong></td>
+        <td class="border-top" style="width: 27.78%;"><strong>Warto¶æ netto</strong></td>
+    </tr>
+    <tr id="firstItem">
+        <td class="border-top-small" style="width: 4.48456%;">abc</td>
+        <td class="border-top-small" style="width: 27.922%;">abc</td>
+        <td class="border-top-small" style="width: 16.9846%;">abc</td>
+        <td class="border-top-small" style="width: 2.49597%;">abc</td>
+        <td class="border-top-small" style="width: 6.04711%;"></td>
+        <td class="border-top-small" style="width: 17.4107%;"></td>
+        <td class="border-top-small" style="width: 11.1607%;"></td>
+        <td class="border-top-small" style="width: 27.78%;"></td>
+    </tr>
+    <tr id="secondItem">
+        <td class="border-top-small" style="width: 4.48456%;">abc1</td>
+        <td class="border-top-small" style="width: 27.922%;">abc1</td>
+        <td class="border-top-small" style="width: 16.9846%;">abc1</td>
+        <td class="border-top-small" style="width: 2.49597%;">abc1</td>
+        <td class="border-top-small" style="width: 6.04711%;"></td>
+        <td class="border-top-small" style="width: 17.4107%;"></td>
+        <td class="border-top-small" style="width: 11.1607%;"></td>
+        <td class="border-top-small" style="width: 27.78%;"></td>
+    </tr>
+    <tr>
+        <td class="border-top" style="width: 4.48456%;"></td>
+        <td class="border-top" style="width: 27.922%;"></td>
+        <td class="border-top" style="width: 16.9846%;"></td>
+        <td class="border-top" style="width: 2.49597%;"></td>
+        <td class="border-top" style="width: 6.04711%;"></td>
+        <td class="border-top" style="width: 17.4107%;"></td>
+        <td class="border-top" style="width: 11.1607%;"></td>
+        <td class="border-top" style="width: 27.78%;"></td>
+    </tr>
+    </tbody>
+</table>
+<table class="standard" border="0">
+    <tbody>
+    <tr>
+        <td class="border-bottom" style="width: 20%;"><strong>Forma p³atno¶ci</strong></td>
+        <td class="border-bottom" style="width: 20%;"><strong>Termin p³atno¶ci</strong></td>
+        <td style="width: 1%;"></td>
+        <td class="border-bottom" style="width: 3%;"></td>
+        <td class="border-bottom" style="width: 5%;"><strong>VAT</strong></td>
+        <td class="border-bottom" style="width: 16%;"><strong>Warto¶æ netto</strong></td>
+        <td class="border-bottom" style="width: 1%;"><strong>Kwota VAT</strong></td>
+        <td class="border-bottom" style="width: 18%;"><strong>Warto¶æ brutto</strong></td>
+    </tr>
+    <tr>
+        <td style="width: 14.6622%;">${itemsPaymantHowValue}</td>
+        <td style="width: 14.6622%;">${itemsPaymantDeadlineValue}</td>
+        <td style="width: 3.29859%;"></td>
+        <td style="width: 8.28156%;">${itemsPaymantDetails}</td>
+        <td style="width: 5.71338%;">${itemsPaymantTaxValue}</td>
+        <td style="width: 14.3781%;">${itemsPaymantTotalNetValue}</td>
+        <td style="width: 13.2418%;">${itemsPaymantTotalTaxValue}</td>
+        <td style="width: 16.6509%;">${itemsPaymantTotalNetAndTaxValue}</td>
+    </tr>
+    <tr>
+        <td style="width: 14.6622%;"></td>
+        <td style="width: 14.6622%;"></td>
+        <td style="width: 3.29859%;"></td>
+        <td style="width: 8.28156%;"><strong>${itemsPaymantTotalPriceTitle}:</strong></td>
+        <td style="width: 5.71338%;"></td>
+        <td style="width: 14.3781%;"><strong>${itemsPaymantTotalPriceNet}</strong></td>
+        <td style="width: 13.2418%;"><strong>${itemsPaymantTotalPriceTax}</strong></td>
+        <td style="width: 16.6509%;"><strong>${itemsPaymantTotalPriceTotal}</strong></td>
+    </tr>
+    </tbody>
+</table>
+<p></p>
+<h2 style="text-align: right;">Razem do zap³aty: ${itemsPaymantSummaryToPayValue}<br/>${itemsPaymantSummaryToPayAsText}
+</h2>
+<p></p>
+<table style="border-collapse: collapse; width: 100%;" border="0">
+    <tbody>
+    <tr>
+        <td style="width: 60%; text-align: center;border-bottom: 1px solid #000;">${itemsSellerWhoCreatedInvoiceValue}
+        </td>
+        <td style="width: 40%;"></td>
+    </tr>
+    <tr>
+        <td style="width: 60%; text-align: center">${itemsSellerWhoCreatedInvoiceTitle}</td>
+        <td style="width: 40%;"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

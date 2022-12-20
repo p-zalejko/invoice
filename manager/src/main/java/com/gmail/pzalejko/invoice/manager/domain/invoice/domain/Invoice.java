@@ -15,6 +15,8 @@ public class Invoice {
     private @NonNull InvoiceNumber number;
     private @NonNull IssueDate issueDate;
     private @NonNull DueDate dueDate;
+    // TODO: even though it's a root aggregate (in my opinion) it does not have to contain full company objects.
+    //  Maybe ID is fine, as long as it allows for meeting invariants are business rules t
     private @NonNull Company fromCompany;
     private @NonNull Company billToCompany;
     private @NonNull List<InvoiceItem> items;

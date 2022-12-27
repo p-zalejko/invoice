@@ -17,6 +17,11 @@
             font-size: 14px;
         }
 
+        p.verysmall {
+            line-height: 0.1;
+            font-size: 8px;
+        }
+
         p.right {
             text-align: right
         }
@@ -109,24 +114,24 @@
 <table class="standard" border="0">
     <tbody>
     <tr>
-        <td class="border-bottom" style="width: 20px;"><strong>Forma p³atno¶ci</strong></td>
-        <td class="border-bottom" style="width: 20px;"><strong>Termin p³atno¶ci</strong></td>
-        <td style="width: 20px;"></td>
-        <td class="border-bottom" style="width: 20px;"></td>
-        <td class="border-bottom" style="width: 20px;"><strong>VAT</strong></td>
-        <td class="border-bottom" style="width: 20px;"><strong>Warto¶æ netto</strong></td>
-        <td class="border-bottom" style="width: 20px;"><strong>Kwota VAT</strong></td>
-        <td class="border-bottom" style="width: 20px;"><strong>Warto¶æ brutto</strong></td>
+        <td class="border-bottom"><strong>Forma p³atno¶ci</strong></td>
+        <td class="border-bottom" ><strong>Termin p³atno¶ci</strong></td>
+        <td ></td>
+        <td class="border-bottom" ></td>
+        <td class="border-bottom" ><strong>VAT</strong></td>
+        <td class="border-bottom" ><strong>Warto¶æ netto</strong></td>
+        <td class="border-bottom" ><strong>Kwota VAT</strong></td>
+        <td class="border-bottom"><strong>Warto¶æ brutto</strong></td>
     </tr>
     <tr>
-        <td><span th:text="${itemsPaymentHowValue}"/></td>
-        <td><span th:text="${itemsPaymentDeadlineValue}"/></td>
+        <td style="text-align: center; vertical-align: middle;"><span th:text="${itemsPaymentHowValue}"/></td>
+        <td style="text-align: center; vertical-align: middle;"><span th:text="${itemsPaymentDeadlineValue}"/></td>
         <td ></td>
         <td>w tym:</td>
-        <td >23</td>
-        <td >1</td>
-        <td >1</td>
-        <td>1</td>
+        <td style="text-align: center; vertical-align: middle;">23</td>
+        <td style="text-align: center; vertical-align: middle;">1</td>
+        <td style="text-align: center; vertical-align: middle;">1</td>
+        <td style="text-align: center; vertical-align: middle;">1</td>
     </tr>
     <tr>
         <td></td>
@@ -134,16 +139,17 @@
         <td ></td>
         <td ><strong>Suma:</strong></td>
         <td ></td>
-        <td ><strong><span th:text="${itemsPaymentTotalPriceNet}"/></strong></td>
-        <td ><strong><span th:text="${itemsPaymentTotalPriceTax}"/></strong></td>
-        <td ><strong><span th:text="${itemsPaymentTotalPriceTotal}"/></strong></td>
+        <td style="text-align: center; vertical-align: middle;"><strong><span th:text="${itemsPaymentTotalPriceNet}"/></strong></td>
+        <td style="text-align: center; vertical-align: middle;"><strong><span th:text="${itemsPaymentTotalPriceTax}"/></strong></td>
+        <td style="text-align: center; vertical-align: middle;"><strong><span th:text="${itemsPaymentTotalPriceTotal}"/></strong></td>
     </tr>
     </tbody>
 </table>
-<p></p>
-<h2 style="text-align: right;">Razem do zap³aty: <span th:text="${itemsPaymentSummaryToPayValue}"/><br/>
-</h2>
-<p></p>
+<p style="width: 100%; height: 10px;"></p>
+
+<h2 style="text-align: right;">Razem do zap³aty: <span th:text="${itemsPaymentSummaryToPayValue}"/><br/></h2>
+<p style="width: 100%; height: 10px;"></p>
+
 <table style="border-collapse: collapse; width: 100%;" border="0">
     <tbody>
     <tr>
@@ -151,7 +157,7 @@
         <td style="width: 40%;"></td>
     </tr>
     <tr>
-        <td style="width: 60%; text-align: center">Podpis osoby uprawnionej do wystawienia faktury</td>
+        <td style="width: 60%; text-align: center"><p class="verysmall">Podpis osoby uprawnionej do wystawienia faktury</p></td>
         <td style="width: 40%;"></td>
     </tr>
     </tbody>

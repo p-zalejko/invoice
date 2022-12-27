@@ -1,7 +1,6 @@
 package com.gmail.pzalejko.invoice.pdfgenerator.application;
 
 import com.lowagie.text.pdf.BaseFont;
-import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,15 +15,9 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.time.LocalDate;
 
 @RestController
 public class GeneratorController {
-
-    @PostConstruct
-    void init() {
-        System.out.println(LocalDate.now().toString());
-    }
 
     @PostMapping("/v1/invoices")
     public void go(@RequestBody @Validated InvoiceInput input) {

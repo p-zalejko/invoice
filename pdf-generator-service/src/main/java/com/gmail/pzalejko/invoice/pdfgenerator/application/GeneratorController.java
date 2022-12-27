@@ -54,6 +54,13 @@ public class GeneratorController {
         context.setVariable("invoiceExecDateValue", input.issueDate());
         context.setVariable("consumerNameLine", input.billToCompany().name());
         context.setVariable("whoCreatedInvoiceValue", input.whoCreated());
+        context.setVariable("itemsPaymentHowValue", input.paymentMethod());
+        context.setVariable("itemsPaymentDeadlineValue", input.dueDate());
+
+        context.setVariable("itemsPaymentTotalPriceNet", input.summary().totalNet());
+        context.setVariable("itemsPaymentTotalPriceTax", input.summary().totalVat());
+        context.setVariable("itemsPaymentTotalPriceTotal", input.summary().total());
+        context.setVariable("itemsPaymentSummaryToPayValue", input.summary().total());
         context.setVariable("invoiceItems", input.items());
         return context;
     }

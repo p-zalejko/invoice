@@ -69,6 +69,7 @@
 <h2>Nabywca:</h2>
 <p class="small"><span th:text="${consumerNameLine}"/></p>
 
+<p style="width: 100%; height: 10px;"></p>
 
 <table id="invoiceItems" class="standard" border="0">
     <tbody>
@@ -83,14 +84,14 @@
         <td class="border-top" style="width: 27.78%;"><strong>Warto¶æ netto</strong></td>
     </tr>
     <tr th:each="item, custStat: ${invoiceItems}">
-        <td class="border-top-small" style="width: 4.48456%;"><span th:text="${custStat.count}"/></td>
-        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.name}"/></td>
-        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.itemCode}"/></td>
-        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.quantity}"/></td>
-        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.unit}"/></td>
-        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.netPerItem}"/></td>
-        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.vatPerItem}"/></td>
-        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.totalNet}"/></td>
+        <td class="border-top-small"><span th:text="${custStat.count}"/></td>
+        <td class="border-top-small"><span th:text="${item.name}"/></td>
+        <td class="border-top-small"><span th:text="${item.itemCode}"/></td>
+        <td class="border-top-small"><span th:text="${item.quantity}"/></td>
+        <td class="border-top-small"><span th:text="${item.unit}"/></td>
+        <td class="border-top-small"><span th:text="${item.netPerItem}"/></td>
+        <td class="border-top-small"><span th:text="${item.vatPerItem}"/></td>
+        <td class="border-top-small"><span th:text="${item.totalNet}"/></td>
     </tr>
     <tr>
         <td class="border-top" style="width: 4.48456%;"></td>
@@ -104,7 +105,7 @@
     </tr>
     </tbody>
 </table>
-
+<p style="width: 100%; height: 2px;"></p>
 <table class="standard" border="0">
     <tbody>
     <tr>
@@ -118,29 +119,29 @@
         <td class="border-bottom" style="width: 18%;"><strong>Warto¶æ brutto</strong></td>
     </tr>
     <tr>
-        <td style="width: 14.6622%;">${itemsPaymantHowValue}</td>
-        <td style="width: 14.6622%;">${itemsPaymantDeadlineValue}</td>
+        <td style="width: 14.6622%;"><span th:text="${itemsPaymentHowValue}"/></td>
+        <td style="width: 14.6622%;"><span th:text="${itemsPaymentDeadlineValue}"/></td>
         <td style="width: 3.29859%;"></td>
-        <td style="width: 8.28156%;">${itemsPaymantDetails}</td>
-        <td style="width: 5.71338%;">${itemsPaymantTaxValue}</td>
-        <td style="width: 14.3781%;">${itemsPaymantTotalNetValue}</td>
-        <td style="width: 13.2418%;">${itemsPaymantTotalTaxValue}</td>
-        <td style="width: 16.6509%;">${itemsPaymantTotalNetAndTaxValue}</td>
+        <td style="width: 8.28156%;">w tym:</td>
+        <td style="width: 5.71338%;">23</td>
+        <td style="width: 14.3781%;">1</td>
+        <td style="width: 13.2418%;">1</td>
+        <td style="width: 16.6509%;">1</td>
     </tr>
     <tr>
         <td style="width: 14.6622%;"></td>
         <td style="width: 14.6622%;"></td>
         <td style="width: 3.29859%;"></td>
-        <td style="width: 8.28156%;"><strong>${itemsPaymantTotalPriceTitle}:</strong></td>
+        <td style="width: 8.28156%;"><strong>Suma:</strong></td>
         <td style="width: 5.71338%;"></td>
-        <td style="width: 14.3781%;"><strong>${itemsPaymantTotalPriceNet}</strong></td>
-        <td style="width: 13.2418%;"><strong>${itemsPaymantTotalPriceTax}</strong></td>
-        <td style="width: 16.6509%;"><strong>${itemsPaymantTotalPriceTotal}</strong></td>
+        <td style="width: 14.3781%;"><strong><span th:text="${itemsPaymentTotalPriceNet}"/></strong></td>
+        <td style="width: 13.2418%;"><strong><span th:text="${itemsPaymentTotalPriceTax}"/></strong></td>
+        <td style="width: 16.6509%;"><strong><span th:text="${itemsPaymentTotalPriceTotal}"/></strong></td>
     </tr>
     </tbody>
 </table>
 <p></p>
-<h2 style="text-align: right;">Razem do zap³aty: ${itemsPaymantSummaryToPayValue}<br/>${itemsPaymantSummaryToPayAsText}
+<h2 style="text-align: right;">Razem do zap³aty: <span th:text="${itemsPaymentSummaryToPayValue}"/><br/>
 </h2>
 <p></p>
 <table style="border-collapse: collapse; width: 100%;" border="0">

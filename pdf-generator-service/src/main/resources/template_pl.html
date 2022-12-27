@@ -47,12 +47,8 @@
 </head>
 <body>
 <h4 style="color: #5e9ca0; text-align: right;"><span style="color: #000000;">Sprzedawca:</span></h4>
-<span th:text="'Welcome to ' + ${to} + '!'"></span>
-
-<p class="small right"><span th:text="'Welcome to ' + ${sellerNameLine1} + '!'"></span></p>
-<p class="small right">${sellerNameLine2}</p>
-<p class="small right">${sellerNameLine3}</p>
-<p class="big right">${sellerAccountSection}: ${sellerAccountNumber}</p>
+<p class="small right"><span th:text="${sellerNameLine1}"/></p>
+<p class="big right">Konto: <span th:text="${sellerAccountNumber}"/></p>
 <p style="text-align: right;"></p>
 <hr/>
 <table style="border-collapse: collapse; width: 100%; height: 109px;" border="0">
@@ -62,20 +58,17 @@
             <h2>Faktura VAT</h2>
         </td>
         <td style="width: 50%; height: 109px;">
-            <p style="text-align: right;"><strong>Numer dokumentu: ${invoiceNumberValue}</strong></p>
-            <p style="text-align: right;">${invoiceSellDateTitle}: ${invoiceSellDateValue}</p>
-            <p style="text-align: right;">${invoiceExecDateTitle}: ${invoiceExecDateValue}</p>
+            <p style="text-align: right;"><strong>Numer dokumentu: <span th:text="${invoiceNumberValue}"/></strong></p>
+            <p style="text-align: right;">Data wystawienia: <span th:text="${invoiceSellDateValue}"/></p>
+            <p style="text-align: right;">Data dostawy/wykonania us³ugi: <span th:text="${invoiceExecDateValue}"/></p>
         </td>
     </tr>
     </tbody>
 </table>
 <hr/>
 <h2>Nabywca:</h2>
-<p class="small">${consumerNameLine1}</p>
-<p class="small">${consumerNameLine2}</p>
-<p class="small">${consumerNameLine3}</p>
-<p class="small">${consumerNameLine4}</p>
-<p></p>
+<p class="small"><span th:text="${consumerNameLine}"/></p>
+
 
 <table id="invoiceItems" class="standard" border="0">
     <tbody>
@@ -89,25 +82,15 @@
         <td class="border-top" style="width: 11.1607%;"><strong>VAT</strong></td>
         <td class="border-top" style="width: 27.78%;"><strong>Warto¶æ netto</strong></td>
     </tr>
-    <tr id="firstItem">
-        <td class="border-top-small" style="width: 4.48456%;">abc</td>
-        <td class="border-top-small" style="width: 27.922%;">abc</td>
-        <td class="border-top-small" style="width: 16.9846%;">abc</td>
-        <td class="border-top-small" style="width: 2.49597%;">abc</td>
-        <td class="border-top-small" style="width: 6.04711%;"></td>
-        <td class="border-top-small" style="width: 17.4107%;"></td>
-        <td class="border-top-small" style="width: 11.1607%;"></td>
-        <td class="border-top-small" style="width: 27.78%;"></td>
-    </tr>
-    <tr id="secondItem">
-        <td class="border-top-small" style="width: 4.48456%;">abc1</td>
-        <td class="border-top-small" style="width: 27.922%;">abc1</td>
-        <td class="border-top-small" style="width: 16.9846%;">abc1</td>
-        <td class="border-top-small" style="width: 2.49597%;">abc1</td>
-        <td class="border-top-small" style="width: 6.04711%;"></td>
-        <td class="border-top-small" style="width: 17.4107%;"></td>
-        <td class="border-top-small" style="width: 11.1607%;"></td>
-        <td class="border-top-small" style="width: 27.78%;"></td>
+    <tr th:each="item, custStat: ${invoiceItems}">
+        <td class="border-top-small" style="width: 4.48456%;"><span th:text="${custStat.count}"/></td>
+        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.name}"/></td>
+        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.itemCode}"/></td>
+        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.quantity}"/></td>
+        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.unit}"/></td>
+        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.netPerItem}"/></td>
+        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.vatPerItem}"/></td>
+        <td class="border-top-small" style="width: 27.922%;"><span th:text="${item.totalNet}"/></td>
     </tr>
     <tr>
         <td class="border-top" style="width: 4.48456%;"></td>
@@ -121,6 +104,7 @@
     </tr>
     </tbody>
 </table>
+
 <table class="standard" border="0">
     <tbody>
     <tr>
@@ -162,12 +146,11 @@
 <table style="border-collapse: collapse; width: 100%;" border="0">
     <tbody>
     <tr>
-        <td style="width: 60%; text-align: center;border-bottom: 1px solid #000;">${itemsSellerWhoCreatedInvoiceValue}
-        </td>
+        <td style="width: 60%; text-align: center;border-bottom: 1px solid #000;"><span th:text="${whoCreatedInvoiceValue}"/></td>
         <td style="width: 40%;"></td>
     </tr>
     <tr>
-        <td style="width: 60%; text-align: center">${itemsSellerWhoCreatedInvoiceTitle}</td>
+        <td style="width: 60%; text-align: center">Podpis osoby uprawnionej do wystawienia faktury</td>
         <td style="width: 40%;"></td>
     </tr>
     </tbody>

@@ -8,6 +8,7 @@ import java.util.List;
 public record InvoiceInput(@NonNull FromCompany fromCompany,
                            @NonNull LocalDate issueDate,
                            @NonNull LocalDate dueDate,
+                           @NonNull String invoiceNumber,
                            @NonNull String paymentMethod,
                            @NonNull String whoCreated,
                            @NonNull BillToCompany billToCompany,

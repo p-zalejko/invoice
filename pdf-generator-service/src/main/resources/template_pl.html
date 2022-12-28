@@ -17,6 +17,11 @@
             font-size: 14px;
         }
 
+        span.small {
+            line-height: 0.1;
+            font-size: 14px;
+        }
+
         p.verysmall {
             line-height: 0.1;
             font-size: 8px;
@@ -26,25 +31,37 @@
             text-align: right
         }
 
+        span.right {
+            text-align: right
+        }
+
+        span.float-right {
+            float: right;
+        }
+
         p.big {
             line-height: 1.8;
             font-size: 16px;
         }
-        table.standard{
+
+        table.standard {
             border-collapse: collapse;
             width: 100%;
             font-size: 11px;
             line-height: 1.8;
         }
-        td.border-top{
+
+        td.border-top {
             border-top: 1px solid #000;
             text-align: center;
         }
-        td.border-top-small{
+
+        td.border-top-small {
             border-top: 0.5px solid #808080;
             text-align: center;
         }
-        td.border-bottom{
+
+        td.border-bottom {
             border-bottom: 1px solid #000;
             text-align: center;
         }
@@ -52,15 +69,17 @@
         #wrapper {
             border: 0;
         }
+
         #div1 {
             display: inline-block;
-            width:49%;
+            width: 49%;
             border: 0;
             vertical-align: top;
         }
+
         #div2 {
             display: inline-block;
-            width:49.5%;
+            width: 49.5%;
             border: 0;
             vertical-align: top;
         }
@@ -68,9 +87,13 @@
 </head>
 <body>
 <h4 style="color: #5e9ca0; text-align: right;"><span style="color: #000000;">Sprzedawca:</span></h4>
-<p class="small right"><span th:text="${sellerNameLine1}"/></p>
+<!--<p class="small right"><span style="white-space: pre-line" th:text="${sellerNameLine1}"/></p>-->
+
+<p style="width: 100%; height: 50px;">
+    <span class="float-right right" style="white-space: pre-line;" th:text="${sellerNameLine1}"/>
+</p>
+
 <p class="big right">Konto: <span th:text="${sellerAccountNumber}"/></p>
-<p style="text-align: right;"></p>
 <hr/>
 <table style="border-collapse: collapse; width: 100%; height: 109px;" border="0">
     <tbody>
@@ -134,11 +157,12 @@
             <tbody>
             <tr>
                 <td class="border-bottom"><strong>Forma p³atno¶ci</strong></td>
-                <td class="border-bottom" ><strong>Termin p³atno¶ci</strong></td>
+                <td class="border-bottom"><strong>Termin p³atno¶ci</strong></td>
             </tr>
             <tr>
                 <td style="text-align: center; vertical-align: middle;"><span th:text="${itemsPaymentHowValue}"/></td>
-                <td style="text-align: center; vertical-align: middle;"><span th:text="${itemsPaymentDeadlineValue}"/></td>
+                <td style="text-align: center; vertical-align: middle;"><span th:text="${itemsPaymentDeadlineValue}"/>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -147,14 +171,15 @@
         <table class="standard" border="0">
             <tbody>
             <tr>
-                <td class="border-bottom" ></td>
-                <td class="border-bottom" ><strong>VAT</strong></td>
-                <td class="border-bottom" ><strong>Warto¶æ netto</strong></td>
-                <td class="border-bottom" ><strong>Kwota VAT</strong></td>
+                <td class="border-bottom"></td>
+                <td class="border-bottom"><strong>VAT</strong></td>
+                <td class="border-bottom"><strong>Warto¶æ netto</strong></td>
+                <td class="border-bottom"><strong>Kwota VAT</strong></td>
                 <td class="border-bottom"><strong>Warto¶æ brutto</strong></td>
             </tr>
             <tr th:each="item, custStat: ${vatSummary}">
-                <td class="border-top-small" th:style="${custStat.last}? 'font-weight: bold;'" ><span th:text="${item.rowTitle}"/></td>
+                <td class="border-top-small" th:style="${custStat.last}? 'font-weight: bold;'"><span
+                        th:text="${item.rowTitle}"/></td>
                 <td class="border-top-small"><span th:text="${item.vatPercentage}"/></td>
                 <td class="border-top-small"><span th:text="${item.netValue}"/></td>
                 <td class="border-top-small"><span th:text="${item.vatValue}"/></td>
@@ -173,11 +198,13 @@
 <table style="border-collapse: collapse; width: 100%;" border="0">
     <tbody>
     <tr>
-        <td style="width: 60%; text-align: center;border-bottom: 1px solid #000;"><span th:text="${whoCreatedInvoiceValue}"/></td>
+        <td style="width: 60%; text-align: center;border-bottom: 1px solid #000;"><span
+                th:text="${whoCreatedInvoiceValue}"/></td>
         <td style="width: 40%;"></td>
     </tr>
     <tr>
-        <td style="width: 60%; text-align: center"><p class="verysmall">Podpis osoby uprawnionej do wystawienia faktury</p></td>
+        <td style="width: 60%; text-align: center"><p class="verysmall">Podpis osoby uprawnionej do wystawienia
+            faktury</p></td>
         <td style="width: 40%;"></td>
     </tr>
     </tbody>

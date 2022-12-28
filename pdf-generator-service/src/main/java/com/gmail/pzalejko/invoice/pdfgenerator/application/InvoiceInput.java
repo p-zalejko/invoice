@@ -13,7 +13,7 @@ public record InvoiceInput(@NonNull FromCompany fromCompany,
                            @NonNull String whoCreated,
                            @NonNull BillToCompany billToCompany,
                            @NonNull Summary summary,
-                           @NonNull SummaryPerVat summaryPerVat,
+                           @NonNull List<SummaryPerVat> summaryPerVat,
                            @NonNull List<Item> items) {
 
     record Item(String name, int quantity, String itemCode, String unit, int vatPerItem, double netPerItem, double totalNet, double total) {

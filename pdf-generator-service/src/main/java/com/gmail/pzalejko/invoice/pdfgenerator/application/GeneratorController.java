@@ -15,6 +15,10 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @RestController
 public class GeneratorController {
@@ -54,7 +58,11 @@ public class GeneratorController {
         context.setVariable("itemsPaymentTotalPriceTax", input.summary().totalVat());
         context.setVariable("itemsPaymentTotalPriceTotal", input.summary().total());
         context.setVariable("itemsPaymentSummaryToPayValue", input.summary().total());
+
         context.setVariable("invoiceItems", input.items());
+        context.setVariable("vatSummary", toVatSummaryDtos(input.summaryPerVat()));
+
+
         return context;
     }
 
@@ -70,5 +78,44 @@ public class GeneratorController {
         renderer.createPDF(outputStream);
 
         outputStream.close();
+    }
+
+    private List<VatSummaryDto> toVatSummaryDtos(List<InvoiceInput.SummaryPerVat> summaryPerVat) {
+        var sorted = summaryPerVat.stream()
+                .sorted(Comparator.comparingInt(InvoiceInput.SummaryPerVat::vatPercentage))
+                .toList();
+
+        var dtos = new ArrayList<VatSummaryDto>();
+        for (int i = 0; i < sorted.size(); i++) {
+            var item = sorted.get(i);
+            if (i == 0) {
+                dtos.add(new VatSummaryDto("w tym:", Integer.toString(item.vatPercentage()), item.totalNet(), item.vatTotal(), item.total()));
+            } else {
+                dtos.add(new VatSummaryDto("", Integer.toString(item.vatPercentage()), item.totalNet(), item.vatTotal(), item.total()));
+            }
+        }
+
+        var totalNet = sorted.stream()
+                .map(i -> BigDecimal.valueOf(i.totalNet()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .doubleValue();
+
+        var totalVat = sorted.stream()
+                .map(i -> BigDecimal.valueOf(i.vatTotal()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .doubleValue();
+
+        var total = sorted.stream()
+                .map(i -> BigDecimal.valueOf(i.total()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .doubleValue();
+
+        dtos.add(new VatSummaryDto("Suma:", "", totalNet, totalVat, total));
+
+        return dtos;
+    }
+
+    record VatSummaryDto(String rowTitle, String vatPercentage, double netValue, double vatValue, double total) {
+
     }
 }

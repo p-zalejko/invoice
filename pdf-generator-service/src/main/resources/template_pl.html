@@ -48,6 +48,22 @@
             border-bottom: 1px solid #000;
             text-align: center;
         }
+
+        #wrapper {
+            border: 0;
+        }
+        #div1 {
+            display: inline-block;
+            width:49%;
+            border: 0;
+            vertical-align: top;
+        }
+        #div2 {
+            display: inline-block;
+            width:49.5%;
+            border: 0;
+            vertical-align: top;
+        }
     </style>
 </head>
 <body>
@@ -111,40 +127,44 @@
     </tbody>
 </table>
 <p style="width: 100%; height: 2px;"></p>
-<table class="standard" border="0">
-    <tbody>
-    <tr>
-        <td class="border-bottom"><strong>Forma p³atno¶ci</strong></td>
-        <td class="border-bottom" ><strong>Termin p³atno¶ci</strong></td>
-        <td ></td>
-        <td class="border-bottom" ></td>
-        <td class="border-bottom" ><strong>VAT</strong></td>
-        <td class="border-bottom" ><strong>Warto¶æ netto</strong></td>
-        <td class="border-bottom" ><strong>Kwota VAT</strong></td>
-        <td class="border-bottom"><strong>Warto¶æ brutto</strong></td>
-    </tr>
-    <tr>
-        <td style="text-align: center; vertical-align: middle;"><span th:text="${itemsPaymentHowValue}"/></td>
-        <td style="text-align: center; vertical-align: middle;"><span th:text="${itemsPaymentDeadlineValue}"/></td>
-        <td ></td>
-        <td>w tym:</td>
-        <td style="text-align: center; vertical-align: middle;">23</td>
-        <td style="text-align: center; vertical-align: middle;">1</td>
-        <td style="text-align: center; vertical-align: middle;">1</td>
-        <td style="text-align: center; vertical-align: middle;">1</td>
-    </tr>
-    <tr>
-        <td></td>
-        <td ></td>
-        <td ></td>
-        <td ><strong>Suma:</strong></td>
-        <td ></td>
-        <td style="text-align: center; vertical-align: middle;"><strong><span th:text="${itemsPaymentTotalPriceNet}"/></strong></td>
-        <td style="text-align: center; vertical-align: middle;"><strong><span th:text="${itemsPaymentTotalPriceTax}"/></strong></td>
-        <td style="text-align: center; vertical-align: middle;"><strong><span th:text="${itemsPaymentTotalPriceTotal}"/></strong></td>
-    </tr>
-    </tbody>
-</table>
+
+<div id="wrapper">
+    <div id="div1">
+        <table class="standard" border="0">
+            <tbody>
+            <tr>
+                <td class="border-bottom"><strong>Forma p³atno¶ci</strong></td>
+                <td class="border-bottom" ><strong>Termin p³atno¶ci</strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: center; vertical-align: middle;"><span th:text="${itemsPaymentHowValue}"/></td>
+                <td style="text-align: center; vertical-align: middle;"><span th:text="${itemsPaymentDeadlineValue}"/></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="div2">
+        <table class="standard" border="0">
+            <tbody>
+            <tr>
+                <td class="border-bottom" ></td>
+                <td class="border-bottom" ><strong>VAT</strong></td>
+                <td class="border-bottom" ><strong>Warto¶æ netto</strong></td>
+                <td class="border-bottom" ><strong>Kwota VAT</strong></td>
+                <td class="border-bottom"><strong>Warto¶æ brutto</strong></td>
+            </tr>
+            <tr th:each="item, custStat: ${vatSummary}">
+                <td class="border-top-small" th:style="${custStat.last}? 'font-weight: bold;'" ><span th:text="${item.rowTitle}"/></td>
+                <td class="border-top-small"><span th:text="${item.vatPercentage}"/></td>
+                <td class="border-top-small"><span th:text="${item.netValue}"/></td>
+                <td class="border-top-small"><span th:text="${item.vatValue}"/></td>
+                <td class="border-top-small"><span th:text="${item.total}"/></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <p style="width: 100%; height: 10px;"></p>
 
 <h2 style="text-align: right;">Razem do zap³aty: <span th:text="${itemsPaymentSummaryToPayValue}"/><br/></h2>

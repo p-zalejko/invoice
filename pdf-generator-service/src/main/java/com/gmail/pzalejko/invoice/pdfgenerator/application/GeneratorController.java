@@ -71,40 +71,12 @@ public class GeneratorController {
 
     @SneakyThrows
     public void generatePdfFromHtml(String html) {
-//        String outputFolder = System.getProperty("user.home") + File.separator + "thymeleaf.pdf";
-//        OutputStream outputStream = new FileOutputStream(outputFolder);
-//
-//        final ClassPathResource fonts = new ClassPathResource("fonts/simsun.ttc");
-//
-//
-//        ITextRenderer renderer = new ITextRenderer();
-//        resolver.addFont(fonts.getPath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-//        renderer.setDocumentFromString(html);
-//        renderer.layout();
-//        renderer.createPDF(outputStream, false);
-//        renderer.finishPDF();
-//        outputStream.close();
-
-//        String outputFolder = System.getProperty("user.home") + File.separator + "thymeleaf.pdf";
-//        OutputStream outputStream = new FileOutputStream(outputFolder);
-//        var writer = new OutputStreamWriter(outputStream, "windows-1250");
-//        ITextRenderer renderer = new ITextRenderer();
-//
-//        ITextFontResolver resolver = renderer.getFontResolver();
-//        final ClassPathResource fonts = new ClassPathResource("fonts/simsun.ttc");
-//        resolver.addFont(fonts.getPath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-//        renderer.setDocumentFromString(html);
-//        renderer.layout();
-//        renderer.createPDF(writer, false);
-//        renderer.finishPDF();
-
         String outputFolder = System.getProperty("user.home") + File.separator + "thymeleaf.pdf";
         OutputStream outputStream = new FileOutputStream(outputFolder);
 
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(html);
-//        renderer.getFontResolver().addFont("fonts/simsun.ttc", BaseFont.IDENTITY_H, true);
-        renderer.getFontResolver().addFont("fonts/ARIALUNI.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+        renderer.getFontResolver().addFont("fonts/Arial.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
         renderer.layout();
         renderer.createPDF(outputStream);
 

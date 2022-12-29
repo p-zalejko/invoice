@@ -2,6 +2,7 @@ package com.gmail.pzalejko.invoice.pdfgenerator.application;
 
 import com.lowagie.text.pdf.BaseFont;
 import lombok.SneakyThrows;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,12 +11,12 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -32,6 +33,8 @@ public class GeneratorController {
     private String parseThymeleafTemplate(InvoiceInput input) {
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode("LEGACYHTML5");
+        templateResolver.setCharacterEncoding("windows-1250");
         templateResolver.setTemplateMode(TemplateMode.HTML);
 
         TemplateEngine templateEngine = new TemplateEngine();
@@ -68,12 +71,40 @@ public class GeneratorController {
 
     @SneakyThrows
     public void generatePdfFromHtml(String html) {
+//        String outputFolder = System.getProperty("user.home") + File.separator + "thymeleaf.pdf";
+//        OutputStream outputStream = new FileOutputStream(outputFolder);
+//
+//        final ClassPathResource fonts = new ClassPathResource("fonts/simsun.ttc");
+//
+//
+//        ITextRenderer renderer = new ITextRenderer();
+//        resolver.addFont(fonts.getPath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//        renderer.setDocumentFromString(html);
+//        renderer.layout();
+//        renderer.createPDF(outputStream, false);
+//        renderer.finishPDF();
+//        outputStream.close();
+
+//        String outputFolder = System.getProperty("user.home") + File.separator + "thymeleaf.pdf";
+//        OutputStream outputStream = new FileOutputStream(outputFolder);
+//        var writer = new OutputStreamWriter(outputStream, "windows-1250");
+//        ITextRenderer renderer = new ITextRenderer();
+//
+//        ITextFontResolver resolver = renderer.getFontResolver();
+//        final ClassPathResource fonts = new ClassPathResource("fonts/simsun.ttc");
+//        resolver.addFont(fonts.getPath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//        renderer.setDocumentFromString(html);
+//        renderer.layout();
+//        renderer.createPDF(writer, false);
+//        renderer.finishPDF();
+
         String outputFolder = System.getProperty("user.home") + File.separator + "thymeleaf.pdf";
         OutputStream outputStream = new FileOutputStream(outputFolder);
 
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(html);
-        renderer.getFontResolver().addFont("/SourceSans3-Regular.ttf", BaseFont.IDENTITY_H, true);
+//        renderer.getFontResolver().addFont("fonts/simsun.ttc", BaseFont.IDENTITY_H, true);
+        renderer.getFontResolver().addFont("fonts/ARIALUNI.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
         renderer.layout();
         renderer.createPDF(outputStream);
 
